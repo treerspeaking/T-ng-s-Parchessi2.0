@@ -1,18 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] private int _activePlayer = 4;
+
+    private List<PlayerTurnController> _playerTurnControllers;
+
+    /*
     void Start()
     {
-        
+        for (int i = 0; i < _activePlayer; i++)
+        {
+            _playerTurnControllers.Add(Instantiate(GameResourceManager.Instance.PlayerTurnController));
+        }
+
+        int k = 0;
+        foreach (var playerTurnController in _playerTurnControllers)
+        {
+            Debug.Log(k+": "+ playerTurnController.CurrentPlayerPhase );
+            k++;
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
         
     }
+    */
 }
