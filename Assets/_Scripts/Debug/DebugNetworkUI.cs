@@ -11,10 +11,31 @@ public class DebugNetworkUI : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        _server.onClick.AddListener( () => NetworkManager.Singleton.StartServer());
-        _host.onClick.AddListener(() => NetworkManager.Singleton.StartHost());
-        _client.onClick.AddListener( () => NetworkManager.Singleton.StartClient());
+        _server.onClick.AddListener( () =>
+        {
+            NetworkManager.Singleton.StartServer();
+            Debug.Log("Start Server");
+            DestroyThis();
+        });
+        
+        _host.onClick.AddListener(() =>
+        {
+            NetworkManager.Singleton.StartHost();
+            Debug.Log("Start Host");
+            DestroyThis();
+        });
+        
+        _client.onClick.AddListener( () =>
+        {
+            NetworkManager.Singleton.StartClient();
+            Debug.Log("Start Client");
+            DestroyThis();
+        });
     }
 
+    void DestroyThis()
+    {
+        Destroy(this.gameObject);
+    }
     
 }
