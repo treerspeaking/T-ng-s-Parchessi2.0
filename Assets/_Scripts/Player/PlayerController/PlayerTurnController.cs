@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using _Scripts.Player;
+
 using QFSW.QC;
 using Shun_Unity_Editor;
 using Unity.Collections;
@@ -20,7 +20,7 @@ public class PlayerTurnController : PlayerControllerDependency
 
     private PlayerController _playerController;
     
-    [ShowImmutable] private PlayerPhase _currentPlayerPhase;
+    [ShowImmutable, SerializeField] private PlayerPhase _currentPlayerPhase = PlayerPhase.Wait;
     public PlayerPhase CurrentPlayerPhase => _currentPlayerPhase;
 
     private void Start()

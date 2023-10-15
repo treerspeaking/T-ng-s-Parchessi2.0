@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using _Scripts.Player;
+
 using Unity.Netcode;
 using UnityEngine;
 

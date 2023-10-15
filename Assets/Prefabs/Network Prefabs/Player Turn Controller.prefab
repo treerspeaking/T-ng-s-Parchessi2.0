@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7998730319864698967}
-  - component: {fileID: 7998730319864698965}
+  - component: {fileID: 5587576400566048034}
   - component: {fileID: 7998730319864698964}
   m_Layer: 0
   m_Name: Player Turn Controller
@@ -33,7 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7998730319864698965
+--- !u!114 &5587576400566048034
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,9 +42,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7998730319864698966}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d22e4c4fb41da844c96a83717a3f8476, type: 3}
+  m_Script: {fileID: 11500000, guid: c3e283d757a540248bcd4c118784cf02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentPlayerPhase: 0
 --- !u!114 &7998730319864698964
 MonoBehaviour:
   m_ObjectHideFlags: 0
