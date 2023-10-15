@@ -44,4 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9297467f1008984aad3503e97e0d578, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerTurnController: {fileID: 7998730319864698965, guid: 9c1d19606d27cb942ac92ddd6e316cb3, type: 3}
+  PlayerTurnControllerPrefab: {fileID: 7998730319864698965, guid: 9c1d19606d27cb942ac92ddd6e316cb3, type: 3}
+  PlayerActionControllerPrefab: {fileID: 7936779839920554363, guid: 59fa4d86998892544931b7702dfe12ae, type: 3}

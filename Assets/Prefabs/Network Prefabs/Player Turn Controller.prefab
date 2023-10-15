@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7998730319864698965}
   - component: {fileID: 7998730319864698964}
   m_Layer: 0
-  m_Name: PlayerTurnController
+  m_Name: Player Turn Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

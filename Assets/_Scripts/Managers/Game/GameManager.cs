@@ -2,32 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityUtilities;
 
-public class GameManager : MonoBehaviour
+public class GameManager : SingletonMonoBehaviour<GameManager>
 {
     [SerializeField] private int _activePlayer = 4;
 
-    private List<PlayerTurnController> _playerTurnControllers;
+    private readonly List<PlayerController> _playerControllers = new ();
 
-    /*
-    void Start()
+    public void AddPlayerController(PlayerController playerController)
     {
-        for (int i = 0; i < _activePlayer; i++)
-        {
-            _playerTurnControllers.Add(Instantiate(GameResourceManager.Instance.PlayerTurnController));
-        }
-
-        int k = 0;
-        foreach (var playerTurnController in _playerTurnControllers)
-        {
-            Debug.Log(k+": "+ playerTurnController.CurrentPlayerPhase );
-            k++;
-        }
+        _playerControllers.Add(playerController);
     }
-
-    void Update()
-    {
-        
-    }
-    */
 }
