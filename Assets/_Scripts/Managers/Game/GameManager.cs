@@ -1,18 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
+using UnityUtilities;
 
-public class GameManager : MonoBehaviour
+public class GameManager : SingletonMonoBehaviour<GameManager>
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private int _activePlayer = 4;
 
-    // Update is called once per frame
-    void Update()
+    private readonly List<PlayerController> _playerControllers = new ();
+
+    public void AddPlayerController(PlayerController playerController)
     {
-        
+        _playerControllers.Add(playerController);
     }
 }
