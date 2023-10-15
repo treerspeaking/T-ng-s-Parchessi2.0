@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-public class dice_script : MonoBehaviour
+public class Dice : MonoBehaviour
 {
     private int GetDice()
     {
