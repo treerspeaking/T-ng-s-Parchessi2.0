@@ -1,11 +1,13 @@
 ﻿using Unity.Netcode;
+using UnityEngine;
 
+[RequireComponent(typeof(PlayerController))]
 public class PlayerControllerDependency : NetworkBehaviour
 {
     protected PlayerController PlayerController;
 
-    public void Initialize(PlayerController playerController)
+    public void Awake()
     {
-        PlayerController = playerController;
+        PlayerController = GetComponent<PlayerController>();
     }
 }

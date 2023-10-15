@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6905961411984022540}
   - component: {fileID: 9097427634083806982}
+  - component: {fileID: 6012954016721665117}
+  - component: {fileID: 5917750071920771271}
   - component: {fileID: 6905961411984022542}
   m_Layer: 0
   m_Name: Player Controller
@@ -45,6 +47,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc354e3faed8de64c98c714212529950, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6012954016721665117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6905961411984022577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d9c308730d421545983a32d513bbebd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5917750071920771271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6905961411984022577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3e283d757a540248bcd4c118784cf02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currentPlayerPhase:
+    m_InternalValue: 0
 --- !u!114 &6905961411984022542
 MonoBehaviour:
   m_ObjectHideFlags: 0
