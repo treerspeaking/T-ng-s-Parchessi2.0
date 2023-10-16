@@ -16,7 +16,7 @@ public class HandCard : MonoBehaviour
     
     [SerializeField] private Image _backgroundImage;
     [SerializeField] private Image _descriptionBackgroundImage;
-    
+    [SerializeField] private Image _bannerImage;
     
     private void Start()
     {

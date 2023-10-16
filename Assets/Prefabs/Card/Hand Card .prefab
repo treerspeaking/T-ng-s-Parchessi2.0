@@ -70,7 +70,8 @@ MonoBehaviour:
   _cardImage: {fileID: 5957310923543655301}
   _cardCost: {fileID: 5957310923104708874}
   _backgroundImage: {fileID: 5957310924167581621}
-  _descriptionBackgroundImage: {fileID: 5957310922920801851}
+  _descriptionBackgroundImage: {fileID: 5957310924378179761}
+  _bannerImage: {fileID: 5957310922920801851}
 --- !u!1 &5957310922792894948
 GameObject:
   m_ObjectHideFlags: 0
