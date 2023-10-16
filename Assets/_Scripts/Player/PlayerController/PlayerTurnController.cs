@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using _Scripts.NetworkContainter;
 using QFSW.QC;
 using Shun_Unity_Editor;
 using Unity.Collections;
@@ -19,8 +19,8 @@ public class PlayerTurnController : PlayerControllerDependency
     }
 
     private PlayerController _playerController;
-    
-    [ShowImmutable, SerializeField] private NetworkVariable<PlayerPhase> _currentPlayerPhase = new NetworkVariable<PlayerPhase>(PlayerPhase.Wait);
+    [ShowImmutable] public readonly NativeList<DiceContainer> CurrentTurnDices = new ();
+    [ShowImmutable] public readonly NetworkVariable<PlayerPhase> CurrentPlayerPhase = new NetworkVariable<PlayerPhase>(PlayerPhase.Wait);
 
     private void Start()
     {
@@ -30,7 +30,7 @@ public class PlayerTurnController : PlayerControllerDependency
     [Command]
     public PlayerPhase GetPlayerPhase()
     {
-        return _currentPlayerPhase.Value;
+        return CurrentPlayerPhase.Value;
     }
     
     [ClientRpc]
@@ -42,7 +42,7 @@ public class PlayerTurnController : PlayerControllerDependency
     [ServerRpc(RequireOwnership = false), Command]
     public void StartPreparationPhaseServerRPC()
     {
-        _currentPlayerPhase.Value = PlayerPhase.Preparation;
+        CurrentPlayerPhase.Value = PlayerPhase.Preparation;
         
         StartPreparationPhaseClientRPC();
     }
@@ -54,21 +54,35 @@ public class PlayerTurnController : PlayerControllerDependency
     }
     
     [ServerRpc, Command]
-    private void StartRollPhaseServerRPC()
+    public void StartRollPhaseServerRPC()
     {
-        _currentPlayerPhase.Value = PlayerPhase.Roll;
+        CurrentPlayerPhase.Value = PlayerPhase.Roll;
         StartRollPhaseClientRPC();
     }
    
     [ClientRpc]
     private void StartSubsequencePhaseClientRPC()
     {
+        Debug.Log($"Client {OwnerClientId} Start Subsequence");   
+    }
+
+    [ServerRpc]
+    public void EndRollPhaseServerRPC()
+    {
+        if (CurrentTurnDices.Length > 0)
+        {
+            StartPreparationPhaseServerRPC();
+        }
+        else
+        {
+            StartSubsequencePhaseServerRPC();
+        }
     }
     
-    [ServerRpc, Command]
+    [ServerRpc]
     private void StartSubsequencePhaseServerRPC()
     {
-        _currentPlayerPhase.Value = PlayerPhase.Subsequence;
+        CurrentPlayerPhase.Value = PlayerPhase.Subsequence;
         StartSubsequencePhaseClientRPC();
     }
     
@@ -81,7 +95,7 @@ public class PlayerTurnController : PlayerControllerDependency
     [ServerRpc(RequireOwnership = false), Command]
     public void EndTurnServerRPC()
     {
-        _currentPlayerPhase.Value = PlayerPhase.Wait;
+        CurrentPlayerPhase.Value = PlayerPhase.Wait;
         EndTurnClientRPC();
         
         GameManager.Instance.StartNextPlayerTurnServerRPC();

@@ -13,13 +13,14 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     [SerializeField, ShowImmutable]private List<PlayerController> _playerControllers = new ();
 
     private readonly NetworkVariable<int> _playerTurn = new NetworkVariable<int>(0);
+    public PlayerController ClientOwnerPlayerController;
     public int PlayerTurn => _playerTurn.Value;
 
-
-
+    
     public void AddPlayerController(PlayerController playerController)
     {
         _playerControllers.Add(playerController);
+        if (playerController.OwnerClientId == NetworkManager.LocalClientId) ClientOwnerPlayerController = playerController;
     }
 
     [Command]
@@ -28,14 +29,7 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
         _playerControllers[PlayerTurn].PlayerTurnController.StartPreparationPhaseServerRPC();
     }
     
-    public void EndCurrentPlayerTurn()
-    {
-        if (!_playerControllers[PlayerTurn].IsOwner) return;
-        
-        Debug.Log($"Player {_playerControllers[PlayerTurn].OwnerClientId} end turn");
-        _playerControllers[PlayerTurn].PlayerTurnController.EndTurnServerRPC();
-    }
-
+    
     [ServerRpc]
     public void StartNextPlayerTurnServerRPC()
     {
