@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using _Scripts.NetworkContainter;
+using _Scripts.Player;
 using QFSW.QC;
 using Shun_Unity_Editor;
 using Unity.Collections;
@@ -22,9 +23,11 @@ public class PlayerTurnController : PlayerControllerDependency
     [ShowImmutable] public NativeList<DiceContainer> CurrentTurnDices;
     [ShowImmutable] public readonly NetworkVariable<PlayerPhase> CurrentPlayerPhase = new NetworkVariable<PlayerPhase>(PlayerPhase.Wait);
 
+    private PlayerDiceHand _playerDiceHand;
     private void Start()
     {
         CurrentTurnDices = new(Allocator.Persistent);
+        _playerDiceHand = FindObjectOfType<PlayerDiceHand>();
     }
 
     [Command]
@@ -100,5 +103,20 @@ public class PlayerTurnController : PlayerControllerDependency
         
         GameManager.Instance.StartNextPlayerTurnServerRPC();
     }
+
+
+    [ServerRpc]
+    public void AddDiceServerRPC(DiceContainer diceContainer)
+    {
+        CurrentTurnDices.Add(diceContainer);
+    }
+
+    [ServerRpc]
+    public void RemoveBackDiceServerRPC()
+    {
+        CurrentTurnDices.RemoveAt(CurrentTurnDices.Length - 1);    
+    }
+
+    
     
 }

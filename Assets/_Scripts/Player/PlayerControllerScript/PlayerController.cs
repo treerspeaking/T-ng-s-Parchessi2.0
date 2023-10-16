@@ -9,7 +9,7 @@ public class PlayerController : NetworkBehaviour
 {
     public PlayerTurnController PlayerTurnController { get; internal set; }
     public PlayerActionController PlayerActionController { get; internal set; }
-    private PlayerHand _playerHand;
+    private PlayerCardHand _playerCardHand;
 
     private void Start()
     {

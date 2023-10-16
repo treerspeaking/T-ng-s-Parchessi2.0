@@ -1,24 +1,17 @@
-﻿
+﻿using _Scripts.Player.PlayerControllerScript;
 using UnityEngine;
 using UnityEngine.UI;
 
 
 [RequireComponent(typeof(Button))]
-public abstract class PhaseManipulateButtonControllerDependency : MonoBehaviour
+public abstract class PhaseManipulateButtonControllerDependency : PlayerControllerStartSetUpDependency
 {
     protected Button Button;
-    protected PlayerController PlayerController;
     
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Button = GetComponent<Button>();
-        GameManager.Instance.OnGameSetUp += () =>
-        {
-            PlayerController = GameManager.Instance.ClientOwnerPlayerController;
-            GameSetUp();
-        };
     }
-
-    protected abstract void GameSetUp();
 
 }
