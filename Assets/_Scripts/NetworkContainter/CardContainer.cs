@@ -3,18 +3,18 @@ using Unity.Netcode;
 
 namespace _Scripts.NetworkContainter
 {
-    public struct CardContainer  : INetworkSerializable, IEquatable<PlayerContainer>
+    public struct CardContainer : INetworkSerializable, IEquatable<CardContainer>
     {
-        public int ID;
+        public int CardID;
         
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
-            serializer.SerializeValue(ref ID);
+            serializer.SerializeValue(ref CardID);
         }
 
-        public bool Equals(PlayerContainer other)
+        public bool Equals(CardContainer other)
         {
-            return ID == other.ID;
+            return CardID == other.CardID;
         }
     }
 }
