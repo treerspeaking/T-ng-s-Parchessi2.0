@@ -25,11 +25,10 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     [SerializeField, ShowImmutable] private GameState _gameState = GameState.NetworkSetup;
     
     
-    private readonly NetworkVariable<int> _playerTurnId = new NetworkVariable<int>(0);
+    private readonly NetworkVariable<int> _playerIdTurn = new NetworkVariable<int>(0);
+    
     
     public PlayerController ClientOwnerPlayerController;
-    public int PlayerTurn => _playerTurnId.Value;
-
     public Action OnNetworkSetUp { get; set; }
     public Action OnGameSetUp { get; set; }
 
@@ -49,7 +48,7 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     [Command]
     public void StartGame()
     {
-        _playerControllers[PlayerTurn].PlayerTurnController.StartPreparationPhaseServerRPC();
+        _playerControllers[_playerIdTurn.Value].PlayerTurnController.StartPreparationPhaseServerRPC();
         _gameState = GameState.GamePlay;
     }
     
@@ -57,14 +56,14 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     [ServerRpc]
     public void StartNextPlayerTurnServerRPC()
     {
-        _playerTurnId.Value++;
-        if (PlayerTurn >= _playerControllers.Count)
+        _playerIdTurn.Value++;
+        if (_playerIdTurn.Value >= _playerControllers.Count)
         {
-            _playerTurnId.Value = 0;
+            _playerIdTurn.Value = 0;
         }
-        _playerControllers[PlayerTurn].PlayerTurnController.StartPreparationPhaseServerRPC();
+        _playerControllers[_playerIdTurn.Value].PlayerTurnController.StartPreparationPhaseServerRPC();
         
-        Debug.Log($"Player {_playerControllers[PlayerTurn].OwnerClientId} start turn");
+        Debug.Log($"Player {_playerControllers[_playerIdTurn.Value].OwnerClientId} start turn");
 
     }
     
