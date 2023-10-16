@@ -7,7 +7,7 @@ public class PawnDescription : ScriptableObject
     public int PawnID;
     public Sprite PawnSprite;
     public int PawnMaxHealth;
-    public int PawnAttack;
-    
-    
+    public int PawnAttackDamage;
+    public int PawnMovementSpeed;
+
 }

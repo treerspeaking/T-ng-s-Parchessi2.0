@@ -5,4 +5,7 @@
 public class DiceDescription : ScriptableObject
 {
     public int DiceID;
+    public int DiceLowerRange;
+    public int DiceUpperRange;
+
 }
