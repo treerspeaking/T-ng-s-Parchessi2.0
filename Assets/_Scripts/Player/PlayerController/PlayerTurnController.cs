@@ -76,7 +76,6 @@ public class PlayerTurnController : PlayerControllerDependency
     private void EndTurnClientRPC()
     {
         Debug.Log($"Client {OwnerClientId} End Turn");
-        GameManager.Instance.StartNextPlayerTurn();
     }
     
     [ServerRpc(RequireOwnership = false), Command]
@@ -84,6 +83,8 @@ public class PlayerTurnController : PlayerControllerDependency
     {
         _currentPlayerPhase.Value = PlayerPhase.Wait;
         EndTurnClientRPC();
+        
+        GameManager.Instance.StartNextPlayerTurnServerRPC();
     }
     
 }

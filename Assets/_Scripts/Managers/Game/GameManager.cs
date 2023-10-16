@@ -30,11 +30,14 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     
     public void EndCurrentPlayerTurn()
     {
+        if (!_playerControllers[PlayerTurn].IsOwner) return;
+        
         Debug.Log($"Player {_playerControllers[PlayerTurn].OwnerClientId} end turn");
         _playerControllers[PlayerTurn].PlayerTurnController.EndTurnServerRPC();
     }
 
-    public void StartNextPlayerTurn()
+    [ServerRpc]
+    public void StartNextPlayerTurnServerRPC()
     {
         _playerTurn.Value++;
         if (PlayerTurn >= _playerControllers.Count)
