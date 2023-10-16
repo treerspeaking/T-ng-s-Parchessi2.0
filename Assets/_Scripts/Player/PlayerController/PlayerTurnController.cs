@@ -19,9 +19,14 @@ public class PlayerTurnController : PlayerControllerDependency
     }
 
     private PlayerController _playerController;
-    [ShowImmutable] public readonly NativeList<DiceContainer> CurrentTurnDices = new ();
+    [ShowImmutable] public NativeList<DiceContainer> CurrentTurnDices;
     [ShowImmutable] public readonly NetworkVariable<PlayerPhase> CurrentPlayerPhase = new NetworkVariable<PlayerPhase>(PlayerPhase.Wait);
 
+    public override void Awake()
+    {
+        CurrentTurnDices = new(Allocator.Persistent);
+    }
+    
     private void Start()
     {
         Debug.Log("Start Player Turn Controller");

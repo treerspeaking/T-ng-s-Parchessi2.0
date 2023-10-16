@@ -2,9 +2,9 @@
 
 namespace _Scripts.UI.GameUI
 {
-    public class EndRollButtonController : ButtonControllerDependency
+    public class EndRollButtonController : PhaseManipulateButtonControllerDependency
     {
-        private void Start()
+        protected override void GameSetUp()
         {
             Button.onClick.AddListener(GameManager.Instance.ClientOwnerPlayerController.PlayerTurnController.EndRollPhaseServerRPC);
         }

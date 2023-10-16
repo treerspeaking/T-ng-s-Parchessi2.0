@@ -8,35 +8,54 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityUtilities;
 
+
 public class GameManager : SingletonNetworkBehavior<GameManager>
 {
-    [SerializeField, ShowImmutable]private List<PlayerController> _playerControllers = new ();
 
-    private readonly NetworkVariable<int> _playerTurn = new NetworkVariable<int>(0);
-    public PlayerController ClientOwnerPlayerController;
-    public int PlayerTurn => _playerTurn.Value;
+    public enum GameState
+    {
+        NetworkSetup,
+        GameSetup,
+        GamePlay,
+        GamePause,
+        GameEnd
+    }
 
+    [SerializeField, ShowImmutable] private List<PlayerController> _playerControllers = new();
+    [SerializeField, ShowImmutable] private GameState _gameState = GameState.NetworkSetup;
     
+    
+    private readonly NetworkVariable<int> _playerTurnId = new NetworkVariable<int>(0);
+    
+    public PlayerController ClientOwnerPlayerController;
+    public int PlayerTurn => _playerTurnId.Value;
+
+    public Action OnNetworkSetUp { get; set; }
+    public Action OnGameSetUp { get; set; }
+
     public void AddPlayerController(PlayerController playerController)
     {
         _playerControllers.Add(playerController);
-        if (playerController.OwnerClientId == NetworkManager.LocalClientId) ClientOwnerPlayerController = playerController;
+        if (playerController.IsOwner) ClientOwnerPlayerController = playerController;
     }
 
     [Command]
     public void StartGame()
     {
+        _gameState = GameState.GameSetup;
+        OnGameSetUp.Invoke();
         _playerControllers[PlayerTurn].PlayerTurnController.StartPreparationPhaseServerRPC();
+        _gameState = GameState.GamePlay;
     }
     
     
     [ServerRpc]
     public void StartNextPlayerTurnServerRPC()
     {
-        _playerTurn.Value++;
+        _playerTurnId.Value++;
         if (PlayerTurn >= _playerControllers.Count)
         {
-            _playerTurn.Value = 0;
+            _playerTurnId.Value = 0;
         }
         _playerControllers[PlayerTurn].PlayerTurnController.StartPreparationPhaseServerRPC();
         

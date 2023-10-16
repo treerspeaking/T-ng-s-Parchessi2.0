@@ -3,7 +3,7 @@ using _Scripts.UI.GameUI;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PhaseManipulateButtonAccumulation : MonoBehaviour
+public class PhaseManipulateButtonContent : MonoBehaviour
 {
     PlayerController _playerController;
     
@@ -16,11 +16,27 @@ public class PhaseManipulateButtonAccumulation : MonoBehaviour
 
     private void Start()
     {
-        _playerController = GameManager.Instance.ClientOwnerPlayerController;
-        _playerController.PlayerTurnController.CurrentPlayerPhase.OnValueChanged += OnCurrentPlayerPhaseChanged;
+        GameManager.Instance.OnGameSetUp += GameSetUp;
+        DisableAllExceptWait();
     }
 
-    private void OnCurrentPlayerPhaseChanged(PlayerTurnController.PlayerPhase previousValue, PlayerTurnController.PlayerPhase newValue)
+    private void GameSetUp()
+    {
+        _playerController = GameManager.Instance.ClientOwnerPlayerController;
+        _playerController.PlayerTurnController.CurrentPlayerPhase.OnValueChanged += CurrentPlayerPhaseChanged;
+    }
+    
+    private void DisableAllExceptWait()
+    {
+        _endTurnButtonController.gameObject.SetActive(false);
+        _endRollButtonController.gameObject.SetActive(false);
+        _startRollButtonController.gameObject.SetActive(false);
+        _waitButton.gameObject.SetActive(true);
+        
+        _currentActiveButton = _waitButton.gameObject;
+    }
+    
+    private void CurrentPlayerPhaseChanged(PlayerTurnController.PlayerPhase previousValue, PlayerTurnController.PlayerPhase newValue)
     {
         switch (newValue)
         {

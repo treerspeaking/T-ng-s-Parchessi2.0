@@ -6,7 +6,7 @@ public class PlayerControllerDependency : NetworkBehaviour
 {
     protected PlayerController PlayerController;
 
-    public void Awake()
+    public virtual void Awake()
     {
         PlayerController = GetComponent<PlayerController>();
     }

@@ -3,9 +3,9 @@ using UnityEngine;
 using UnityEngine.Rendering;
 
 
-public class StartRollButtonController : ButtonControllerDependency
+public class StartRollButtonController : PhaseManipulateButtonControllerDependency
 {
-    private void Start()
+    protected override void GameSetUp()
     {
         Button.onClick.AddListener(GameManager.Instance.ClientOwnerPlayerController.PlayerTurnController.StartRollPhaseServerRPC);
     }
