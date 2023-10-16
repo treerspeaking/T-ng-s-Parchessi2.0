@@ -13,9 +13,9 @@ public class PlayerController : NetworkBehaviour
 
     private void Start()
     {
-        GameManager.Instance.AddPlayerController(this);
         PlayerTurnController = GetComponent<PlayerTurnController>();
         PlayerActionController = GetComponent<PlayerActionController>();
+        GameManager.Instance.StartPlayerController(this);
     }
 
     

@@ -14,8 +14,9 @@ public class PhaseManipulateButtonContent : MonoBehaviour
     
     private GameObject _currentActiveButton;
 
-    private void Start()
+    private void Awake()
     {
+        
         GameManager.Instance.OnGameSetUp += GameSetUp;
         DisableAllExceptWait();
     }

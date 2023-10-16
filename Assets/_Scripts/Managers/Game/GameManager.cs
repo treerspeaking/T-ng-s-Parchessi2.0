@@ -33,17 +33,22 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     public Action OnNetworkSetUp { get; set; }
     public Action OnGameSetUp { get; set; }
 
-    public void AddPlayerController(PlayerController playerController)
+    public void StartPlayerController(PlayerController playerController)
     {
         _playerControllers.Add(playerController);
-        if (playerController.IsOwner) ClientOwnerPlayerController = playerController;
+        if (playerController.IsOwner)
+        {
+            ClientOwnerPlayerController = playerController;
+            
+            _gameState = GameState.GameSetup;
+            OnGameSetUp.Invoke();
+        }
     }
+
 
     [Command]
     public void StartGame()
     {
-        _gameState = GameState.GameSetup;
-        OnGameSetUp.Invoke();
         _playerControllers[PlayerTurn].PlayerTurnController.StartPreparationPhaseServerRPC();
         _gameState = GameState.GamePlay;
     }

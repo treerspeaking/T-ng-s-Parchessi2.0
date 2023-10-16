@@ -22,14 +22,9 @@ public class PlayerTurnController : PlayerControllerDependency
     [ShowImmutable] public NativeList<DiceContainer> CurrentTurnDices;
     [ShowImmutable] public readonly NetworkVariable<PlayerPhase> CurrentPlayerPhase = new NetworkVariable<PlayerPhase>(PlayerPhase.Wait);
 
-    public override void Awake()
-    {
-        CurrentTurnDices = new(Allocator.Persistent);
-    }
-    
     private void Start()
     {
-        Debug.Log("Start Player Turn Controller");
+        CurrentTurnDices = new(Allocator.Persistent);
     }
 
     [Command]
@@ -55,7 +50,7 @@ public class PlayerTurnController : PlayerControllerDependency
     [ClientRpc]
     private void StartRollPhaseClientRPC()
     {
-        Debug.Log($"Client {OwnerClientId} Start Preparation");
+        Debug.Log($"Client {OwnerClientId} Start Roll");
     }
     
     [ServerRpc, Command]
