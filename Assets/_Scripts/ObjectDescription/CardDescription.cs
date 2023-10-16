@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using _Scripts.NetworkContainter;
+using UnityEditor;
+using UnityEngine;
 
 namespace _Scripts.Scriptable_Objects
 {
@@ -6,10 +10,12 @@ namespace _Scripts.Scriptable_Objects
     public class CardDescription : ScriptableObject
     {
         public int CardID;
+        public string CardAssetPath => AssetDatabase.GetAssetPath(this);
         public Sprite CardSprite;
         public string CardName;
         public string CardDescriptionText;
         public int CardCost;
+        
         
     }
 }

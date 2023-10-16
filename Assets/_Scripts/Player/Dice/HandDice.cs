@@ -4,11 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-public class Dice : MonoBehaviour
+public class HandDice : MonoBehaviour
 {
+    DiceDescription _diceDescription;
     private int GetDice()
     {
-        return Random.Range(1,6);
+        if (_diceDescription == null) return -1;
+        
+        return Random.Range(_diceDescription.DiceLowerRange, _diceDescription.DiceUpperRange);
     }
     
     public TextMeshProUGUI textMeshPro;
@@ -21,5 +24,9 @@ public class Dice : MonoBehaviour
         textMeshPro.text = diceRes;
         Debug.Log("Dice roll result is: "+diceRes);
     }
-    
+
+    public void InitializeDice(DiceDescription diceDescription)
+    {
+        _diceDescription = diceDescription;
+    }
 }
