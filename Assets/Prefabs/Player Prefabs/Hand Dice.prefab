@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9070011752249346516}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.62, y: -3.02, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -148,7 +148,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _diceDescription: {fileID: 0}
-  textMeshPro: {fileID: 0}
 --- !u!114 &5995340789764069458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,6 +160,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9015df0f2334d65be30164dda66700b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dragObject: {fileID: 8914028338790642072}
   _targetType: 2
   _defaultPosition: {x: 0, y: 0}

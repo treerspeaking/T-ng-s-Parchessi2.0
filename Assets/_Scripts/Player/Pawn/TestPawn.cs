@@ -13,7 +13,12 @@ namespace _Scripts.Player.Pawn
             {
                 Debug.Log("HandDice");
                 HandDice handDice = targeter as HandDice;
-                handDice.PrintDice();
+                
+                
+                var diceRes = handDice.GetNumber();
+        
+                Debug.Log("Dice roll result is: "+diceRes);
+                handDice.DropDice();
             }
             else
             {

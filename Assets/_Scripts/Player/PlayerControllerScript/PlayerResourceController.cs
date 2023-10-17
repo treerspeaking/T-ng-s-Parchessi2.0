@@ -46,23 +46,18 @@ public class PlayerResourceController : NetworkBehaviour
     [ClientRpc]
     private void GainIncomeClientRPC()
     {
-        foreach (DiceContainer diceContainer in CurrentTurnDices)
+        for (int i = 0; i < CurrentTurnDices.Count; i++)
         {
-            _playerDiceHand.AddDiceToHand(diceContainer);
+            
+            _playerDiceHand.AddDiceToHand(CurrentTurnDices[i], i);
         }
+        
     }
-
-
+    
     [ServerRpc]
-    public void AddDiceServerRPC(DiceContainer diceContainer)
+    public void RemoveDiceServerRPC(int index)
     {
-        CurrentTurnDices.Add(diceContainer);
-    }
-
-    [ServerRpc]
-    public void RemoveBackDiceServerRPC()
-    {
-        CurrentTurnDices.RemoveAt(CurrentTurnDices.Count - 1);    
+        CurrentTurnDices.RemoveAt(index);
     }
 
 

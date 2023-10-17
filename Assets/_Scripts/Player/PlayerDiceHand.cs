@@ -8,24 +8,20 @@ namespace _Scripts.Player
     public class PlayerDiceHand : PlayerControllerStartSetUpDependency
     {
         
-        private List<HandDice> _handDiceList = new List<HandDice>();
+        private Dictionary<HandDice, int> _handDiceToDiceContainerDictionary = new ();
 
         protected override void GameSetUp()
         {
             
         }
 
-        public void AddDiceToHand(DiceContainer cardContainer)
+        public void AddDiceToHand(DiceContainer diceContainer, int diceContainerIndex)
         {
-            var handDice = CreateDiceHand(cardContainer);
+            var handDice = CreateDiceHand(diceContainer);
             
-            _handDiceList.Add(handDice);
+            _handDiceToDiceContainerDictionary.Add(handDice, diceContainerIndex);
         }
         
-        public void AddDiceToHand(HandDice handDice)
-        {
-            _handDiceList.Add(handDice);
-        }
         
         public HandDice CreateDiceHand(DiceContainer diceContainer)
         {
@@ -34,7 +30,15 @@ namespace _Scripts.Player
             handDice.Initialize(this, diceDescription);
             return handDice;
         }
-        
+
+        public void PlayDice(HandDice handDice)
+        {
+            int diceContainerIndex = _handDiceToDiceContainerDictionary[handDice];
+            _handDiceToDiceContainerDictionary.Remove(handDice);
+            Destroy(handDice.gameObject);
+            
+            PlayerController.PlayerResourceController.RemoveDiceServerRPC(diceContainerIndex);
+        }
     }
 
     
