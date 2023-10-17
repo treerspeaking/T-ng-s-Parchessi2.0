@@ -6,7 +6,6 @@ using UnityEngine;
 public class PawnDescription : ScriptableObject
 {
     public int PawnID;
-    public string PawnAssetPath => AssetDatabase.GetAssetPath(this);
     public Sprite PawnSprite;
     public int PawnMaxHealth;
     public int PawnAttackDamage;

@@ -11,34 +11,27 @@ public class GameResourceManager : SingletonMonoBehaviour<GameResourceManager>
 {
     public HandCard HandCard;
     public HandDice HandDice;
-    
+
     private readonly Dictionary<int, CardDescription> _cardDescriptionsDictionary = new();
     private readonly Dictionary<int, DiceDescription> _diceDescriptionsDictionary = new();
     private readonly Dictionary<int, PawnDescription> _pawnDescriptionsDictionary = new();
 
-    [SerializeField] private string _cardDescriptionAssetPath;
-    [SerializeField] private string _diceDescriptionAssetPath;
-    [SerializeField] private string _pawnDescriptionAssetPath;
+    const string CARD_DESCRIPTIONS_PATH = "CardDescriptions";
+    const string DICE_DESCRIPTIONS_PATH = "DiceDescriptions";
+    const string PAWN_DESCRIPTIONS_PATH = "PawnDescriptions";
     
     private void Awake()
     {
-        InitializeCardDescriptionDictionary();
-        InitializePawnDescriptionDictionary();
-        InitializeDiceDescriptionDictionary();
+        LoadCardDescriptions();
+        LoadDiceDescriptions();
+        LoadPawnDescriptions();
     }
 
-    private void InitializeCardDescriptionDictionary()
+    private void LoadCardDescriptions()
     {
-        // Use the AssetDatabase to load all assets at the specified folder path.
-        string[] assetPaths = AssetDatabase.FindAssets("", new[] { _cardDescriptionAssetPath });
-
-        foreach (string assetPath in assetPaths)
+        CardDescription[] cardDescriptions = Resources.LoadAll<CardDescription>(CARD_DESCRIPTIONS_PATH);
+        foreach (CardDescription cardDescription in cardDescriptions)
         {
-            Object loadedAsset =
-                AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(assetPath), (typeof(CardDescription)));
-            if (loadedAsset == null) continue;
-
-            var cardDescription = (CardDescription)loadedAsset;
             _cardDescriptionsDictionary[cardDescription.CardID] = cardDescription;
         }
     }
@@ -54,21 +47,13 @@ public class GameResourceManager : SingletonMonoBehaviour<GameResourceManager>
         return null;
     }
 
-    private void InitializeDiceDescriptionDictionary()
+    private void LoadDiceDescriptions()
     {
-        // Use the AssetDatabase to load all assets at the specified folder path.
-        string[] assetPaths = AssetDatabase.FindAssets("", new[] { _diceDescriptionAssetPath });
-
-        foreach (string assetPath in assetPaths)
+        DiceDescription[] diceDescriptions = Resources.LoadAll<DiceDescription>(DICE_DESCRIPTIONS_PATH);
+        foreach (DiceDescription diceDescription in diceDescriptions)
         {
-            Object loadedAsset =
-                AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(assetPath), (typeof(DiceDescription)));
-            if (loadedAsset == null) continue;
-
-            var diceDescription = (DiceDescription)loadedAsset;
             _diceDescriptionsDictionary[diceDescription.DiceID] = diceDescription;
         }
-
     }
 
     public DiceDescription GetDiceDescription(int diceID)
@@ -81,19 +66,12 @@ public class GameResourceManager : SingletonMonoBehaviour<GameResourceManager>
         Debug.LogWarning("DiceDescription not found for DiceID: " + diceID);
         return null;
     }
-    
-    private void InitializePawnDescriptionDictionary()
+
+    private void LoadPawnDescriptions()
     {
-        // Use the AssetDatabase to load all assets at the specified folder path.
-        string[] assetPaths = AssetDatabase.FindAssets("", new[] { _pawnDescriptionAssetPath });
-
-        foreach (string assetPath in assetPaths)
+        PawnDescription[] pawnDescriptions = Resources.LoadAll<PawnDescription>(PAWN_DESCRIPTIONS_PATH);
+        foreach (PawnDescription pawnDescription in pawnDescriptions)
         {
-            Object loadedAsset =
-                AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(assetPath), (typeof(PawnDescription)));
-            if (loadedAsset == null) continue;
-
-            var pawnDescription = (PawnDescription)loadedAsset;
             _pawnDescriptionsDictionary[pawnDescription.PawnID] = pawnDescription;
         }
     }

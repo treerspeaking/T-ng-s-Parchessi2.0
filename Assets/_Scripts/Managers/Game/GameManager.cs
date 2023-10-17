@@ -65,7 +65,7 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
                     DiceID = diceDescription.DiceID 
                 });
                 
-                Debug.Log($"Dice {diceDescription.DiceID} : {diceDescription.DiceAssetPath}");
+                Debug.Log($"Dice {diceDescription.DiceID} : ");
                 
             }
         }

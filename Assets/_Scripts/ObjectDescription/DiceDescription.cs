@@ -6,8 +6,9 @@ using UnityEngine;
 public class DiceDescription : ScriptableObject
 {
     public int DiceID;
-    public string DiceAssetPath => AssetDatabase.GetAssetPath(this);
+    
     public int DiceLowerRange;
     public int DiceUpperRange;
 
+    
 }
