@@ -1375,7 +1375,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 965004797}
-  - component: {fileID: 965004796}
+  - component: {fileID: 965004798}
   m_Layer: 0
   m_Name: Player Dice Hand
   m_TagString: Untagged
@@ -1383,18 +1383,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &965004796
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 965004795}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 762094baa5bc48b7a329ff7b99e0b1e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &965004797
 Transform:
   m_ObjectHideFlags: 0
@@ -1410,6 +1398,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &965004798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 965004795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 762094baa5bc48b7a329ff7b99e0b1e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1154224985
 GameObject:
   m_ObjectHideFlags: 0
@@ -1644,18 +1644,6 @@ PrefabInstance:
     - target: {fileID: 663625991990185625, guid: 92ec200727582d9448be5f654fc34529, type: 3}
       propertyPath: m_Name
       value: Game Resource Manager
-      objectReference: {fileID: 0}
-    - target: {fileID: 663625991990185626, guid: 92ec200727582d9448be5f654fc34529, type: 3}
-      propertyPath: _cardDescriptionAssetPath
-      value: Assets/SO Data/Card Data/
-      objectReference: {fileID: 0}
-    - target: {fileID: 663625991990185626, guid: 92ec200727582d9448be5f654fc34529, type: 3}
-      propertyPath: _diceDescriptionAssetPath
-      value: Assets/SO Data/Dice Data/
-      objectReference: {fileID: 0}
-    - target: {fileID: 663625991990185626, guid: 92ec200727582d9448be5f654fc34529, type: 3}
-      propertyPath: _pawnDescriptionAssetPath
-      value: Assets/SO Data/Pawn Data/
       objectReference: {fileID: 0}
     - target: {fileID: 663625991990185627, guid: 92ec200727582d9448be5f654fc34529, type: 3}
       propertyPath: m_RootOrder
@@ -1984,7 +1972,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4845276930943762971, guid: 2da3dcc22749e7f4280737786d898334, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000061035156
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4845637959249703711, guid: 2da3dcc22749e7f4280737786d898334, type: 3}
       propertyPath: m_AnchorMax.y

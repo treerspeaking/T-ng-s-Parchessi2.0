@@ -41,7 +41,7 @@ public class PlayerTurnController : PlayerControllerDependency
         Debug.Log($"Client {OwnerClientId} Start Preparation");
     }
 
-    [ServerRpc(RequireOwnership = false), Command]
+    [ServerRpc(RequireOwnership = false)]
     public void StartPreparationPhaseServerRPC()
     {
         CurrentPlayerPhase.Value = PlayerPhase.Preparation;

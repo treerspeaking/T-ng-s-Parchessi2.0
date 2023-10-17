@@ -11,7 +11,18 @@ public class PlayerController : NetworkBehaviour
     public PlayerActionController PlayerActionController { get; internal set; }
     public PlayerResourceController PlayerResourceController { get; internal set; }
 
-    private PlayerCardHand _playerCardHand;
+    public ClientRpcParams MyClientRpcParams;
+
+    private void Awake()
+    {
+        MyClientRpcParams  = new ClientRpcParams
+        {
+            Send = new ClientRpcSendParams
+            {
+                TargetClientIds = new ulong[]{OwnerClientId}
+            }
+        };
+    }
 
     private void Start()
     {

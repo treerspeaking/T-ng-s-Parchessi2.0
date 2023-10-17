@@ -3,6 +3,7 @@ using _Scripts.NetworkContainter;
 using _Scripts.Player;
 using Shun_Unity_Editor;
 using Unity.Netcode;
+using UnityEngine;
 
 public class PlayerResourceController : NetworkBehaviour
 {
@@ -42,7 +43,7 @@ public class PlayerResourceController : NetworkBehaviour
         IncomeDices.Add(diceContainer);
     }
     
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void GainIncomeServerRPC()
     {
         foreach(var diceContainer in IncomeDices)
@@ -56,12 +57,18 @@ public class PlayerResourceController : NetworkBehaviour
     [ClientRpc]
     private void GainIncomeClientRPC()
     {
-        for (int i = 0; i < CurrentTurnDices.Count; i++)
+        if (IsOwner)
         {
-            
-            _playerDiceHand.AddDiceToHand(CurrentTurnDices[i], i);
+
+            for (int i = 0; i < CurrentTurnDices.Count; i++)
+            {
+                _playerDiceHand.AddDiceToHand(CurrentTurnDices[i], i);
+            }
         }
-        
+        else
+        {
+            Debug.Log($"Not Owner Gain Income {OwnerClientId}, {NetworkManager.LocalClientId}");
+        }
     }
     
     [ServerRpc]

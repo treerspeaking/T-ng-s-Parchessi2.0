@@ -46,6 +46,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HandCard: {fileID: 5957310922694232700, guid: ac28aefa5a2eb5b46b324c3281723e1d, type: 3}
   HandDice: {fileID: 8914028338790642072, guid: ef0034253842238438eb5f5304433e3f, type: 3}
-  _cardDescriptionAssetPath: 
-  _diceDescriptionAssetPath: 
-  _pawnDescriptionAssetPath: 
