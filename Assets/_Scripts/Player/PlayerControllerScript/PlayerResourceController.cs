@@ -2,6 +2,7 @@
 using _Scripts.NetworkContainter;
 using _Scripts.Player;
 using Shun_Unity_Editor;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -46,23 +47,26 @@ public class PlayerResourceController : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void GainIncomeServerRPC()
     {
-        foreach(var diceContainer in IncomeDices)
+        DiceContainer[] addDiceContainers = new DiceContainer[IncomeDices.Count]; // RPC came before NetworkList 
+        for (var index = 0; index < IncomeDices.Count; index++)
         {
+            var diceContainer = IncomeDices[index];
+            addDiceContainers[index] = diceContainer;
             CurrentTurnDices.Add(diceContainer);
         }
-        
-        GainIncomeClientRPC();
+
+        GainIncomeClientRPC(addDiceContainers);
     }
 
     [ClientRpc]
-    private void GainIncomeClientRPC()
+    private void GainIncomeClientRPC(DiceContainer[] addDiceContainers = default)
     {
         if (IsOwner)
         {
 
-            for (int i = 0; i < CurrentTurnDices.Count; i++)
+            for (int i = 0; i < addDiceContainers.Length; i++)
             {
-                _playerDiceHand.AddDiceToHand(CurrentTurnDices[i], i);
+                _playerDiceHand.AddDiceToHand(addDiceContainers[i], i);
             }
         }
         else

@@ -21,7 +21,7 @@ public class PlayerTurnController : PlayerControllerDependency
 
     private PlayerController _playerController;
 
-    [ShowImmutable] public readonly NetworkVariable<PlayerPhase> CurrentPlayerPhase = new NetworkVariable<PlayerPhase>(PlayerPhase.Wait);
+    [ShowImmutable] public readonly NetworkVariable<PlayerPhase> CurrentPlayerPhase = new (PlayerPhase.Wait);
 
     private PlayerDiceHand _playerDiceHand;
     private void Start()
