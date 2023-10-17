@@ -10,8 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 9070011752249346515}
   - component: {fileID: 9070011752249346514}
+  - component: {fileID: -3597232767527677900}
   - component: {fileID: 9070011752249346517}
   - component: {fileID: 8914028338790642072}
+  - component: {fileID: 5995340789764069458}
   m_Layer: 0
   m_Name: Hand Dice
   m_TagString: Untagged
@@ -86,6 +88,32 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &-3597232767527677900
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9070011752249346516}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.34, y: 1.34}
+    newSize: {x: 1.34, y: 1.34}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.34, y: 1.34}
+  m_EdgeRadius: 0
 --- !u!95 &9070011752249346517
 Animator:
   serializedVersion: 5
@@ -119,4 +147,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 284feb7dda5972648b16c285508bd944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _diceDescription: {fileID: 0}
   textMeshPro: {fileID: 0}
+--- !u!114 &5995340789764069458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9070011752249346516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9015df0f2334d65be30164dda66700b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dragObject: {fileID: 8914028338790642072}
+  _targetType: 2
+  _defaultPosition: {x: 0, y: 0}

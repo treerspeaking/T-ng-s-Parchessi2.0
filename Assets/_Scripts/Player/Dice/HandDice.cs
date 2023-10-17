@@ -1,15 +1,19 @@
 using System.Collections;
 
 using System.Collections.Generic;
+using _Scripts.Player;
+using Shun_Unity_Editor;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-public class HandDice : MonoBehaviour
+public class HandDice : MonoBehaviour, ITargeter<HandDice>
 {
-    DiceDescription _diceDescription;
+    private PlayerDiceHand _playerDiceHand;
+    [SerializeField, ShowImmutable] DiceDescription _diceDescription;
     
-    public void Initialize(DiceDescription diceDescription)
+    public void Initialize(PlayerDiceHand playerDiceHand, DiceDescription diceDescription)
     {
+        _playerDiceHand = playerDiceHand;
         _diceDescription = diceDescription;
     }
     private int GetDice()
@@ -30,4 +34,5 @@ public class HandDice : MonoBehaviour
         Debug.Log("Dice roll result is: "+diceRes);
     }
 
+    
 }

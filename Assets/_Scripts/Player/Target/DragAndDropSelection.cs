@@ -5,9 +5,9 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Device;
 
-public abstract class DragAndDropSelection<T> : MonoBehaviour where T : MonoBehaviour
+public abstract class DragAndDropSelection<TTargeter, TTargetee> : MonoBehaviour where TTargeter : MonoBehaviour, ITargeter<TTargeter> where TTargetee : MonoBehaviour
 {
-    [SerializeField] private T _dragObject;
+    [SerializeField] private ITargeter<TTargeter> _dragObject;
     [SerializeField] private TargetType _targetType;
     
     [SerializeField] private Vector2 _defaultPosition;
@@ -17,7 +17,7 @@ public abstract class DragAndDropSelection<T> : MonoBehaviour where T : MonoBeha
 
     private void Awake()
     {
-        _dragObject = GetComponent<T>();
+        _dragObject = GetComponent<ITargeter<TTargeter>>();
     }
 
     void Start()
@@ -47,19 +47,23 @@ public abstract class DragAndDropSelection<T> : MonoBehaviour where T : MonoBeha
             Collider2D[] overlapCircleAll = Physics2D.OverlapCircleAll(transform.position, 0.2f);
             foreach (Collider2D hit in overlapCircleAll)
             {
-                DropTarget target = hit.gameObject.GetComponent<DropTarget>();
-                if (target != null && CheckValid(target))
-                {
-                    Debug.Log("Hit");
-                    target.ExecuteDrop(_dragObject);
-                    return;
-                }
+                CheckHit(hit);
             }
             transform.position = _defaultPosition;
         }
     }
 
-    protected virtual bool CheckValid(DropTarget dropTarget)
+    protected virtual void CheckHit(Collider2D hit)
+    {
+        DropTarget<TTargetee> target = hit.gameObject.GetComponent<DropTarget<TTargetee>>();
+        
+        if (target == null || !CheckValid(target)) return;
+        
+        target.ExecuteDrop(_dragObject.GetTarget());
+        
+    }
+    
+    protected virtual bool CheckValid(DropTarget<TTargetee> dropTarget)
     {
         return _targetType == dropTarget.GetTargetType();
     }

@@ -5,24 +5,31 @@ using _Scripts.Player.Target;
 using UnityEngine;
 
 
-public class DropTarget : MonoBehaviour
+public abstract class DropTarget<T> : MonoBehaviour where T : MonoBehaviour
 {
-    [SerializeField] private ITargetable _targetBehaviour;
+    private ITargetee<T> _targetBehaviour;
     
     [SerializeField] private TargetType _targetType;
 
-    public void SetTargetedObject(ITargetable targetable)
+    private void Awake()
     {
-        _targetBehaviour = targetable;
+        _targetBehaviour = GetComponent<ITargetee<T>>();
     }
 
+    /*
+    public void Initialize(ITargetee<T> targetee)
+    {
+        _targetBehaviour = targetee;
+    }
+    */
+    
     public TargetType GetTargetType()
     {
         return _targetType;
     }
     
-    public void ExecuteDrop<T>(T dragAndDropSelection) where T : MonoBehaviour
+    public void ExecuteDrop<TTargeter>(TTargeter targeterMonoBehaviour) where TTargeter : MonoBehaviour, ITargeter<TTargeter>
     {
-        _targetBehaviour?.ExecuteTarget(dragAndDropSelection);
+        _targetBehaviour?.ExecuteTarget(targeterMonoBehaviour);
     }
 }

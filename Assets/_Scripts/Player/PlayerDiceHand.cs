@@ -31,7 +31,7 @@ namespace _Scripts.Player
         {
             var diceDescription = GameResourceManager.Instance.GetDiceDescription(diceContainer.DiceID);
             var handDice = Instantiate(GameResourceManager.Instance.HandDice);
-            handDice.Initialize(diceDescription);
+            handDice.Initialize(this, diceDescription);
             return handDice;
         }
         

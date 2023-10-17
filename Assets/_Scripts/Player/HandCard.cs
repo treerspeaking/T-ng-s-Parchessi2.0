@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class HandCard : MonoBehaviour
 {
+    private PlayerCardHand _playerCardHand;
+    
     public CardDescription CardDescription;
     
     [SerializeField] private TMP_Text _cardName;
