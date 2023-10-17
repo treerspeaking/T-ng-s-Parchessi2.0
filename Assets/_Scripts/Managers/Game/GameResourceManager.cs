@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using _Scripts.Scriptable_Objects;
+using UnityEditor;
 using UnityEngine;
 using UnityUtilities;
+using Object = UnityEngine.Object;
 
 public class GameResourceManager : SingletonMonoBehaviour<GameResourceManager>
 {
@@ -27,9 +29,16 @@ public class GameResourceManager : SingletonMonoBehaviour<GameResourceManager>
 
     private void InitializeCardDescriptionDictionary()
     {
-        CardDescription[] cardDescriptions = Resources.LoadAll<CardDescription>(_cardDescriptionAssetPath); // Provide the folder path if needed
-        foreach (CardDescription cardDescription in cardDescriptions)
+        // Use the AssetDatabase to load all assets at the specified folder path.
+        string[] assetPaths = AssetDatabase.FindAssets("", new[] { _cardDescriptionAssetPath });
+
+        foreach (string assetPath in assetPaths)
         {
+            Object loadedAsset =
+                AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(assetPath), (typeof(CardDescription)));
+            if (loadedAsset == null) continue;
+
+            var cardDescription = (CardDescription)loadedAsset;
             _cardDescriptionsDictionary[cardDescription.CardID] = cardDescription;
         }
     }
@@ -47,11 +56,19 @@ public class GameResourceManager : SingletonMonoBehaviour<GameResourceManager>
 
     private void InitializeDiceDescriptionDictionary()
     {
-        DiceDescription[] diceDescriptions = Resources.LoadAll<DiceDescription>(_diceDescriptionAssetPath); // Provide the folder path if needed
-        foreach (DiceDescription diceDescription in diceDescriptions)
+        // Use the AssetDatabase to load all assets at the specified folder path.
+        string[] assetPaths = AssetDatabase.FindAssets("", new[] { _diceDescriptionAssetPath });
+
+        foreach (string assetPath in assetPaths)
         {
+            Object loadedAsset =
+                AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(assetPath), (typeof(DiceDescription)));
+            if (loadedAsset == null) continue;
+
+            var diceDescription = (DiceDescription)loadedAsset;
             _diceDescriptionsDictionary[diceDescription.DiceID] = diceDescription;
         }
+
     }
 
     public DiceDescription GetDiceDescription(int diceID)
@@ -67,9 +84,16 @@ public class GameResourceManager : SingletonMonoBehaviour<GameResourceManager>
     
     private void InitializePawnDescriptionDictionary()
     {
-        PawnDescription[] pawnDescriptions = Resources.LoadAll<PawnDescription>(_pawnDescriptionAssetPath); // Provide the folder path if needed
-        foreach (PawnDescription pawnDescription in pawnDescriptions)
+        // Use the AssetDatabase to load all assets at the specified folder path.
+        string[] assetPaths = AssetDatabase.FindAssets("", new[] { _pawnDescriptionAssetPath });
+
+        foreach (string assetPath in assetPaths)
         {
+            Object loadedAsset =
+                AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(assetPath), (typeof(PawnDescription)));
+            if (loadedAsset == null) continue;
+
+            var pawnDescription = (PawnDescription)loadedAsset;
             _pawnDescriptionsDictionary[pawnDescription.PawnID] = pawnDescription;
         }
     }

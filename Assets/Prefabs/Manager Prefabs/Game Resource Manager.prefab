@@ -44,5 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9297467f1008984aad3503e97e0d578, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerTurnControllerPrefab: {fileID: 5587576400566048034, guid: 9c1d19606d27cb942ac92ddd6e316cb3, type: 3}
-  PlayerActionControllerPrefab: {fileID: 6599463351941860507, guid: 59fa4d86998892544931b7702dfe12ae, type: 3}
+  HandCard: {fileID: 5957310922694232700, guid: ac28aefa5a2eb5b46b324c3281723e1d, type: 3}
+  HandDice: {fileID: 8914028338790642072, guid: ef0034253842238438eb5f5304433e3f, type: 3}
+  _cardDescriptionAssetPath: 
+  _diceDescriptionAssetPath: 
+  _pawnDescriptionAssetPath: 

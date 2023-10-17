@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1459954394566017977}
   - component: {fileID: 7695238754754329727}
+  - component: {fileID: 385805303}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -44,4 +45,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7635d4b4457031b4aadb0e7f40fcccc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _activePlayer: 4
+  _playerControllers: []
+  _gameState: 0
+  ClientOwnerPlayerController: {fileID: 0}
+  _incomeDiceContainers:
+  - {fileID: 11400000, guid: 88f6d5eb9dd88b542b0c3ec68fe84d9f, type: 2}
+  - {fileID: 11400000, guid: 88f6d5eb9dd88b542b0c3ec68fe84d9f, type: 2}
+--- !u!114 &385805303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8876226823398608456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1

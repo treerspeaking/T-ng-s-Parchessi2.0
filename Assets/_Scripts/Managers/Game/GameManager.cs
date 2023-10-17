@@ -6,6 +6,7 @@ using _Scripts.NetworkContainter;
 using QFSW.QC;
 using Shun_Unity_Editor;
 using Unity.Netcode;
+using UnityEditor;
 using UnityEngine;
 using UnityUtilities;
 
@@ -63,6 +64,9 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
                 {
                     DiceID = diceDescription.DiceID 
                 });
+                
+                Debug.Log($"Dice {diceDescription.DiceID} : {diceDescription.DiceAssetPath}");
+                
             }
         }
         
