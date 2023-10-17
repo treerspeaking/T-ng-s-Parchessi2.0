@@ -340,9 +340,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1854457711}
-  - component: {fileID: 1854457712}
   - component: {fileID: 1854457713}
   - component: {fileID: 1854457714}
+  - component: {fileID: 1854457716}
+  - component: {fileID: 1854457715}
   m_Layer: 0
   m_Name: DiceSample
   m_TagString: Untagged
@@ -365,18 +366,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1854457712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1854457710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2defc7cc5680e242a8f87e833af7418, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &1854457713
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -455,3 +444,31 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1854457715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1854457710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 284feb7dda5972648b16c285508bd944, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textMeshPro: {fileID: 0}
+--- !u!114 &1854457716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1854457710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9015df0f2334d65be30164dda66700b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dragObject: {fileID: 1854457715}
+  _targetType: 2
+  _defaultPosition: {x: 0, y: 0}

@@ -24,6 +24,7 @@ namespace _Scripts.Player
             var diceDescription = GameResourceManager.Instance.GetDiceDescription(cardContainer.CardID);
             var handDice = Instantiate(GameResourceManager.Instance.HandDice);
             handDice.InitializeDice(diceDescription);
+            _handDiceList.Add(handDice);
         }
         
     }

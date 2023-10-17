@@ -1,17 +1,28 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using _Scripts.Player.Target;
 using UnityEngine;
 
 
-public abstract class DropTarget : MonoBehaviour
+public class DropTarget : MonoBehaviour
 {
-    [SerializeField] private MonoBehaviour _targetBehaviour;
+    [SerializeField] private ITargetable _targetBehaviour;
+    
     [SerializeField] private TargetType _targetType;
-    private T GetTarget<T>() where T : MonoBehaviour
+
+    public void SetTargetedObject(ITargetable targetable)
     {
-        return (T) _targetBehaviour;
+        _targetBehaviour = targetable;
+    }
+
+    public TargetType GetTargetType()
+    {
+        return _targetType;
     }
     
-    public abstract void ExecuteDrop(DragAndDrop dragAndDrop);
+    public void ExecuteDrop<T>(T dragAndDropSelection) where T : MonoBehaviour
+    {
+        _targetBehaviour?.ExecuteTarget(dragAndDropSelection);
+    }
 }

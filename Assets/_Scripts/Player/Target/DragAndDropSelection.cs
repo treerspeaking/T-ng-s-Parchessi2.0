@@ -1,16 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Device;
 
-public class DragAndDrop : MonoBehaviour
+public abstract class DragAndDropSelection<T> : MonoBehaviour where T : MonoBehaviour
 {
-    [SerializeField] private MonoBehaviour _dragObject; 
+    [SerializeField] private T _dragObject;
+    [SerializeField] private TargetType _targetType;
+    
     [SerializeField] private Vector2 _defaultPosition;
     Collider2D _collider;
     bool _isDragging;
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        _dragObject = GetComponent<T>();
+    }
+
     void Start()
     {
         _collider = GetComponent<Collider2D>();
@@ -35,21 +44,27 @@ public class DragAndDrop : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             _isDragging = false;
-            Collider2D[] pieces = Physics2D.OverlapCircleAll(transform.position, 0.2f);
-            foreach (Collider2D piece in pieces)
+            Collider2D[] overlapCircleAll = Physics2D.OverlapCircleAll(transform.position, 0.2f);
+            foreach (Collider2D hit in overlapCircleAll)
             {
-
-                DropTarget movePiece = piece.gameObject.GetComponent<DropTarget>();
-                if (movePiece != null)
+                DropTarget target = hit.gameObject.GetComponent<DropTarget>();
+                if (target != null && CheckValid(target))
                 {
-                    Debug.Log("MOVE");
-                    movePiece.ExecuteDrop(this);
+                    Debug.Log("Hit");
+                    target.ExecuteDrop(_dragObject);
                     return;
                 }
             }
             transform.position = _defaultPosition;
         }
     }
+
+    protected virtual bool CheckValid(DropTarget dropTarget)
+    {
+        return _targetType == dropTarget.GetTargetType();
+    }
+    
+    
     private void OnMouseOver()
     {
         if (Input.GetMouseButtonDown(0))
