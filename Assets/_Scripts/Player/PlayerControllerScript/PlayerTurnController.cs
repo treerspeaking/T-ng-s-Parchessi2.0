@@ -20,13 +20,12 @@ public class PlayerTurnController : PlayerControllerDependency
     }
 
     private PlayerController _playerController;
-    [ShowImmutable] public NativeList<DiceContainer> CurrentTurnDices;
+
     [ShowImmutable] public readonly NetworkVariable<PlayerPhase> CurrentPlayerPhase = new NetworkVariable<PlayerPhase>(PlayerPhase.Wait);
 
     private PlayerDiceHand _playerDiceHand;
     private void Start()
     {
-        CurrentTurnDices = new(Allocator.Persistent);
         _playerDiceHand = FindObjectOfType<PlayerDiceHand>();
     }
 
@@ -46,10 +45,10 @@ public class PlayerTurnController : PlayerControllerDependency
     public void StartPreparationPhaseServerRPC()
     {
         CurrentPlayerPhase.Value = PlayerPhase.Preparation;
-        
         StartPreparationPhaseClientRPC();
     }
-    
+
+
     [ClientRpc]
     private void StartRollPhaseClientRPC()
     {
@@ -73,7 +72,7 @@ public class PlayerTurnController : PlayerControllerDependency
     [ServerRpc]
     public void EndRollPhaseServerRPC()
     {
-        if (CurrentTurnDices.Length > 0)
+        if (PlayerController.PlayerResourceController.CurrentTurnDices.Count > 0)
         {
             StartPreparationPhaseServerRPC();
         }
@@ -106,18 +105,4 @@ public class PlayerTurnController : PlayerControllerDependency
     }
 
 
-    [ServerRpc]
-    public void AddDiceServerRPC(DiceContainer diceContainer)
-    {
-        CurrentTurnDices.Add(diceContainer);
-    }
-
-    [ServerRpc]
-    public void RemoveBackDiceServerRPC()
-    {
-        CurrentTurnDices.RemoveAt(CurrentTurnDices.Length - 1);    
-    }
-
-    
-    
 }

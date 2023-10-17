@@ -7,6 +7,11 @@ using TMPro;
 public class HandDice : MonoBehaviour
 {
     DiceDescription _diceDescription;
+    
+    public void Initialize(DiceDescription diceDescription)
+    {
+        _diceDescription = diceDescription;
+    }
     private int GetDice()
     {
         if (_diceDescription == null) return -1;
@@ -25,8 +30,4 @@ public class HandDice : MonoBehaviour
         Debug.Log("Dice roll result is: "+diceRes);
     }
 
-    public void InitializeDice(DiceDescription diceDescription)
-    {
-        _diceDescription = diceDescription;
-    }
 }

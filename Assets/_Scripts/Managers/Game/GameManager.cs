@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using _Scripts.Managers.Network;
+using _Scripts.NetworkContainter;
 using QFSW.QC;
 using Shun_Unity_Editor;
 using Unity.Netcode;
@@ -32,6 +33,9 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     public Action OnNetworkSetUp { get; set; }
     public Action OnGameSetUp { get; set; }
 
+    [SerializeField] private List<DiceDescription> _incomeDiceContainers = new();
+
+
     public void StartPlayerController(PlayerController playerController)
     {
         _playerControllers.Add(playerController);
@@ -41,6 +45,7 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
             
             _gameState = GameState.GameSetup;
             OnGameSetUp.Invoke();
+            //OnGameSetUp = null;
         }
     }
 
@@ -48,8 +53,20 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     [Command]
     public void StartGame()
     {
-        _playerControllers[_playerIdTurn.Value].PlayerTurnController.StartPreparationPhaseServerRPC();
         _gameState = GameState.GamePlay;
+        
+        foreach (var playerController in _playerControllers)
+        {
+            foreach (var diceDescription in _incomeDiceContainers)
+            {
+                playerController.PlayerResourceController.AddIncomeServerRPC(new DiceContainer
+                {
+                    DiceID = diceDescription.DiceID 
+                });
+            }
+        }
+        
+        StartPlayerTurn(_playerControllers[_playerIdTurn.Value]);
     }
     
     
@@ -61,10 +78,18 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
         {
             _playerIdTurn.Value = 0;
         }
-        _playerControllers[_playerIdTurn.Value].PlayerTurnController.StartPreparationPhaseServerRPC();
+
+        StartPlayerTurn(_playerControllers[_playerIdTurn.Value]);
         
         Debug.Log($"Player {_playerControllers[_playerIdTurn.Value].OwnerClientId} start turn");
 
     }
+
+    private void StartPlayerTurn(PlayerController playerController)
+    {
+        playerController.PlayerTurnController.StartPreparationPhaseServerRPC();
+        playerController.PlayerResourceController.GainIncomeServerRPC();
+    }
+    
     
 }
