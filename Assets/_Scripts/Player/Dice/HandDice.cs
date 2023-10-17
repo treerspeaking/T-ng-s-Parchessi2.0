@@ -16,21 +16,18 @@ public class HandDice : MonoBehaviour, ITargeter<HandDice>
         _playerDiceHand = playerDiceHand;
         _diceDescription = diceDescription;
     }
-    private int GetDice()
+    private int GetNumber()
     {
         if (_diceDescription == null) return -1;
         
         return Random.Range(_diceDescription.DiceLowerRange, _diceDescription.DiceUpperRange);
     }
     
-    public TextMeshProUGUI textMeshPro;
-    
     public void PrintDice()
     {
         
-        var diceRes = this.GetDice().ToString();
+        var diceRes = this.GetNumber().ToString();
         
-        textMeshPro.text = diceRes;
         Debug.Log("Dice roll result is: "+diceRes);
     }
 
