@@ -2,7 +2,7 @@
 
 public abstract class PlayerControllerStartSetUpDependency : MonoBehaviour
 {
-    protected global::PlayerController PlayerController;
+    protected PlayerController PlayerController;
 
     protected virtual void Awake()
     {
@@ -13,5 +13,8 @@ public abstract class PlayerControllerStartSetUpDependency : MonoBehaviour
         };
     }
 
-    protected abstract void GameSetUp();
+    protected virtual void GameSetUp()
+    {
+        
+    }
 }

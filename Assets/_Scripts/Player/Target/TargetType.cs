@@ -1,9 +1,7 @@
 ﻿public enum TargetType
 {
     All,
-    AllPawn,
-    AllyPawn,
-    EnemyPawn,
+    Pawn,
     Tile,
     Card,
     Dice

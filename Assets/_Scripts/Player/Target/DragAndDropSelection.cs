@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Device;
 
-public abstract class DragAndDropSelection<TTargeter, TTargetee> : MonoBehaviour where TTargeter : MonoBehaviour, ITargeter<TTargeter> where TTargetee : MonoBehaviour
+public abstract class DragAndDropSelection<TTargeter, TTargetee> : MonoBehaviour where TTargeter : PlayerEntity, ITargeter<TTargeter> where TTargetee : PlayerEntity
 {
     [SerializeField] private ITargeter<TTargeter> _dragObject;
     [SerializeField] private TargetType _targetType;

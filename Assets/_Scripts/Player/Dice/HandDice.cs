@@ -6,21 +6,23 @@ using Shun_Unity_Editor;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-public class HandDice : MonoBehaviour, ITargeter<HandDice>
+public class HandDice : PlayerEntity, ITargeter<HandDice>
 {
+
     private PlayerDiceHand _playerDiceHand;
     [SerializeField, ShowImmutable] DiceDescription _diceDescription;
+    private ITargeter<HandDice> _targeterImplementation;
+ 
     
-    public void Initialize(PlayerDiceHand playerDiceHand, DiceDescription diceDescription)
+    public void Initialize(PlayerDiceHand playerDiceHand, int containerIndex, ulong ownerClientID , DiceDescription diceDescription)
     {
         _playerDiceHand = playerDiceHand;
         _diceDescription = diceDescription;
+        Initialize(containerIndex, ownerClientID);
     }
 
     public int GetNumber()
     {
-        if (_diceDescription == null) return -1;
-        
         return Random.Range(_diceDescription.DiceLowerRange, _diceDescription.DiceUpperRange);
     }
     
@@ -29,5 +31,5 @@ public class HandDice : MonoBehaviour, ITargeter<HandDice>
         
         _playerDiceHand.PlayDice(this);
     }
-    
+
 }
