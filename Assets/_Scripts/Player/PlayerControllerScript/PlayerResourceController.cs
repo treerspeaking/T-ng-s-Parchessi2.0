@@ -6,16 +6,26 @@ using Unity.Netcode;
 
 public class PlayerResourceController : NetworkBehaviour
 {
+
+    public NetworkList<CardContainer> DeckCards;
+    public NetworkList<CardContainer> HandCards;
+    public NetworkList<CardContainer> DiscardCards;
     
-    public NetworkList<CardContainer> DeckCards = new();
-    public NetworkList<CardContainer> HandCards = new();
-    public NetworkList<CardContainer> DiscardCards = new();
-    
-    public NetworkList<DiceContainer> IncomeDices = new();
-    public NetworkList<DiceContainer> CurrentTurnDices = new();
+    public NetworkList<DiceContainer> IncomeDices;
+    public NetworkList<DiceContainer> CurrentTurnDices;
 
     private PlayerDiceHand _playerDiceHand;
     private PlayerCardHand _playerCardHand;
+
+    private void Awake()
+    {
+        DeckCards = new();        
+        HandCards = new();        
+        DiscardCards = new();     
+                          
+        IncomeDices = new();      
+        CurrentTurnDices = new(); 
+    }
 
     public override void OnNetworkSpawn()
     {
