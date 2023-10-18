@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9297467f1008984aad3503e97e0d578, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HandCard: {fileID: 5957310922694232700, guid: ac28aefa5a2eb5b46b324c3281723e1d, type: 3}
+  HandCard: {fileID: -313294548724005488, guid: 8acfe556bbf875c4d9f115e9ad9599a7, type: 3}
   HandDice: {fileID: 8914028338790642072, guid: ef0034253842238438eb5f5304433e3f, type: 3}

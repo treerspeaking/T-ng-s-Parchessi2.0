@@ -12,7 +12,7 @@ namespace _Scripts.Scriptable_Objects
         public int CardID;
         public Sprite CardSprite;
         public string CardName;
-        public string CardDescriptionText;
+        public string CardEffectDescription;
         public int CardCost;
         
         
