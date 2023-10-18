@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityUtilities;
 
-public class MouseManager : MonoBehaviour
+public class MouseSettingManager : PersistentSingletonMonoBehaviour<MouseSettingManager>
 {
     public bool IsOnUI => EventSystem.current.IsPointerOverGameObject();
     

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Shun_Unity_Editor;
+using UnityEngine;
 
 namespace Shun_Card_System
 {
@@ -11,7 +12,7 @@ namespace Shun_Card_System
     {
         [HideInInspector] public BaseCardRegion CardRegion;
         [HideInInspector] public int IndexInRegion;
-        public BaseCardGameObject CardGameObject;
+        [ShowImmutable] public BaseCardGameObject CardGameObject;
 
         
         public void InitializeRegion(BaseCardRegion cardRegion, int indexInRegion)

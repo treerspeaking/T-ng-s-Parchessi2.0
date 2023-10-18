@@ -29,19 +29,6 @@ public abstract class DragAndDropSelection<TTargeter, TTargetee> : MonoBehaviour
     {
         _isDragging = false;
     }
-    // Update is called once per frame
-    void Update()
-    {
-        HandleDrag();
-        
-    }
-    void HandleDrag()
-    {
-        if (_isDragging)
-        {
-        }
-    }
-
     protected virtual void CheckHit(Collider2D hit)
     {
         DropTargetEntity<TTargetee> targetEntity = hit.gameObject.GetComponent<DropTargetEntity<TTargetee>>();
@@ -60,7 +47,7 @@ public abstract class DragAndDropSelection<TTargeter, TTargetee> : MonoBehaviour
     
     private void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && MouseSettingManager.Instance.IsOnUI == false)
         {
             _isDragging=true;
         }
