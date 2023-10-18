@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using _Scripts.Player.Target;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Device;
 
-public abstract class DragAndDropSelection<TTargeter, TTargetee> : MonoBehaviour where TTargeter : PlayerEntity, ITargeter<TTargeter> where TTargetee : PlayerEntity
+public abstract class DragAndDropSelection<TTargeter, TTargetee> : MonoBehaviour where TTargeter : PlayerEntity, ITargeter<TTargeter> where TTargetee : PlayerEntity, ITargetee<TTargetee>
 {
     [SerializeField] private ITargeter<TTargeter> _dragObject;
     [SerializeField] private TargetType _targetType;
@@ -55,17 +56,17 @@ public abstract class DragAndDropSelection<TTargeter, TTargetee> : MonoBehaviour
 
     protected virtual void CheckHit(Collider2D hit)
     {
-        DropTarget<TTargetee> target = hit.gameObject.GetComponent<DropTarget<TTargetee>>();
+        DropTargetEntity<TTargetee> targetEntity = hit.gameObject.GetComponent<DropTargetEntity<TTargetee>>();
         
-        if (target == null || !CheckValid(target)) return;
+        if (targetEntity == null || !CheckValid(targetEntity)) return;
         
-        target.ExecuteDrop(_dragObject.GetTarget());
+        targetEntity.ExecuteDrop(_dragObject.GetTarget());
         
     }
     
-    protected virtual bool CheckValid(DropTarget<TTargetee> dropTarget)
+    protected virtual bool CheckValid(DropTargetEntity<TTargetee> dropTargetEntity)
     {
-        return _targetType == dropTarget.GetTargetType();
+        return _targetType == dropTargetEntity.GetTargetType();
     }
     
     
