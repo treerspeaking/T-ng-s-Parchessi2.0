@@ -6,24 +6,23 @@ using UnityEngine.EventSystems;
 namespace Shun_Card_System
 {
     [RequireComponent(typeof(Collider2D))]
-    public class BaseDraggableObject : MonoBehaviour, IMouseDraggable , IMouseHoverable
+    public class BaseDraggableObject : MonoBehaviour, IMouseDraggable, IMouseHoverable
     {
-        [SerializeField]
-        private bool _interactable;
-        public bool IsDraggable { get => _interactable; protected set => _interactable = value; }
-        public bool IsDragging { get; }
         
-        public bool IsHoverable { get; }
+        public bool IsDraggable; 
+        public bool IsDragging { get; protected set; }
+
+        public bool IsHoverable;
         public bool IsHovering { get; protected set; }
         
-        public void StartDrag()
+        public virtual void StartDrag()
         {
-            throw new System.NotImplementedException();
+            IsDragging = true;
         }
 
-        public void EndDrag()
+        public virtual void EndDrag()
         {
-            throw new System.NotImplementedException();
+            IsDragging = false;
         }
         
         [SerializeField] protected bool ActivateOnValidate = false;
@@ -49,14 +48,14 @@ namespace Shun_Card_System
             IsHovering = false;
         }
         
-        public virtual void DisableInteractable()
+        public virtual void DisableDrag()
         {
             if (!IsDraggable) return;
             IsDraggable = false;
             if (IsHovering) EndHover();
         }
         
-        public virtual void EnableInteractable()
+        public virtual void EnableDrag()
         {
             if (IsDraggable) return;
             IsDraggable = true;

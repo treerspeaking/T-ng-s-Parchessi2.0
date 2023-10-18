@@ -13,7 +13,7 @@ public class HandCardHolder : BaseDraggableObjectHolder
     {
         Transform cardTransform = DraggableObject.transform;
         cardTransform.DOLocalMove(Vector3.zero, _addDuration).SetEase(_addEase)
-            .OnComplete(DraggableObject.EnableInteractable);
+            .OnComplete(DraggableObject.EnableDrag);
 
         
         cardTransform.DOScale(Vector3.one , _addDuration).SetEase(_addEase);

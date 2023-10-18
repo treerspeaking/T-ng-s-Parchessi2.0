@@ -29,7 +29,7 @@ namespace Shun_Card_System
             DraggableObject = draggableObject;
             DraggableObject.transform.SetParent(transform, true);
             
-            DraggableObject.DisableInteractable();
+            DraggableObject.DisableDrag();
             AttachCardVisual();
         }
 
@@ -50,7 +50,7 @@ namespace Shun_Card_System
         protected virtual void AttachCardVisual()
         {
             DraggableObject.transform.localPosition = Vector3.zero;
-            DraggableObject.EnableInteractable();
+            DraggableObject.EnableDrag();
         }
         
         

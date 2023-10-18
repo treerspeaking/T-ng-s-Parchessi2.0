@@ -34,7 +34,12 @@ namespace Shun_Card_System
             UpdateMousePosition();
             CastMouse();
             if(!IsDraggingCard) UpdateHoverObject();
-        
+            
+            if (Input.GetMouseButtonUp(0))
+            {
+                EndDragCard();
+            }
+            
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 StartDragCard();
@@ -45,10 +50,6 @@ namespace Shun_Card_System
                 DragCard();
             }
 
-            if (Input.GetMouseButtonUp(0))
-            {
-                EndDragCard();
-            }
         }
 
         #region CAST

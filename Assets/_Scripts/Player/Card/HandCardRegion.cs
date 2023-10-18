@@ -28,14 +28,14 @@ public class HandCardRegion : BaseDraggableObjectRegion
     {
         base.Awake();
         _startPosition = transform.localPosition;
-        
     }
 
     protected override void OnSuccessfullyAddCard(BaseDraggableObject baseDraggableObject, BaseDraggableObjectHolder baseDraggableObjectHolder, int index)
     {
-        AudioManager.Instance.PlaySFX(_addCardSfx);
-
+        
         MiddleAlign();
+        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX(_addCardSfx);
+
     }
 
     protected override void OnSuccessfullyRemoveCard(BaseDraggableObject baseDraggableObject, BaseDraggableObjectHolder baseDraggableObjectHolder, int index)
@@ -62,7 +62,7 @@ public class HandCardRegion : BaseDraggableObjectRegion
         
         LocalMoveToDestination(_moveInteractableDuration, _moveInteractableEase);
 
-        AudioManager.Instance.PlaySFX(_dragCardSfx);
+        if (AudioManager.Instance != null)  AudioManager.Instance.PlaySFX(_dragCardSfx);
     }
 
     public override void DisableInteractable()
@@ -72,7 +72,7 @@ public class HandCardRegion : BaseDraggableObjectRegion
 
         LocalMoveToDestination(_moveInteractableDuration, _moveInteractableEase);
         
-        AudioManager.Instance.PlaySFX(_dragCardSfx);
+        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX(_dragCardSfx);
     }
 
     private void LocalMoveToDestination(float duration, Ease ease)
