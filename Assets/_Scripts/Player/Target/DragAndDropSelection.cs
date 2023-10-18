@@ -2,17 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using _Scripts.Player.Target;
+using Shun_Card_System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Device;
 
-public abstract class DragAndDropSelection<TTargeter, TTargetee> : MonoBehaviour where TTargeter : PlayerEntity, ITargeter<TTargeter> where TTargetee : PlayerEntity, ITargetee<TTargetee>
+public abstract class DragAndDropSelection<TTargeter, TTargetee> : BaseDraggableObject where TTargeter : PlayerEntity, ITargeter<TTargeter> where TTargetee : PlayerEntity, ITargetee<TTargetee>
 {
     [SerializeField] private ITargeter<TTargeter> _dragObject;
     [SerializeField] private TargetType _targetType;
-    
     [SerializeField] private Vector2 _defaultPosition;
-    Collider2D _collider;
+    [SerializeField] private bool _isUseOutsourceInteraction = false;
+    
     bool _isDragging;
     // Start is called before the first frame update
 
@@ -23,12 +24,23 @@ public abstract class DragAndDropSelection<TTargeter, TTargetee> : MonoBehaviour
 
     void Start()
     {
-        _collider = GetComponent<Collider2D>();
+        
     }
     private void OnEnable()
     {
         _isDragging = false;
     }
+
+    public void Drop()
+    {
+        Collider2D[] overlapCircleAll = Physics2D.OverlapCircleAll(transform.position, 0.2f);
+        foreach (Collider2D hit in overlapCircleAll)
+        {
+            CheckHit(hit);
+        }
+        transform.position = _defaultPosition;
+    }
+
     protected virtual void CheckHit(Collider2D hit)
     {
         DropTargetEntity<TTargetee> targetEntity = hit.gameObject.GetComponent<DropTargetEntity<TTargetee>>();
@@ -47,6 +59,8 @@ public abstract class DragAndDropSelection<TTargeter, TTargetee> : MonoBehaviour
     
     private void OnMouseOver()
     {
+        if (_isUseOutsourceInteraction) return;
+
         if (Input.GetMouseButtonDown(0) && MouseSettingManager.Instance.IsOnUI == false)
         {
             _isDragging=true;
@@ -55,19 +69,16 @@ public abstract class DragAndDropSelection<TTargeter, TTargetee> : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if (_isUseOutsourceInteraction) return;
         if (!_isDragging) return;
         
         _isDragging = false;
-        Collider2D[] overlapCircleAll = Physics2D.OverlapCircleAll(transform.position, 0.2f);
-        foreach (Collider2D hit in overlapCircleAll)
-        {
-            CheckHit(hit);
-        }
-        transform.position = _defaultPosition;
+        Drop();
     }
-
+    
     private void OnMouseDrag()
     {
+        if (_isUseOutsourceInteraction) return;
         Vector2 mousepos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.position = mousepos;
     }

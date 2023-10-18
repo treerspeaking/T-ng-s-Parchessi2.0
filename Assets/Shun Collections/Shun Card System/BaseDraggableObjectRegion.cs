@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Shun_Card_System
 {
     [RequireComponent(typeof(Collider2D))]
-    public class BaseCardRegion : MonoBehaviour, IMouseInteractable
+    public class BaseDraggableObjectRegion : MonoBehaviour, IMouseHoverable
     {
         public enum MiddleInsertionStyle
         {
@@ -15,21 +15,21 @@ namespace Shun_Card_System
             Cannot,
             Swap,
         }
-        [SerializeField] protected BaseCardHolder CardHolderPrefab;
+        [SerializeField] protected BaseDraggableObjectHolder DraggableObjectHolderPrefab;
         [SerializeField] protected Transform SpawnPlace;
         [SerializeField] protected Vector3 CardOffset = new Vector3(5f, 0 ,0);
 
         
-        [SerializeField] protected List<BaseCardHolder> _cardPlaceHolders = new();
+        [SerializeField] protected List<BaseDraggableObjectHolder> _cardPlaceHolders = new();
         [SerializeField] protected int MaxCardHold;
         public MiddleInsertionStyle CardMiddleInsertionStyle = MiddleInsertionStyle.InsertInMiddle;
-        protected BaseCardHolder TemporaryBaseCardHolder;
+        protected BaseDraggableObjectHolder TemporaryBaseDraggableObjectHolder;
         public int CardHoldingCount { get; private set; } 
         
         
         [SerializeField]
         private bool _interactable;
-        public bool Interactable { get => _interactable; protected set => _interactable = value;}
+        public bool IsHoverable { get => _interactable; protected set => _interactable = value;}
         public bool IsHovering { get; protected set; }
 
         #region INITIALIZE
@@ -53,7 +53,7 @@ namespace Shun_Card_System
             {
                 for (int i = 0; i < MaxCardHold; i++)
                 {
-                    var cardPlaceHolder = Instantiate(CardHolderPrefab, SpawnPlace.position + i * CardOffset,
+                    var cardPlaceHolder = Instantiate(DraggableObjectHolderPrefab, SpawnPlace.position + i * CardOffset,
                         Quaternion.identity, SpawnPlace);
                     _cardPlaceHolders.Add(cardPlaceHolder);
                     cardPlaceHolder.InitializeRegion(this, i);
@@ -67,12 +67,12 @@ namespace Shun_Card_System
         #region OPERATION
 
         
-        public List<BaseCardGameObject> GetAllCardGameObjects(bool getNull = false)
+        public List<BaseDraggableObject> GetAllCardGameObjects(bool getNull = false)
         {
-            List<BaseCardGameObject> result = new();
+            List<BaseDraggableObject> result = new();
             for (int i = 0; i < CardHoldingCount; i++)
             {
-                if ((!getNull && _cardPlaceHolders[i].CardGameObject != null) || getNull) result.Add(_cardPlaceHolders[i].CardGameObject);
+                if ((!getNull && _cardPlaceHolders[i].DraggableObject != null) || getNull) result.Add(_cardPlaceHolders[i].DraggableObject);
             }
 
             return result;
@@ -82,47 +82,47 @@ namespace Shun_Card_System
         {
             foreach (var cardHolder in _cardPlaceHolders)
             {
-                if (cardHolder.CardGameObject == null) continue;
-                Destroy(cardHolder.CardGameObject.gameObject);
-                cardHolder.CardGameObject = null;
+                if (cardHolder.DraggableObject == null) continue;
+                Destroy(cardHolder.DraggableObject.gameObject);
+                cardHolder.DraggableObject = null;
             }
             
             CardHoldingCount = 0;
         }
 
-        protected BaseCardHolder FindEmptyCardPlaceHolder()
+        protected BaseDraggableObjectHolder FindEmptyCardPlaceHolder()
         {
             if (CardHoldingCount >= MaxCardHold) return null;
             return _cardPlaceHolders[CardHoldingCount];
         }
         
-        public BaseCardHolder FindCardPlaceHolder(BaseCardGameObject baseCardGameObject)
+        public BaseDraggableObjectHolder FindCardPlaceHolder(BaseDraggableObject baseDraggableObject)
         {
             foreach (var cardPlaceHolder in _cardPlaceHolders)
             {
-                if (cardPlaceHolder.CardGameObject == baseCardGameObject) return cardPlaceHolder;
+                if (cardPlaceHolder.DraggableObject == baseDraggableObject) return cardPlaceHolder;
             }
 
             return null;
         }
 
-        public bool AddCard(BaseCardGameObject cardGameObject, BaseCardHolder cardHolder = null)
+        public bool AddCard(BaseDraggableObject draggableObject, BaseDraggableObjectHolder draggableObjectHolder = null)
         {
-            if ( cardHolder == null || cardHolder.IndexInRegion >= CardHoldingCount)
+            if ( draggableObjectHolder == null || draggableObjectHolder.IndexInRegion >= CardHoldingCount)
             {
-                return AddCardAtBack(cardGameObject);
+                return AddCardAtBack(draggableObject);
             }
 
             return CardMiddleInsertionStyle switch
             {
-                MiddleInsertionStyle.AlwaysBack => AddCardAtBack(cardGameObject),
-                MiddleInsertionStyle.InsertInMiddle => AddCardAtMiddle(cardGameObject, cardHolder.IndexInRegion),
+                MiddleInsertionStyle.AlwaysBack => AddCardAtBack(draggableObject),
+                MiddleInsertionStyle.InsertInMiddle => AddCardAtMiddle(draggableObject, draggableObjectHolder.IndexInRegion),
                 MiddleInsertionStyle.Cannot => false,
                 _ => false
             };
         }
 
-        private bool AddCardAtBack(BaseCardGameObject cardGameObject)
+        private bool AddCardAtBack(BaseDraggableObject draggableObject)
         {
             if (CardHoldingCount >= MaxCardHold)
             {
@@ -131,16 +131,16 @@ namespace Shun_Card_System
 
             var index = CardHoldingCount;
             var cardPlaceHolder = _cardPlaceHolders[index];
-            cardPlaceHolder.AttachCardGameObject(cardGameObject);
+            cardPlaceHolder.AttachCardGameObject(draggableObject);
             
             CardHoldingCount ++;
             
-            OnSuccessfullyAddCard(cardGameObject, cardPlaceHolder, index);
+            OnSuccessfullyAddCard(draggableObject, cardPlaceHolder, index);
                 
             return true;
         }
         
-        private  bool AddCardAtMiddle(BaseCardGameObject cardGameObject, int index)
+        private  bool AddCardAtMiddle(BaseDraggableObject draggableObject, int index)
         {
             if (CardHoldingCount >= MaxCardHold)
             {
@@ -150,11 +150,11 @@ namespace Shun_Card_System
             ShiftRight(index);
 
             var cardPlaceHolder = _cardPlaceHolders[index];
-            cardPlaceHolder.AttachCardGameObject(cardGameObject);
+            cardPlaceHolder.AttachCardGameObject(draggableObject);
             
             CardHoldingCount++;
             
-            OnSuccessfullyAddCard(cardGameObject, cardPlaceHolder, index);
+            OnSuccessfullyAddCard(draggableObject, cardPlaceHolder, index);
             
             return true;
         }
@@ -191,34 +191,34 @@ namespace Shun_Card_System
             }
         }
         
-        public virtual bool RemoveCard(BaseCardGameObject cardGameObject)
+        public virtual bool RemoveCard(BaseDraggableObject draggableObject)
         {
 
             for (int i = 0; i < _cardPlaceHolders.Count; i++)
             {
-                if (_cardPlaceHolders[i].CardGameObject != cardGameObject) continue;
+                if (_cardPlaceHolders[i].DraggableObject != draggableObject) continue;
                 _cardPlaceHolders[i].DetachCardGameObject();
                 
                 ShiftLeft(i);
                 CardHoldingCount--;
                 
-                OnSuccessfullyRemoveCard(cardGameObject, _cardPlaceHolders[i], i);
+                OnSuccessfullyRemoveCard(draggableObject, _cardPlaceHolders[i], i);
                 return true;
             }
             return false;
         }
         
-        public virtual bool RemoveCard(BaseCardGameObject cardGameObject,BaseCardHolder cardHolder)
+        public virtual bool RemoveCard(BaseDraggableObject draggableObject,BaseDraggableObjectHolder draggableObjectHolder)
         {
-            if (cardHolder.CardGameObject != cardGameObject) return false;
+            if (draggableObjectHolder.DraggableObject != draggableObject) return false;
 
-            cardHolder.DetachCardGameObject();
+            draggableObjectHolder.DetachCardGameObject();
 
-            var index = _cardPlaceHolders.IndexOf(cardHolder);
+            var index = _cardPlaceHolders.IndexOf(draggableObjectHolder);
             ShiftLeft(index);
             CardHoldingCount--;
 
-            OnSuccessfullyRemoveCard(cardGameObject, cardHolder, index);
+            OnSuccessfullyRemoveCard(draggableObject, draggableObjectHolder, index);
             return true;
         }
         
@@ -227,32 +227,32 @@ namespace Shun_Card_System
 
         #region MOUSE_INPUT
         
-        public virtual bool TryAddCard(BaseCardGameObject cardGameObject, BaseCardHolder cardHolder = null)
+        public virtual bool TryAddCard(BaseDraggableObject draggableObject, BaseDraggableObjectHolder draggableObjectHolder = null)
         {
-            if (!Interactable) return false;
-            return AddCard(cardGameObject, cardHolder);
+            if (!IsHoverable) return false;
+            return AddCard(draggableObject, draggableObjectHolder);
         }
         
-        public virtual bool TakeOutTemporary(BaseCardGameObject cardGameObject,BaseCardHolder cardHolder)
+        public virtual bool TakeOutTemporary(BaseDraggableObject draggableObject,BaseDraggableObjectHolder draggableObjectHolder)
         {
-            if (!Interactable) return false;
+            if (!IsHoverable) return false;
 
-            if (!RemoveCard(cardGameObject, cardHolder)) return false;
+            if (!RemoveCard(draggableObject, draggableObjectHolder)) return false;
             
-            TemporaryBaseCardHolder = cardHolder;
+            TemporaryBaseDraggableObjectHolder = draggableObjectHolder;
             return true;
         }
         
-        public virtual void ReAddTemporary(BaseCardGameObject baseCardGameObject)
+        public virtual void ReAddTemporary(BaseDraggableObject baseDraggableObject)
         {
-            AddCard(baseCardGameObject, TemporaryBaseCardHolder);
+            AddCard(baseDraggableObject, TemporaryBaseDraggableObjectHolder);
             
-            TemporaryBaseCardHolder = null;
+            TemporaryBaseDraggableObjectHolder = null;
         }
 
-        public virtual void RemoveTemporary(BaseCardGameObject baseCardGameObject)
+        public virtual void RemoveTemporary(BaseDraggableObject baseDraggableObject)
         {
-            TemporaryBaseCardHolder = null;
+            TemporaryBaseDraggableObjectHolder = null;
         }
         
         
@@ -263,11 +263,11 @@ namespace Shun_Card_System
             movingObject.position = toPosition;
         }
 
-        protected virtual void OnSuccessfullyAddCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder, int index)
+        protected virtual void OnSuccessfullyAddCard(BaseDraggableObject baseDraggableObject, BaseDraggableObjectHolder baseDraggableObjectHolder, int index)
         {
             
         }
-        protected virtual void OnSuccessfullyRemoveCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder, int index)
+        protected virtual void OnSuccessfullyRemoveCard(BaseDraggableObject baseDraggableObject, BaseDraggableObjectHolder baseDraggableObjectHolder, int index)
         {
             
         }
@@ -297,15 +297,15 @@ namespace Shun_Card_System
         public virtual void DisableInteractable()
         {
             
-            if (!Interactable) return;
-            Interactable = false;
+            if (!IsHoverable) return;
+            IsHoverable = false;
             if(IsHovering) EndHover();
         }
         
         public virtual void EnableInteractable()
         {
-            if (Interactable) return;
-            Interactable = true;
+            if (IsHoverable) return;
+            IsHoverable = true;
         }
     }
 }

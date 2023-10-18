@@ -4,12 +4,12 @@ using UnityEngine;
 namespace Shun_Card_System
 {
     [RequireComponent(typeof(Collider2D))]
-    public class BaseCardButton : MonoBehaviour, IMouseInteractable
+    public class BaseCardButton : MonoBehaviour, IMouseHoverable
     {
         
         [SerializeField]
         private bool _interactable;
-        public bool Interactable { get => _interactable; protected set => _interactable = value; }
+        public bool IsHoverable { get => _interactable; protected set => _interactable = value; }
         public bool IsHovering { get; protected set; }
 
 
@@ -35,15 +35,15 @@ namespace Shun_Card_System
 
         public virtual void DisableInteractable()
         {
-            if (!Interactable) return;
-            Interactable = false;
+            if (!IsHoverable) return;
+            IsHoverable = false;
             if (IsHovering) EndHover();
         }
         
         public virtual void EnableInteractable()
         {
-            if (Interactable) return;
-            Interactable = true;
+            if (IsHoverable) return;
+            IsHoverable = true;
         }
 
         
