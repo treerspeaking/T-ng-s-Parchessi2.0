@@ -39,18 +39,6 @@ public abstract class DragAndDropSelection<TTargeter, TTargetee> : MonoBehaviour
     {
         if (_isDragging)
         {
-            Vector2 mousepos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            transform.position = mousepos;
-        }
-        if (Input.GetMouseButtonUp(0))
-        {
-            _isDragging = false;
-            Collider2D[] overlapCircleAll = Physics2D.OverlapCircleAll(transform.position, 0.2f);
-            foreach (Collider2D hit in overlapCircleAll)
-            {
-                CheckHit(hit);
-            }
-            transform.position = _defaultPosition;
         }
     }
 
@@ -76,5 +64,28 @@ public abstract class DragAndDropSelection<TTargeter, TTargetee> : MonoBehaviour
         {
             _isDragging=true;
         }
+    }
+
+    private void OnMouseUp()
+    {
+        if (!_isDragging) return;
+        
+        _isDragging = false;
+        Collider2D[] overlapCircleAll = Physics2D.OverlapCircleAll(transform.position, 0.2f);
+        foreach (Collider2D hit in overlapCircleAll)
+        {
+            CheckHit(hit);
+        }
+        transform.position = _defaultPosition;
+    }
+
+    private void OnMouseDrag()
+    {
+        Vector2 mousepos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        transform.position = mousepos;
+    }
+
+    private void OnMouseDown()
+    {
     }
 }
