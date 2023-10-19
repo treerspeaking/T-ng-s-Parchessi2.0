@@ -2,6 +2,7 @@ using System.Collections;
 
 using System.Collections.Generic;
 using _Scripts.Player;
+using _Scripts.Player.Dice;
 using _Scripts.Player.Pawn;
 using Shun_Card_System;
 using Shun_Unity_Editor;
@@ -31,17 +32,20 @@ public class HandDice : PlayerEntity, ITargeter<HandDice>
 
     public virtual void ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : PlayerEntity
     {
-        if (targetee is not PlayerPawn playerPawn)
+        if (targetee is PlayerPawn playerPawn)
         {
-            Debug.LogError("Dice drag to not Pawn");
+            
+            playerPawn.Move(GetNumber());
+            _playerDiceHand.PlayDice(this);
+        
+            // Inherit this class and write Dice effect
+            Debug.Log(name + " Dice drag to Pawn " + playerPawn.name);
             return;
         }
-        
-        playerPawn.Move(GetNumber());
-        _playerDiceHand.PlayDice(this);
-        
-        // Inherit this class and write Dice effect
-        Debug.Log(name + " Dice drag to Pawn " + playerPawn.name);
+        else if (targetee is DiceCardConverter)
+        {
+            Debug.Log("Draw a card");
+        }
         
         Destroy();
     }

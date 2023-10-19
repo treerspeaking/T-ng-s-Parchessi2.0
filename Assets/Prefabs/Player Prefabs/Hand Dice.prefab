@@ -163,6 +163,4 @@ MonoBehaviour:
   IsDraggable: 1
   IsHoverable: 1
   ActivateOnValidate: 0
-  _targetTypes: 01000000
-  _defaultPosition: {x: 0, y: 0}
-  _isUseOutsourceInteraction: 1
+  _targetTypes: 0100000000000000

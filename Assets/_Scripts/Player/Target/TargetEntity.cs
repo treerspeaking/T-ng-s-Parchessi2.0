@@ -5,6 +5,7 @@ using _Scripts.Player.Pawn;
 using UnityEngine;
 
 
+[RequireComponent(typeof(PlayerEntity))]
 public class TargetEntity : MonoBehaviour
 {
     [SerializeField] protected TargetType TargetType;
