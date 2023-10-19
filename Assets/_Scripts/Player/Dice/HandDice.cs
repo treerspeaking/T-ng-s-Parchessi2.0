@@ -2,6 +2,8 @@ using System.Collections;
 
 using System.Collections.Generic;
 using _Scripts.Player;
+using _Scripts.Player.Pawn;
+using Shun_Card_System;
 using Shun_Unity_Editor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,20 +23,23 @@ public class HandDice : PlayerEntity, ITargeter<HandDice>
         Initialize(containerIndex, ownerClientID);
     }
 
-    public int GetNumber()
+    protected virtual int GetNumber()
     {
         return Random.Range(_diceDescription.DiceLowerRange, _diceDescription.DiceUpperRange);
     }
     
-    public void DropDice()
-    {
-        
-        _playerDiceHand.PlayDice(this);
-    }
 
-    public virtual void ExecuteTargeter<TTargetee>(TTargetee targeter) where TTargetee : PlayerEntity
+    public virtual void ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : PlayerEntity
     {
-        
-        
+        if (targetee is not PlayerPawn)
+        {
+            Debug.LogError("Dice drag to not Pawn");
+            return;
+        }
+
+        targetee.GetComponent<PlayerPawn>().Move(GetNumber());
+        _playerDiceHand.PlayDice(this);
+        GetComponent<BaseDraggableObject>().OnDestroy();
+        Destroy(gameObject);
     }
 }

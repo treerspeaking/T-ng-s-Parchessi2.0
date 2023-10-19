@@ -37,7 +37,7 @@ namespace Shun_Card_System
             
             if (Input.GetMouseButtonUp(0))
             {
-                EndDragCard();
+                EndDrag();
             }
             
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
@@ -47,7 +47,7 @@ namespace Shun_Card_System
 
             if (Input.GetMouseButton(0))
             {
-                DragCard();
+                DragObject();
             }
 
         }
@@ -184,7 +184,7 @@ namespace Shun_Card_System
         
         }
 
-        protected void DragCard()
+        protected void DragObject()
         {
             if (!IsDraggingCard) return; 
         
@@ -192,10 +192,10 @@ namespace Shun_Card_System
         
         }
 
-        protected void EndDragCard()
+        protected void EndDrag()
         {
             if (!IsDraggingCard) return;
-        
+
             DraggingObject.EndDrag();
             AttachCardToHolder();
 
@@ -208,6 +208,8 @@ namespace Shun_Card_System
     
         protected virtual bool DetachCardToHolder()
         {
+            if (DraggingObject.IsDestroyed) return false;
+            
             // Check the card region base on card game object or card holder, to TakeOutTemporary
             LastDraggableObjectRegion = FindFirstInMouseCast<BaseDraggableObjectRegion>();
             if (LastDraggableObjectRegion == null)
@@ -239,7 +241,7 @@ namespace Shun_Card_System
 
         protected void AttachCardToHolder()
         {
-        
+            if (DraggingObject.IsDestroyed) return;
             var dropRegion = FindFirstInMouseCast<BaseDraggableObjectRegion>();
             var dropHolder = FindFirstInMouseCast<BaseDraggableObjectHolder>();
         

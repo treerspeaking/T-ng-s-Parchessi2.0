@@ -5,24 +5,14 @@ namespace _Scripts.Player.Pawn
 {
     public class PlayerPawn : PlayerEntity, ITargetee<PlayerPawn>
     {
-        public void ExecuteTargetee<TTargeter>(TTargeter targeter) where TTargeter : PlayerEntity, ITargeter<TTargeter>
+        public void Move(int stepCount)
         {
-            Debug.Log($"Success {targeter.ToString()}");
-            if (targeter is HandDice)
-            {
-                Debug.Log("HandDice");
-                HandDice handDice = targeter as HandDice;
-                
-                
-                var diceRes = handDice.GetNumber();
-        
-                Debug.Log("Dice roll result is: "+diceRes);
-                handDice.DropDice();
-            }
-            else
-            {
-                Debug.Log("Unknown");
-            }
+            Debug.Log("Player Pawn move "+ stepCount);
+        }
+
+        public override void ExecuteTargetee<TTargeter>(TTargeter targeter)
+        {
+            
         }
     }
 }

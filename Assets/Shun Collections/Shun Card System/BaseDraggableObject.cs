@@ -1,4 +1,5 @@
 
+using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,7 +9,7 @@ namespace Shun_Card_System
     [RequireComponent(typeof(Collider2D))]
     public class BaseDraggableObject : MonoBehaviour, IMouseDraggable, IMouseHoverable
     {
-        
+        public bool IsDestroyed { get; set; }
         public bool IsDraggable; 
         public bool IsDragging { get; protected set; }
 
@@ -61,6 +62,9 @@ namespace Shun_Card_System
             IsDraggable = true;
         }
 
-        
+        public void OnDestroy()
+        {
+            IsDestroyed = true;
+        }
     }
 }

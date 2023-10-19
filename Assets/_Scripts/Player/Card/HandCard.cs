@@ -1,6 +1,7 @@
 ﻿
 using System;
 using _Scripts.Scriptable_Objects;
+using Shun_Card_System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,7 +19,10 @@ public class HandCard : PlayerEntity, ITargeter<HandCard>
     }
 
 
-    public virtual void ExecuteTargeter<TTargetee>(TTargetee targeter) where TTargetee : PlayerEntity
+    public virtual void ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : PlayerEntity
     {
+        GetComponent<BaseDraggableObject>().OnDestroy();
+        Destroy(gameObject);
     }
+
 }
