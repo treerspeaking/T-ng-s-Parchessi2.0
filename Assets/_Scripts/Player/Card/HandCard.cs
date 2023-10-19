@@ -1,5 +1,6 @@
 ﻿
 using System;
+using _Scripts.Player.Pawn;
 using _Scripts.Scriptable_Objects;
 using Shun_Card_System;
 using TMPro;
@@ -21,6 +22,15 @@ public class HandCard : PlayerEntity, ITargeter<HandCard>
 
     public virtual void ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : PlayerEntity
     {
+        if (targetee is not PlayerPawn playerPawn)
+        {
+            Debug.LogError("Card drag to not Pawn");
+            return;
+        }
+        
+        // Inherit this class and write Card effect
+        Debug.Log(name + " Card drag to Pawn " + playerPawn.name);
+        
         Destroy();
     }
 

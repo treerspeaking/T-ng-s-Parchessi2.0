@@ -36,9 +36,12 @@ public class HandDice : PlayerEntity, ITargeter<HandDice>
             Debug.LogError("Dice drag to not Pawn");
             return;
         }
-
+        
         playerPawn.Move(GetNumber());
         _playerDiceHand.PlayDice(this);
+        
+        // Inherit this class and write Dice effect
+        Debug.Log(name + " Dice drag to Pawn " + playerPawn.name);
         
         Destroy();
     }
