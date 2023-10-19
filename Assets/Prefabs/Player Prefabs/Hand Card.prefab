@@ -1079,6 +1079,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62653a127a7e448dbe4718005f2af84e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _targeteeType: 4
 --- !u!114 &971385533165736036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1113,9 +1114,7 @@ MonoBehaviour:
   IsDraggable: 1
   IsHoverable: 1
   ActivateOnValidate: 0
-  _targetTypes: 01000000
-  _defaultPosition: {x: 0, y: 0}
-  _isUseOutsourceInteraction: 1
+  _targetTypes: 02000000
 --- !u!1 &5892810086544425642
 GameObject:
   m_ObjectHideFlags: 0

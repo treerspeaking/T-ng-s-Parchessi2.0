@@ -1,18 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
+using _Scripts.NetworkContainter;
 using UnityEngine;
 
-public class PlayerCardHand : MonoBehaviour
+public class PlayerCardHand : PlayerControllerStartSetUpDependency
 {
-    // Start is called before the first frame update
-    void Start()
+    private readonly Dictionary<int, HandCard> _containerIndexToHandCardDictionary = new Dictionary<int, HandCard>();
+
+    protected override void GameSetUp()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public HandCard GetHandCard(int cardContainerIndex)
     {
-        
+        _containerIndexToHandCardDictionary.TryGetValue(cardContainerIndex, out var handCard);
+        return handCard;
+    }
+
+    public void AddCardToHand(CardContainer cardContainer, int cardContainerIndex)
+    {
+        var handCard = CreateCardHand(cardContainer, cardContainerIndex);
+        _containerIndexToHandCardDictionary.Add(cardContainerIndex, handCard);
+    }
+
+
+    public HandCard CreateCardHand(CardContainer cardContainer, int cardContainerIndex)
+    {
+        var cardDescription = GameResourceManager.Instance.GetCardDescription(cardContainer.CardID);
+        var handCard = Instantiate(GameResourceManager.Instance.HandCard);
+        handCard.Initialize(this, cardDescription, cardContainerIndex, PlayerController.OwnerClientId);
+        return handCard;
+    }
+
+    public void PlayCard(HandCard handCard)
+    {
+        PlayerController.PlayerResourceController.RemoveCardServerRPC(handCard.ContainerIndex);
+
     }
 }

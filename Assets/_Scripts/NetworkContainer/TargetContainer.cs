@@ -5,26 +5,22 @@ namespace _Scripts.NetworkContainter
 {
     public struct TargetContainer : INetworkSerializable, IEquatable<TargetContainer>
     {
-        public TargetType TargeterType;
-        public int TargeterContainerIndex;
-        public TargetType TargeteeType;
-        public int TargeteeContainerIndex;
-        
+        public TargetType TargetType;
+        public int TargetContainerIndex;
+        public ulong TargetClientOwnerId;
         
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
-            serializer.SerializeValue(ref TargeterType);
-            serializer.SerializeValue(ref TargeterContainerIndex);
-            serializer.SerializeValue(ref TargeteeType);
-            serializer.SerializeValue(ref TargeteeContainerIndex);
+            serializer.SerializeValue(ref TargetType);
+            serializer.SerializeValue(ref TargetContainerIndex);
+            serializer.SerializeValue(ref TargetClientOwnerId);
         }
 
         public bool Equals(TargetContainer other)
         {
-            return TargeterType == other.TargeterType 
-                   && TargeterContainerIndex == other.TargeterContainerIndex 
-                   && TargeteeType == other.TargeteeType 
-                   && TargeteeContainerIndex == other.TargeteeContainerIndex;
+            return TargetType == other.TargetType 
+                   && TargetContainerIndex == other.TargetContainerIndex 
+                     && TargetClientOwnerId == other.TargetClientOwnerId;
         }
         
         

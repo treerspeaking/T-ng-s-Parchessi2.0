@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class MapCell : PlayerEntity
 {
-    private readonly List<PlayerPawn> _stayingPlayerPawns = new(); 
+    private readonly List<MapPawn> _stayingPlayerPawns = new(); 
     
     [SerializeField] private List<Transform> _mapSpotTransforms;    
     
@@ -27,7 +27,7 @@ public class MapCell : PlayerEntity
         objToTeleport.position = transform.position;
     }
 
-    public List<PlayerPawn> GetAllPawn()
+    public List<MapPawn> GetAllPawn()
     {
         return _stayingPlayerPawns;
     }
@@ -37,7 +37,7 @@ public class MapCell : PlayerEntity
         return _stayingPlayerPawns.Count < _mapSpotTransforms.Count;
     }
     
-    public void EnterPawn(PlayerPawn playerPawn)
+    public void EnterPawn(MapPawn mapPawn)
     {
         if (_stayingPlayerPawns.Count >= _mapSpotTransforms.Count)
         {
@@ -45,12 +45,12 @@ public class MapCell : PlayerEntity
             return;
         }
 
-        _stayingPlayerPawns[_stayingPlayerPawns.Count] = playerPawn;
+        _stayingPlayerPawns[_stayingPlayerPawns.Count] = mapPawn;
     }
 
-    public void RemovePawn(PlayerPawn playerPawn)
+    public void RemovePawn(MapPawn mapPawn)
     {
-        _stayingPlayerPawns.Remove(playerPawn);
+        _stayingPlayerPawns.Remove(mapPawn);
     }
 
     public Transform GetEmptySpot()

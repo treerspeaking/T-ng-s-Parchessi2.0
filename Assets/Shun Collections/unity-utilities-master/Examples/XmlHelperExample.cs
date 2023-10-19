@@ -68,7 +68,7 @@ namespace UnityUtilities.Examples
              */
             Debug.Log(xmlString);
 
-            // Get the data back from the string
+            // GetComponentWithITargetee the data back from the string
             TestData deserializedData = xmlString.DeserializeFromXmlString<TestData>();
         }
 
@@ -91,15 +91,15 @@ namespace UnityUtilities.Examples
             // Read each enemyData element in the enemyList
             foreach (XmlNode enemyData in xmlDocument["enemyList"].ChildNodes)
             {
-                // Get the name element content, if it exists, else set "???"
+                // GetComponentWithITargetee the name element content, if it exists, else set "???"
                 string name = enemyData.GetElementString("name", "???");
 
-                // Get the position element and then its attributes
+                // GetComponentWithITargetee the position element and then its attributes
                 XmlNode position = enemyData["position"];
                 int x = position.GetAttributeInt("x");
                 int y = position.GetAttributeInt("y");
 
-                // Get the ranged element content, if it exists, else set "false"
+                // GetComponentWithITargetee the ranged element content, if it exists, else set "false"
                 bool ranged = enemyData.GetElementBool("ranged", false);
 
                 // Output the result

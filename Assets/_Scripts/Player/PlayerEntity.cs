@@ -1,27 +1,39 @@
 ﻿using System;
 using UnityEngine;
 
-public class PlayerEntity : MonoBehaviour, ITargetee<PlayerEntity>
+public class PlayerEntity : MonoBehaviour, ITargetee
 {
-    public int ContainerIndex { get; protected set; }
-    public ulong OwnerClientID { get; protected set; }
-
-    public Action OnDestroy;
+    public int ContainerIndex
+    { 
+        get => _containerIndex;
+        set { }
+    }
+    public ulong ClientOwnerID 
+    { 
+        get => _ownerClientID;
+        set { }
+    }
     
-    public void Initialize(int containerIndex, ulong ownerClientID)
+    public TargetType TargetType
     {
-        ContainerIndex = containerIndex;
-        OwnerClientID = ownerClientID;
+        get => _targeteeType;
+        set {}
     }
 
-    public virtual void ExecuteTargetee<TTargeter>(TTargeter targeter) where TTargeter : PlayerEntity, ITargeter<TTargeter>
+    [SerializeField] private TargetType _targeteeType;
+    private ulong _ownerClientID;
+    private int _containerIndex;
+
+
+    protected virtual void Initialize(int containerIndex, ulong ownerClientID)
+    {
+        _containerIndex = containerIndex;
+        _ownerClientID = ownerClientID;
+    }
+
+    public virtual void ExecuteTargetee<TTargeter>(TTargeter targeter) where TTargeter : ITargeter
     {
         
     }
 
-    protected void Destroy()
-    {
-        OnDestroy.Invoke();
-        Destroy(gameObject);
-    }
 }

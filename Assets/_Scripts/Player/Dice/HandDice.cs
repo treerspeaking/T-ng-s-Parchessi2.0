@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 
 using System.Collections.Generic;
@@ -9,30 +10,34 @@ using Shun_Unity_Editor;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-public class HandDice : PlayerEntity, ITargeter<HandDice>
+using Random = UnityEngine.Random;
+
+public class HandDice : PlayerEntity, ITargeter
 {
 
+    public Action OnTargeterDestroy { get; set; }
     private PlayerDiceHand _playerDiceHand;
     [SerializeField, ShowImmutable] DiceDescription _diceDescription;
-    private ITargeter<HandDice> _targeterImplementation;
+    private ITargeter _targeterImplementation;
  
     
-    public void Initialize(PlayerDiceHand playerDiceHand, int containerIndex, ulong ownerClientID , DiceDescription diceDescription)
+    public void Initialize(PlayerDiceHand playerDiceHand, DiceDescription diceDescription, int containerIndex, ulong ownerClientID )
     {
         _playerDiceHand = playerDiceHand;
         _diceDescription = diceDescription;
-        Initialize(containerIndex, ownerClientID);
+        base.Initialize(containerIndex, ownerClientID);
     }
 
     protected virtual int GetNumber()
     {
         return Random.Range(_diceDescription.DiceLowerRange, _diceDescription.DiceUpperRange);
     }
-    
 
-    public virtual void ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : PlayerEntity
+
+
+    public virtual void ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : ITargetee
     {
-        if (targetee is PlayerPawn playerPawn)
+        if (targetee is MapPawn playerPawn)
         {
             
             playerPawn.Move(GetNumber());
@@ -40,13 +45,17 @@ public class HandDice : PlayerEntity, ITargeter<HandDice>
         
             // Inherit this class and write Dice effect
             Debug.Log(name + " Dice drag to Pawn " + playerPawn.name);
-            return;
+            
         }
         else if (targetee is DiceCardConverter)
         {
             Debug.Log("Draw a card");
+            _playerDiceHand.PlayDice(this);
         }
-        
-        Destroy();
+
+        if( TryGetComponent<BaseDraggableObject>(out var baseDraggableObject))
+            baseDraggableObject.OnDestroy();
+        Destroy(gameObject);
     }
+
 }

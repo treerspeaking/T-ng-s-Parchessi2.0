@@ -1,12 +1,17 @@
 ﻿
+using System;
 using UnityEngine;
 
-public interface ITargeter<T> where T : PlayerEntity
+public interface ITargeter
 {
-    public void ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : PlayerEntity;
+    public ulong ClientOwnerID { get; set; }
+    public int ContainerIndex { get; set; }
+    public TargetType TargetType { get; set; }
+    public void ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : ITargetee;
 
-    public virtual T GetTarget()
+    public virtual MonoBehaviour GetMonoBehavior() 
     {
-        return this as T;
+        return this as MonoBehaviour;
     }
+    
 }

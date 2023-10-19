@@ -71,7 +71,7 @@ namespace UnityUtilities.Examples
 
         private void EasedLerpFactorExample()
         {
-            // Get the world position of the mouse pointer
+            // GetComponentWithITargetee the world position of the mouse pointer
             Vector3 mousePositionWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePositionWorld.z = 0f;
 

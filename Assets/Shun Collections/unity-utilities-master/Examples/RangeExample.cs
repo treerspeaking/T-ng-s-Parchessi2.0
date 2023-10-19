@@ -9,7 +9,7 @@ namespace UnityUtilities.Examples
 
         void Awake()
         {
-            // Get a random number in amountRange
+            // GetComponentWithITargetee a random number in amountRange
             int amount = amountRange.RandomInclusive;
 
             // Output [amount] numbers

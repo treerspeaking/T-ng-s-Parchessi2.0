@@ -21,9 +21,9 @@ public class TargetEntity : MonoBehaviour
 
     }
     
-    public virtual T Get<T>() where T : PlayerEntity , ITargetee<T>
+    public virtual ITargetee GetComponentWithITargetee()
     {
-        return GetComponent<T>();
+        return gameObject.GetComponent<ITargetee>();
     }
     
 }

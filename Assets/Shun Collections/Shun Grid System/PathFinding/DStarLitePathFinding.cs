@@ -171,7 +171,7 @@ namespace Shun_Grid_System
             if (updateCell != _endCell)
             {
                 /*
-             * Get the min rhs from Successors, then add it to the predecessors for traverse
+             * GetComponentWithITargetee the min rhs from Successors, then add it to the predecessors for traverse
              */
                 double minRhs = double.PositiveInfinity;
                 TCell minSucc = null;

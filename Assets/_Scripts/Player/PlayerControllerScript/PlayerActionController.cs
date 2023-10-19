@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerActionController : PlayerControllerDependency
 {
-    NetworkList <TargetContainer> _targetContainers;
+    NetworkList <ActionContainer> _targetContainers;
 
     public override void Awake()
     {
@@ -14,15 +14,15 @@ public class PlayerActionController : PlayerControllerDependency
     }
 
     [ServerRpc]
-    public void PlayTargetServerRPC(TargetContainer targetContainer)
+    public void PlayTargetServerRPC(ActionContainer actionContainer)
     {
-        _targetContainers.Add(targetContainer);
-        PlayTargetClientRPC(targetContainer);
+        _targetContainers.Add(actionContainer);
+        PlayTargetClientRPC(actionContainer);
     }
     
     [ClientRpc]
-    private void PlayTargetClientRPC(TargetContainer targetContainer)
+    private void PlayTargetClientRPC(ActionContainer actionContainer)
     {
-        Debug.Log("Client Play Target RPC");
+        Debug.Log("Client Play Action RPC");
     }
 }

@@ -16,8 +16,8 @@ public class PlayerResourceController : NetworkBehaviour
     public NetworkList<DiceContainer> IncomeDices;
     public NetworkList<DiceContainer> CurrentTurnDices;
 
-    private PlayerDiceHand _playerDiceHand;
-    private PlayerCardHand _playerCardHand;
+    public PlayerDiceHand PlayerDiceHand { get; private set;}
+    public PlayerCardHand PlayerCardHand { get; private set;}
 
     private void Awake()
     {
@@ -33,9 +33,8 @@ public class PlayerResourceController : NetworkBehaviour
     {
         if (!IsOwner) return;
         
-        _playerDiceHand = FindObjectOfType<PlayerDiceHand>();
-        _playerCardHand = FindObjectOfType<PlayerCardHand>();
-
+        PlayerDiceHand = FindObjectOfType<PlayerDiceHand>();
+        PlayerCardHand = FindObjectOfType<PlayerCardHand>();
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -66,7 +65,7 @@ public class PlayerResourceController : NetworkBehaviour
 
             for (int i = 0; i < addDiceContainers.Length; i++)
             {
-                _playerDiceHand.AddDiceToHand(addDiceContainers[i], i);
+                PlayerDiceHand.AddDiceToHand(addDiceContainers[i], i);
             }
         }
         else
@@ -80,6 +79,11 @@ public class PlayerResourceController : NetworkBehaviour
     {
         CurrentTurnDices.RemoveAt(index);
     }
-
-
+    
+    [ServerRpc]
+    public void RemoveCardServerRPC(int handCardContainerIndex)
+    {
+        DiscardCards.Add(HandCards[handCardContainerIndex]);
+        HandCards.RemoveAt(handCardContainerIndex);
+    }
 }

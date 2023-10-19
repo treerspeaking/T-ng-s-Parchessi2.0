@@ -7,16 +7,23 @@ namespace _Scripts.Player
 {
     public class PlayerDiceHand : PlayerControllerStartSetUpDependency
     {
-
+        private readonly Dictionary<int, HandDice> _containerIndexToHandDiceDictionary = new Dictionary<int, HandDice>();
         protected override void GameSetUp()
         {
             
         }
 
+        public HandDice GetHandDice(int diceContainerIndex)
+        {
+            _containerIndexToHandDiceDictionary.TryGetValue(diceContainerIndex, out var handDice);
+            return handDice;
+        }
+        
+
         public void AddDiceToHand(DiceContainer diceContainer, int diceContainerIndex)
         {
             var handDice = CreateDiceHand(diceContainer, diceContainerIndex);
-            
+            _containerIndexToHandDiceDictionary.Add(diceContainerIndex, handDice);
         }
         
         
@@ -24,14 +31,12 @@ namespace _Scripts.Player
         {
             var diceDescription = GameResourceManager.Instance.GetDiceDescription(diceContainer.DiceID);
             var handDice = Instantiate(GameResourceManager.Instance.HandDice);
-            handDice.Initialize(this, diceContainerIndex, PlayerController.OwnerClientId, diceDescription);
+            handDice.Initialize(this, diceDescription,  diceContainerIndex, PlayerController.OwnerClientId);
             return handDice;
         }
 
         public void PlayDice(HandDice handDice)
         {
-            Destroy(handDice.gameObject);
-            
             PlayerController.PlayerResourceController.RemoveDiceServerRPC(handDice.ContainerIndex);
         }
     }

@@ -20,7 +20,7 @@ namespace UnityUtilities.Examples
 
         void FixedUpdate()
         {
-            // Get the mouse position in a fixed interval
+            // GetComponentWithITargetee the mouse position in a fixed interval
             // If we get to 50 positions, the oldest position will be replaced
             mousePositions.Append(mainCamera.ScreenToWorldPoint(Input.mousePosition));
         }

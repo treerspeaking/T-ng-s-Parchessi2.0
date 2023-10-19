@@ -1,17 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using _Scripts.Player.Pawn;
 using _Scripts.Scriptable_Objects;
-using UnityEditor;
 using UnityEngine;
 using UnityUtilities;
-using Object = UnityEngine.Object;
+
 
 public class GameResourceManager : SingletonMonoBehaviour<GameResourceManager>
 {
     public HandCard HandCard;
     public HandDice HandDice;
-
+    public MapPawn MapPawn;
+    
     private readonly Dictionary<int, CardDescription> _cardDescriptionsDictionary = new();
     private readonly Dictionary<int, DiceDescription> _diceDescriptionsDictionary = new();
     private readonly Dictionary<int, PawnDescription> _pawnDescriptionsDictionary = new();

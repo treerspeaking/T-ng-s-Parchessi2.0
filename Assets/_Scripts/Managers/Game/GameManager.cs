@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using _Scripts.Managers.Network;
 using _Scripts.NetworkContainter;
 using QFSW.QC;
@@ -36,6 +37,10 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
 
     [SerializeField] private List<DiceDescription> _incomeDiceContainers = new();
 
+    public PlayerController GetPlayerController(ulong clientId)
+    {
+        return _playerControllers.FirstOrDefault(playerController => playerController.OwnerClientId == clientId);
+    }
 
     public void StartPlayerController(PlayerController playerController)
     {
