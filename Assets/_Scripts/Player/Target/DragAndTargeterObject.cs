@@ -6,11 +6,11 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Device;
 
-public abstract class DragAndDropSelection<TTargeter> : BaseDraggableObject where TTargeter : PlayerEntity, ITargeter<TTargeter> 
+public abstract class DragAndTargeterObject<TTargeter> : BaseDraggableObject where TTargeter : PlayerEntity, ITargeter<TTargeter> 
 {
     [SerializeField] private ITargeter<TTargeter> _targeterObject;
     [SerializeField] private TargetType[] _targetTypes;
-    [SerializeField] private bool _isUseOutsourceInteraction = false;
+    
     
     bool _isDragging;
     // Start is called before the first frame update
@@ -29,7 +29,8 @@ public abstract class DragAndDropSelection<TTargeter> : BaseDraggableObject wher
 
     private bool TryDrop()
     {
-        RaycastHit2D[] overlapCircleAll = Physics2D.RaycastAll(transform.position, Vector2.zero);
+        var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D[] overlapCircleAll = Physics2D.RaycastAll(mousePosition, Vector2.zero);
         foreach (RaycastHit2D hit in overlapCircleAll)
         {
             if (hit.transform.gameObject == gameObject) continue;

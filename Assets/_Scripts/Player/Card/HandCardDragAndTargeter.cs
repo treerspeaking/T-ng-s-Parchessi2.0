@@ -2,7 +2,7 @@
 
 namespace _Scripts.Player.Card
 {
-    public class CardDragAndDropSelection : DragAndDropSelection<HandCard>
+    public class HandCardDragAndTargeter : DragAndTargeterObject<HandCard>
     {
         
     }

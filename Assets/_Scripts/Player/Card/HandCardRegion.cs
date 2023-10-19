@@ -1,4 +1,5 @@
 ﻿
+using _Scripts.Player.Card;
 using DG.Tweening;
 using Shun_Card_System;
 using UnityEngine;
@@ -30,6 +31,11 @@ public class HandCardRegion : BaseDraggableObjectRegion
         _startPosition = transform.localPosition;
     }
 
+    public override bool CheckCompatibleObject(BaseDraggableObject baseDraggableObject)
+    {
+        return baseDraggableObject is HandCardDragAndTargeter;
+    }
+
     protected override void OnSuccessfullyAddCard(BaseDraggableObject baseDraggableObject, BaseDraggableObjectHolder baseDraggableObjectHolder, int index)
     {
         
@@ -40,8 +46,6 @@ public class HandCardRegion : BaseDraggableObjectRegion
 
     protected override void OnSuccessfullyRemoveCard(BaseDraggableObject baseDraggableObject, BaseDraggableObjectHolder baseDraggableObjectHolder, int index)
     {
-        //var characterCardGameObject = (BaseCharacterCardGameObject) baseCardGameObject;
-        
         MiddleAlign();
     }
 
