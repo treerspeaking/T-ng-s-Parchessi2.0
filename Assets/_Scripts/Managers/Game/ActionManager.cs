@@ -30,7 +30,7 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
             return;
         }
         var targeteeMonoBehaviour = targetEntity.Get<PlayerEntity>();
-        SendExecuteToServer(targeterMonoBehaviour, targeteeMonoBehaviour);
+        SendTargetExecutionToServer(targeterMonoBehaviour, targeteeMonoBehaviour);
         targeteeMonoBehaviour.ExecuteTargetee(targeterMonoBehaviour);
         targeterMonoBehaviour.ExecuteTargeter(targeteeMonoBehaviour);
     }
@@ -45,14 +45,17 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
             return;
         }
         
-        SendExecuteToServer(targeterMonoBehaviour, targeteeMonoBehavior.GetTarget());
+        SendTargetExecutionToServer(targeterMonoBehaviour, targeteeMonoBehavior.GetTarget());
         targeteeMonoBehavior.ExecuteTargetee(targeterMonoBehaviour);
         
     }
-    
 
+    public void SimulateTargetExecutionFromServer(TargetContainer targetContainer)
+    {
+        
+    }
 
-    private void SendExecuteToServer<TTargeter, TTargetee>(TTargeter targeterMonoBehaviour, TTargetee targeteeMonoBehaviour)
+    private void SendTargetExecutionToServer<TTargeter, TTargetee>(TTargeter targeterMonoBehaviour, TTargetee targeteeMonoBehaviour)
         where TTargeter : PlayerEntity, ITargeter<TTargeter>
         where TTargetee : PlayerEntity, ITargetee<TTargetee>
     {
@@ -83,4 +86,16 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         else return (TargetType.Deck, -1);
         
     }
+    
+    private T GetTargetEntity<T>(TargetType targetType, int containerIndex) where T : PlayerEntity
+    {
+        return targetType switch
+        {
+            TargetType.Dice => _mapTargets[containerIndex] as T,
+            TargetType.Pawn => _mapTargets[containerIndex] as T,
+            TargetType.Deck => _mapTargets[containerIndex] as T,
+            _ => null
+        };
+    }
+    
 }
