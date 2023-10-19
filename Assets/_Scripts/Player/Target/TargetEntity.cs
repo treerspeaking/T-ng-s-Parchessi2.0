@@ -1,47 +1,28 @@
 ﻿using System;
 using _Scripts.NetworkContainter;
 using _Scripts.Player.Pawn;
-using _Scripts.Player.Target;
+
 using UnityEngine;
 
 
 public class TargetEntity : MonoBehaviour
 {
-    private PlayerActionController PlayerActionController => GameManager.Instance.ClientOwnerPlayerController.PlayerActionController;
+    [SerializeField] protected TargetType TargetType;
     private void Awake()
     {
-        MapManager.Instance.AddTargetEntity(this);   
+        ActionManager.Instance.AddTargetEntity(this);   
         
     }
-
-    private TargetContainer CreateTargetContainer<TTargeter, TTargetee>(TTargeter targeterMonoBehaviour, TTargetee targeteeMonoBehaviour)
-        where TTargeter : PlayerEntity, ITargeter<TTargeter>
-        where TTargetee : PlayerEntity, ITargetee<TTargetee>
+    
+    public TargetType GetTargetType()
     {
-        TargetContainer targetContainer = new TargetContainer();
-        
-        (targetContainer.TargeterType, targetContainer.TargeterContainerIndex) = GetTargetType(targeterMonoBehaviour);
-        (targetContainer.TargeteeType, targetContainer.TargeteeContainerIndex) = GetTargetType(targeteeMonoBehaviour);
-        
-        return targetContainer;
-        
-    }
+        return TargetType;
 
-    private (TargetType, int) GetTargetType(PlayerEntity targeterMonoBehaviour)
+    }
+    
+    public virtual T Get<T>() where T : PlayerEntity , ITargetee<T>
     {
-        if (targeterMonoBehaviour is HandDice) return (TargetType.Dice, targeterMonoBehaviour.ContainerIndex);
-        else if (targeterMonoBehaviour is TestPawn)
-            return (TargetType.Pawn, targeterMonoBehaviour.ContainerIndex);
-        else return (TargetType.All, -1);
-        
+        return GetComponent<T>();
     }
-
-    protected void SendExecuteToServer<TTargeter, TTargetee>(TTargeter targeterMonoBehaviour, TTargetee targeteeMonoBehaviour)
-        where TTargeter : PlayerEntity, ITargeter<TTargeter>
-        where TTargetee : PlayerEntity, ITargetee<TTargetee>
-    {
-        var targetContainer = CreateTargetContainer(targeterMonoBehaviour, targeteeMonoBehaviour);
-
-        PlayerActionController.PlayTargetServerRPC(targetContainer);
-    }
+    
 }

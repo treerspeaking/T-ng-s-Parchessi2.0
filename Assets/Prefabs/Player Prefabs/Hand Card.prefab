@@ -1006,6 +1006,7 @@ GameObject:
   - component: {fileID: 5892810086109648494}
   - component: {fileID: -313294548724005488}
   - component: {fileID: 971385533165736036}
+  - component: {fileID: 1235029926}
   m_Layer: 0
   m_Name: Hand Card
   m_TagString: Untagged
@@ -1053,7 +1054,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.5, y: 3.3}
   m_EdgeRadius: 0
 --- !u!210 &5892810086109648494
 SortingGroup:
@@ -1097,6 +1098,24 @@ MonoBehaviour:
   _backgroundImage: {fileID: 5892810085116855059}
   _descriptionBackgroundImage: {fileID: 5892810085986476173}
   _bannerImage: {fileID: 7483394548471913138}
+--- !u!114 &1235029926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5892810086109648495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07748f6f05104711b5a11074609a2875, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsDraggable: 1
+  IsHoverable: 1
+  ActivateOnValidate: 0
+  _targetTypes: 01000000
+  _defaultPosition: {x: 0, y: 0}
+  _isUseOutsourceInteraction: 1
 --- !u!1 &5892810086544425642
 GameObject:
   m_ObjectHideFlags: 0

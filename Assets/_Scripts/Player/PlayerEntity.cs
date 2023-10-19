@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 
-public class PlayerEntity : MonoBehaviour
+public class PlayerEntity : MonoBehaviour, ITargetee<PlayerEntity>
 {
     public int ContainerIndex { get; protected set; }
 
@@ -10,5 +11,10 @@ public class PlayerEntity : MonoBehaviour
     {
         ContainerIndex = containerIndex;
         OwnerClientID = ownerClientID;
+    }
+
+    public virtual void ExecuteTargetee<TTargeter>(TTargeter targeter) where TTargeter : PlayerEntity, ITargeter<TTargeter>
+    {
+        
     }
 }

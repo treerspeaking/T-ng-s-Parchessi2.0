@@ -26,5 +26,7 @@ namespace _Scripts.NetworkContainter
                    && TargeteeType == other.TargeteeType 
                    && TargeteeContainerIndex == other.TargeteeContainerIndex;
         }
+        
+        
     }
 }

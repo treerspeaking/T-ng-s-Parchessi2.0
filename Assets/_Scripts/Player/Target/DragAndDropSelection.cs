@@ -1,17 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using _Scripts.Player.Target;
 using Shun_Card_System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Device;
 
-public abstract class DragAndDropSelection<TTargeter, TTargetee> : BaseDraggableObject where TTargeter : PlayerEntity, ITargeter<TTargeter> where TTargetee : PlayerEntity, ITargetee<TTargetee>
+public abstract class DragAndDropSelection<TTargeter> : BaseDraggableObject where TTargeter : PlayerEntity, ITargeter<TTargeter> 
 {
-    [SerializeField] private ITargeter<TTargeter> _dragObject;
-    [SerializeField] private TargetType _targetType;
-    [SerializeField] private Vector2 _defaultPosition;
+    [SerializeField] private ITargeter<TTargeter> _targeterObject;
+    [SerializeField] private TargetType[] _targetTypes;
     [SerializeField] private bool _isUseOutsourceInteraction = false;
     
     bool _isDragging;
@@ -19,44 +17,48 @@ public abstract class DragAndDropSelection<TTargeter, TTargetee> : BaseDraggable
 
     private void Awake()
     {
-        _dragObject = GetComponent<ITargeter<TTargeter>>();
+        _targeterObject = GetComponent<ITargeter<TTargeter>>();
     }
 
-    void Start()
+
+    public override void EndDrag()
     {
-        
-    }
-    private void OnEnable()
-    {
-        _isDragging = false;
+        if (TryDrop()) return;
+        base.EndDrag();
     }
 
-    public void Drop()
+    private bool TryDrop()
     {
-        Collider2D[] overlapCircleAll = Physics2D.OverlapCircleAll(transform.position, 0.2f);
-        foreach (Collider2D hit in overlapCircleAll)
+        RaycastHit2D[] overlapCircleAll = Physics2D.RaycastAll(transform.position, Vector2.zero);
+        foreach (RaycastHit2D hit in overlapCircleAll)
         {
-            CheckHit(hit);
+            if (hit.transform.gameObject == gameObject) continue;
+            if (CheckHit(hit)) return true;
         }
-        transform.position = _defaultPosition;
+
+        return false;
     }
 
-    protected virtual void CheckHit(Collider2D hit)
+    protected virtual bool CheckHit(RaycastHit2D hit)
     {
-        DropTargetEntity<TTargetee> targetEntity = hit.gameObject.GetComponent<DropTargetEntity<TTargetee>>();
+        var targetEntity = hit.transform.gameObject.GetComponent<TargetEntity>();
         
-        if (targetEntity == null || !CheckValid(targetEntity)) return;
+        if (targetEntity == null || !CheckValid(targetEntity)) return false;
         
-        targetEntity.ExecuteDrop(_dragObject.GetTarget());
-        
+        ActionManager.Instance.ExecuteTarget(_targeterObject.GetTarget(), targetEntity );
+        return true;
     }
     
-    protected virtual bool CheckValid(DropTargetEntity<TTargetee> dropTargetEntity)
+    protected virtual bool CheckValid(TargetEntity dropTargetEntity)
     {
-        return _targetType == dropTargetEntity.GetTargetType();
+        foreach (var targetType in _targetTypes)
+        {
+            if (targetType == dropTargetEntity.GetTargetType()) return true;
+        }
+        return false;
     }
     
-    
+    /*
     private void OnMouseOver()
     {
         if (_isUseOutsourceInteraction) return;
@@ -86,4 +88,6 @@ public abstract class DragAndDropSelection<TTargeter, TTargetee> : BaseDraggable
     private void OnMouseDown()
     {
     }
+    
+    */
 }

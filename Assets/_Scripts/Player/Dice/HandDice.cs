@@ -32,4 +32,9 @@ public class HandDice : PlayerEntity, ITargeter<HandDice>
         _playerDiceHand.PlayDice(this);
     }
 
+    public virtual void ExecuteTargeter<TTargetee>(TTargetee targeter) where TTargetee : PlayerEntity
+    {
+        
+        
+    }
 }

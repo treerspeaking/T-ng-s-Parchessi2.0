@@ -160,5 +160,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9015df0f2334d65be30164dda66700b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetType: 1
+  IsDraggable: 1
+  IsHoverable: 1
+  ActivateOnValidate: 0
+  _targetTypes: 01000000
   _defaultPosition: {x: 0, y: 0}
+  _isUseOutsourceInteraction: 1

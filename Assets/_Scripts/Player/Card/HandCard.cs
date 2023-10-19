@@ -16,6 +16,9 @@ public class HandCard : PlayerEntity, ITargeter<HandCard>
         _playerCardHand = playerCardHand;
         CardDescription = cardDescription;
     }
-    
-    
+
+
+    public virtual void ExecuteTargeter<TTargetee>(TTargetee targeter) where TTargetee : PlayerEntity
+    {
+    }
 }

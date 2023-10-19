@@ -1,14 +1,11 @@
 ﻿using UnityEngine;
 
-namespace _Scripts.Player.Target
+public interface ITargetee<T> where T : PlayerEntity
 {
-    public interface ITargetee<T> where T : PlayerEntity
+    public void ExecuteTargetee<TTargeter>(TTargeter targeter) where TTargeter : PlayerEntity, ITargeter<TTargeter>;
+
+    public virtual T GetTarget()
     {
-        public void ExecuteTarget<TTargeter>(TTargeter targeter) where TTargeter : PlayerEntity, ITargeter<TTargeter>;
-        
-        public virtual T GetTarget()
-        {
-            return this as T;
-        }
+        return this as T;
     }
 }

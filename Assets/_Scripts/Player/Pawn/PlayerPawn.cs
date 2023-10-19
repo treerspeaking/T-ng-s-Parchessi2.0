@@ -1,12 +1,11 @@
 ﻿using System;
-using _Scripts.Player.Target;
 using UnityEngine;
 
 namespace _Scripts.Player.Pawn
 {
-    public class TestPawn : PlayerEntity, ITargetee<TestPawn>
+    public class PlayerPawn : PlayerEntity, ITargetee<PlayerPawn>
     {
-        public void ExecuteTarget<TTargeter>(TTargeter targeter) where TTargeter : PlayerEntity, ITargeter<TTargeter>
+        public void ExecuteTargetee<TTargeter>(TTargeter targeter) where TTargeter : PlayerEntity, ITargeter<TTargeter>
         {
             Debug.Log($"Success {targeter.ToString()}");
             if (targeter is HandDice)

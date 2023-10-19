@@ -4,7 +4,7 @@ using UnityEngine;
 namespace _Scripts.Player.Dice
 {
     [RequireComponent(typeof(HandDice))]
-    public class DiceDragAndDropSelection : DragAndDropSelection<HandDice, TestPawn>
+    public class DiceDragAndDropSelection : DragAndDropSelection<HandDice>
     {
         
     }
