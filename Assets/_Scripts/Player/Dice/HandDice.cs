@@ -31,15 +31,15 @@ public class HandDice : PlayerEntity, ITargeter<HandDice>
 
     public virtual void ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : PlayerEntity
     {
-        if (targetee is not PlayerPawn)
+        if (targetee is not PlayerPawn playerPawn)
         {
             Debug.LogError("Dice drag to not Pawn");
             return;
         }
 
-        targetee.GetComponent<PlayerPawn>().Move(GetNumber());
+        playerPawn.Move(GetNumber());
         _playerDiceHand.PlayDice(this);
-        GetComponent<BaseDraggableObject>().OnDestroy();
-        Destroy(gameObject);
+        
+        Destroy();
     }
 }

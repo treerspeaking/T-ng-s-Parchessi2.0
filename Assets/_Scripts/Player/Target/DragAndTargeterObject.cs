@@ -18,6 +18,9 @@ public abstract class DragAndTargeterObject<TTargeter> : BaseDraggableObject whe
     private void Awake()
     {
         _targeterObject = GetComponent<ITargeter<TTargeter>>();
+
+        _targeterObject.GetTarget().OnDestroy += () => { IsDestroyed = true; };
+
     }
 
 

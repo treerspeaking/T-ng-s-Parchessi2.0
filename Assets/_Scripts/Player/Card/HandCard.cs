@@ -21,8 +21,7 @@ public class HandCard : PlayerEntity, ITargeter<HandCard>
 
     public virtual void ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : PlayerEntity
     {
-        GetComponent<BaseDraggableObject>().OnDestroy();
-        Destroy(gameObject);
+        Destroy();
     }
 
 }
