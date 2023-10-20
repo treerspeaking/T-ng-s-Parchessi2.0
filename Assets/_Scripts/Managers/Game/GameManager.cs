@@ -59,12 +59,12 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     }
 
 
+    [ServerRpc]
     [Command]
-    public void StartGame()
+    public void StartGameServerRPC()
     {
         _gameState = GameState.GamePlay;
-        
-        OnGameStart.Invoke();
+        StartGameClientRPC();
         
         foreach (var playerController in PlayerControllers)
         {
@@ -81,6 +81,13 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
         }
         
         StartPlayerTurn(PlayerControllers[_playerIdTurn.Value]);
+    }
+
+    [ClientRpc]
+    public void StartGameClientRPC()
+    {
+        
+        OnGameStart.Invoke();
     }
     
     
