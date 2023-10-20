@@ -29,7 +29,7 @@ namespace UnityUtilities.Examples
         {
             if (Input.GetMouseButtonDown(0))
             {
-                // Get the x/y position of the click (for an orthographic camera)
+                // GetComponentWithITargetee the x/y position of the click (for an orthographic camera)
                 var mousePositionWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
                 // Gets the element closest to the mouse click

@@ -4,14 +4,16 @@ using UnityEngine.UI;
 
 
 [RequireComponent(typeof(Button))]
-public abstract class PhaseManipulateButtonControllerDependency : PlayerControllerStartSetUpDependency
+public abstract class PhaseManipulateButtonControllerDependency : PlayerControllerCompositionDependency
 {
     protected Button Button;
     
-    protected override void Awake()
+    protected void Awake()
     {
-        base.Awake();
         Button = GetComponent<Button>();
+        
+        GameManager.Instance.OnGameStart += GameSetUp;
     }
 
+    protected abstract void GameSetUp();
 }

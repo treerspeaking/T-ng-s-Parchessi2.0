@@ -8,6 +8,6 @@ public class EndTurnButtonController : PhaseManipulateButtonControllerDependency
 {
     protected override void GameSetUp()
     {
-        Button.onClick.AddListener(GameManager.Instance.ClientOwnerPlayerController.PlayerTurnController.EndTurnServerRPC);
+        Button.onClick.AddListener(GameManager.Instance.ClientOwnerPlayerController.PlayerTurnControllerRequire.EndTurnServerRPC);
     }
 }

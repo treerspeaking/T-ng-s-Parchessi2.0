@@ -32,10 +32,12 @@ public class PlayerResourceController : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         if (!IsOwner) return;
-        
-        _playerDiceHand = FindObjectOfType<PlayerDiceHand>();
-        _playerCardHand = FindObjectOfType<PlayerCardHand>();
+    }
 
+    public void InitializeHand(PlayerDiceHand playerDiceHand, PlayerCardHand playerCardHand)
+    {
+        _playerDiceHand = playerDiceHand;
+        _playerCardHand = playerCardHand;
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -80,6 +82,11 @@ public class PlayerResourceController : NetworkBehaviour
     {
         CurrentTurnDices.RemoveAt(index);
     }
-
-
+    
+    [ServerRpc]
+    public void RemoveCardServerRPC(int handCardContainerIndex)
+    {
+        DiscardCards.Add(HandCards[handCardContainerIndex]);
+        HandCards.RemoveAt(handCardContainerIndex);
+    }
 }

@@ -114,7 +114,7 @@ namespace UnityUtilities.Examples
             // Create a rect that is 10 units bigger to each side
             Rect biggerRect = rect.Extend(10);
 
-            // Get the corner points
+            // GetComponentWithITargetee the corner points
             Vector2[] cornerPoints = rect.GetCornerPoints();
         }
 
@@ -134,7 +134,7 @@ namespace UnityUtilities.Examples
             float radius;
             Vector3 origin = playerCharacterController.transform.position;
 
-            // Get the data for the capsule cast from the current player position
+            // GetComponentWithITargetee the data for the capsule cast from the current player position
             UnityHelper.GetCapsuleCastData(playerCharacterController, origin, out point1, out point2, out radius);
 
             // Cast 2 units forwards
@@ -158,7 +158,7 @@ namespace UnityUtilities.Examples
             // Does the layer mask contain layer 4?
             bool containsLayer4 = someLayerMask.ContainsLayer(4);
 
-            // Get the bounds of all colliders in the level to clamp the camera later on
+            // GetComponentWithITargetee the bounds of all colliders in the level to clamp the camera later on
             Collider[] allColliders = FindObjectsOfType<Collider>();
             Bounds levelBounds = UnityHelper.CombineColliderBounds(allColliders);
 

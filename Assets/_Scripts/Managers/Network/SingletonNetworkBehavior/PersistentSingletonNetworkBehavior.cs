@@ -79,7 +79,7 @@ namespace _Scripts.Managers.Network
 
         /// <summary>
         /// This method is called when the registered instance of the persistent singleton is either
-        /// destroyed manually by calling Destroy() or the application is closed. This is not called
+        /// destroyed manually by calling OnDestroy() or the application is closed. This is not called
         /// if this is a second instance (which is destroyed automatically immediately).
         /// </summary>
         protected virtual void OnPersistentSingletonDestroyed()

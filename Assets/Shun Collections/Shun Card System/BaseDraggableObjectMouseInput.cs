@@ -17,7 +17,7 @@ namespace Shun_Card_System
 
         [Header("Drag Objects")]
         protected Vector3 CardOffset;
-        protected BaseDraggableObject DraggingDraggable;
+        protected BaseDraggableObject DraggingObject;
         protected BaseDraggableObjectRegion LastDraggableObjectRegion;
         protected BaseDraggableObjectHolder LastDraggableObjectHolder;
         protected BaseCardButton LastCardButton;
@@ -37,7 +37,7 @@ namespace Shun_Card_System
             
             if (Input.GetMouseButtonUp(0))
             {
-                EndDragCard();
+                EndDrag();
             }
             
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
@@ -47,7 +47,7 @@ namespace Shun_Card_System
 
             if (Input.GetMouseButton(0))
             {
-                DragCard();
+                DragObject();
             }
 
         }
@@ -166,40 +166,40 @@ namespace Shun_Card_System
             } 
 
             // Check for card game object second
-            DraggingDraggable = FindFirstInMouseCast<BaseDraggableObject>();
+            DraggingObject = FindFirstInMouseCast<BaseDraggableObject>();
 
-            if (DraggingDraggable == null || !DraggingDraggable.IsDraggable || !DetachCardToHolder())
+            if (DraggingObject == null || !DraggingObject.IsDraggable || !DetachCardToHolder())
             {
-                DraggingDraggable = null;
+                DraggingObject = null;
                 return false;
             }
             
             // Successfully detach card
-            CardOffset = DraggingDraggable.transform.position - MouseWorldPosition;
+            CardOffset = DraggingObject.transform.position - MouseWorldPosition;
             IsDraggingCard = true;
 
-            DraggingDraggable.StartDrag();
+            DraggingObject.StartDrag();
     
             return true;
         
         }
 
-        protected void DragCard()
+        protected void DragObject()
         {
             if (!IsDraggingCard) return; 
         
-            DraggingDraggable.transform.position = MouseWorldPosition + CardOffset;
+            DraggingObject.transform.position = MouseWorldPosition + CardOffset;
         
         }
 
-        protected void EndDragCard()
+        protected void EndDrag()
         {
             if (!IsDraggingCard) return;
-        
-            DraggingDraggable.EndDrag();
+
+            DraggingObject.EndDrag();
             AttachCardToHolder();
 
-            DraggingDraggable = null;
+            DraggingObject = null;
             LastDraggableObjectHolder = null;
             LastDraggableObjectRegion = null;
             IsDraggingCard = false;
@@ -208,6 +208,8 @@ namespace Shun_Card_System
     
         protected virtual bool DetachCardToHolder()
         {
+            if (DraggingObject.IsDestroyed) return false;
+            
             // Check the card region base on card game object or card holder, to TakeOutTemporary
             LastDraggableObjectRegion = FindFirstInMouseCast<BaseDraggableObjectRegion>();
             if (LastDraggableObjectRegion == null)
@@ -222,11 +224,13 @@ namespace Shun_Card_System
             }
             else
             {
-                LastDraggableObjectHolder = LastDraggableObjectRegion.FindCardPlaceHolder(DraggingDraggable);
+                LastDraggableObjectHolder = LastDraggableObjectRegion.FindCardPlaceHolder(DraggingObject);
             }
 
             // Having got the region and holder, take the card out temporary
-            if (LastDraggableObjectRegion.TakeOutTemporary(DraggingDraggable, LastDraggableObjectHolder)) return true;
+            if ((!LastDraggableObjectRegion.CheckCompatibleObject(DraggingObject) )||
+            (LastDraggableObjectRegion.CheckCompatibleObject(DraggingObject) 
+             && LastDraggableObjectRegion.TakeOutTemporary(DraggingObject, LastDraggableObjectHolder))) return true;
         
             LastDraggableObjectHolder = null;
             LastDraggableObjectRegion = null;
@@ -237,24 +241,24 @@ namespace Shun_Card_System
 
         protected void AttachCardToHolder()
         {
-        
+            if (DraggingObject.IsDestroyed) return;
             var dropRegion = FindFirstInMouseCast<BaseDraggableObjectRegion>();
             var dropHolder = FindFirstInMouseCast<BaseDraggableObjectHolder>();
         
             if (dropHolder == null)
             {
                 if (dropRegion != null && dropRegion != LastDraggableObjectRegion &&
-                    dropRegion.TryAddCard(DraggingDraggable, dropHolder)) // Successfully add to the drop region
+                    dropRegion.TryAddCard(DraggingObject, dropHolder)) // Successfully add to the drop region
                 {
                     if (LastDraggableObjectHolder != null) // remove the temporary in last region
                     {
-                        LastDraggableObjectRegion.RemoveTemporary(DraggingDraggable);
+                        LastDraggableObjectRegion.RemoveTemporary(DraggingObject);
                         return;
                     }
                 }
             
                 if (LastDraggableObjectRegion != null) // Unsuccessfully add to drop region or it is the same region
-                    LastDraggableObjectRegion.ReAddTemporary(DraggingDraggable);
+                    LastDraggableObjectRegion.ReAddTemporary(DraggingObject);
             }
             else
             {
@@ -263,7 +267,7 @@ namespace Shun_Card_System
                 
                 if (dropRegion == null) // No region to drop anyway
                 {
-                    if(LastDraggableObjectRegion != null) LastDraggableObjectRegion.ReAddTemporary(DraggingDraggable);
+                    if(LastDraggableObjectRegion != null) LastDraggableObjectRegion.ReAddTemporary(DraggingObject);
                 }
 
                 if (dropRegion.CardMiddleInsertionStyle == BaseDraggableObjectRegion.MiddleInsertionStyle.Swap)
@@ -272,21 +276,21 @@ namespace Shun_Card_System
                     if (targetCard != null && LastDraggableObjectRegion != null && dropRegion.TakeOutTemporary(targetCard, dropHolder))
                     {
                         LastDraggableObjectRegion.ReAddTemporary(targetCard);
-                        dropRegion.ReAddTemporary(DraggingDraggable);
+                        dropRegion.ReAddTemporary(DraggingObject);
                         
                         return;
                     }
                     
                 }
                 
-                if (!dropRegion.TryAddCard(DraggingDraggable, dropHolder))
+                if (!dropRegion.TryAddCard(DraggingObject, dropHolder))
                 {
-                    if(LastDraggableObjectRegion != null) LastDraggableObjectRegion.ReAddTemporary(DraggingDraggable);
+                    if(LastDraggableObjectRegion != null) LastDraggableObjectRegion.ReAddTemporary(DraggingObject);
                 }
                 
                 if (LastDraggableObjectHolder != null)
                 {
-                    LastDraggableObjectRegion.RemoveTemporary(DraggingDraggable);
+                    LastDraggableObjectRegion.RemoveTemporary(DraggingObject);
                 }
 
             }

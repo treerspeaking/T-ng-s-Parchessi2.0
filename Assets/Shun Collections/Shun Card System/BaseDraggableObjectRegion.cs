@@ -124,7 +124,7 @@ namespace Shun_Card_System
 
         private bool AddCardAtBack(BaseDraggableObject draggableObject)
         {
-            if (CardHoldingCount >= MaxCardHold)
+            if (CardHoldingCount >= MaxCardHold || !CheckCompatibleObject(draggableObject))
             {
                 return false;
             }
@@ -142,7 +142,7 @@ namespace Shun_Card_System
         
         private  bool AddCardAtMiddle(BaseDraggableObject draggableObject, int index)
         {
-            if (CardHoldingCount >= MaxCardHold)
+            if (CardHoldingCount >= MaxCardHold || !CheckCompatibleObject(draggableObject))
             {
                 return false;
             }
@@ -210,7 +210,7 @@ namespace Shun_Card_System
         
         public virtual bool RemoveCard(BaseDraggableObject draggableObject,BaseDraggableObjectHolder draggableObjectHolder)
         {
-            if (draggableObjectHolder.DraggableObject != draggableObject) return false;
+            if (draggableObjectHolder == null || draggableObjectHolder.DraggableObject != draggableObject) return false;
 
             draggableObjectHolder.DetachCardGameObject();
 
@@ -263,6 +263,11 @@ namespace Shun_Card_System
             movingObject.position = toPosition;
         }
 
+        public virtual bool CheckCompatibleObject(BaseDraggableObject baseDraggableObject)
+        {
+            return true;
+        }
+
         protected virtual void OnSuccessfullyAddCard(BaseDraggableObject baseDraggableObject, BaseDraggableObjectHolder baseDraggableObjectHolder, int index)
         {
             
@@ -270,16 +275,6 @@ namespace Shun_Card_System
         protected virtual void OnSuccessfullyRemoveCard(BaseDraggableObject baseDraggableObject, BaseDraggableObjectHolder baseDraggableObjectHolder, int index)
         {
             
-        }
-
-        public void Select()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Deselect()
-        {
-            throw new NotImplementedException();
         }
 
         public void StartHover()

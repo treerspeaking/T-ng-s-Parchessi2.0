@@ -17,14 +17,14 @@ public class PhaseManipulateButtonContent : MonoBehaviour
     private void Awake()
     {
         
-        GameManager.Instance.OnGameSetUp += GameSetUp;
+        GameManager.Instance.OnPlayerJoinGameSetUp += GameSetUp;
         DisableAllExceptWait();
     }
 
     private void GameSetUp()
     {
         _playerController = GameManager.Instance.ClientOwnerPlayerController;
-        _playerController.PlayerTurnController.CurrentPlayerPhase.OnValueChanged += CurrentPlayerPhaseChanged;
+        _playerController.PlayerTurnControllerRequire.CurrentPlayerPhase.OnValueChanged += CurrentPlayerPhaseChanged;
     }
     
     private void DisableAllExceptWait()
@@ -37,20 +37,20 @@ public class PhaseManipulateButtonContent : MonoBehaviour
         _currentActiveButton = _waitButton.gameObject;
     }
     
-    private void CurrentPlayerPhaseChanged(PlayerTurnController.PlayerPhase previousValue, PlayerTurnController.PlayerPhase newValue)
+    private void CurrentPlayerPhaseChanged(PlayerTurnControllerRequire.PlayerPhase previousValue, PlayerTurnControllerRequire.PlayerPhase newValue)
     {
         switch (newValue)
         {
-            case PlayerTurnController.PlayerPhase.Wait:
+            case PlayerTurnControllerRequire.PlayerPhase.Wait:
                 SwapButton(_waitButton.gameObject);
                 break;
-            case PlayerTurnController.PlayerPhase.Preparation:
+            case PlayerTurnControllerRequire.PlayerPhase.Preparation:
                 SwapButton(_startRollButtonController.gameObject);
                 break;
-            case PlayerTurnController.PlayerPhase.Roll:
+            case PlayerTurnControllerRequire.PlayerPhase.Roll:
                 SwapButton(_endRollButtonController.gameObject);
                 break;
-            case PlayerTurnController.PlayerPhase.Subsequence:
+            case PlayerTurnControllerRequire.PlayerPhase.Subsequence:
                 SwapButton(_endTurnButtonController.gameObject);
                 break;
             default:

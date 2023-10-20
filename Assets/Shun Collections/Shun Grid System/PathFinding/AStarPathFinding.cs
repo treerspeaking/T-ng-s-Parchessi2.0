@@ -169,7 +169,7 @@ namespace Shun_Grid_System
         }
 
         /// <summary>
-        /// Get a list of Cell that the pathfinding was found
+        /// GetComponentWithITargetee a list of Cell that the pathfinding was found
         /// </summary>
         protected LinkedList<TCell> RetracePath(TCell start, TCell end)
         {

@@ -15,7 +15,7 @@ namespace UnityUtilities.Examples
 
         void Awake()
         {
-            // Get an array with each value of TetrisPiece
+            // GetComponentWithITargetee an array with each value of TetrisPiece
             TetrisPiece[] tetrisPieceArray = (TetrisPiece[]) Enum.GetValues(typeof (TetrisPiece));
 
             // Create the bag containing two instances of every value of TetrisPiece

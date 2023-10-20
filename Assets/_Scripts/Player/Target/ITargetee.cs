@@ -1,14 +1,15 @@
-﻿using UnityEngine;
+﻿using _Scripts.Simulation;
+using UnityEngine;
 
-namespace _Scripts.Player.Target
+public interface ITargetee
 {
-    public interface ITargetee<T> where T : PlayerEntity
+    public ulong ClientOwnerID { get; set; }
+    public int ContainerIndex { get; set; }
+    public TargetType TargetType { get; set; }
+    public CoroutineSimulationPackage ExecuteTargetee<TTargeter>(TTargeter targeter) where TTargeter : ITargeter;
+
+    public virtual MonoBehaviour GetMonoBehavior() 
     {
-        public void ExecuteTarget<TTargeter>(TTargeter targeter) where TTargeter : PlayerEntity, ITargeter<TTargeter>;
-        
-        public virtual T GetTarget()
-        {
-            return this as T;
-        }
+        return this as MonoBehaviour;
     }
 }
