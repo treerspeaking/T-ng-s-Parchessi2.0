@@ -23,6 +23,6 @@ public class PlayerActionController : PlayerControllerDependency
     [ClientRpc]
     private void PlayTargetClientRPC(ActionContainer actionContainer)
     {
-        Debug.Log("Client Play Action RPC");
+        ActionManager.Instance.SimulateAction(actionContainer);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using _Scripts.Map;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -33,6 +34,7 @@ namespace _Scripts.Player.Pawn
         private PawnDescription _pawnDescription;
         
         
+
         public void Initialize(MapPath playerMapPawn, PawnDescription pawnDescription , int containerIndex, ulong ownerClientId)
         {
             _mapPath = playerMapPawn;

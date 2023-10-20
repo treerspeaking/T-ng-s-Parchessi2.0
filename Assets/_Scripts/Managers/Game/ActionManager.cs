@@ -31,8 +31,6 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         }
         
         SendTargetExecutionToServer(targeter, targetee);
-        targeter.ExecuteTargeter(targetee);
-        targetee.ExecuteTargetee(targeter);
         
     }
 

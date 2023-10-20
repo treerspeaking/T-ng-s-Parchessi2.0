@@ -20,9 +20,16 @@ namespace _Scripts.Managers.Game
         
         private Dictionary<int, MapPawn> _containerIndexToMapPawnDictionary = new();
 
+        
+        
         private void Awake()
         {
             _mapPawnContainers = new NetworkList<PawnContainer>();
+        }
+
+        private void Start()
+        {
+            GameManager.Instance.OnGameSetUp += () => SpawnPawnToMap(new PawnContainer{PawnID = 0} ,0,0);
         }
 
         public MapPawn GetPlayerPawn(int pawnContainerIndex)
