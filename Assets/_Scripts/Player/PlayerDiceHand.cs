@@ -1,18 +1,15 @@
 ﻿using System.Collections.Generic;
 using _Scripts.NetworkContainter;
 using _Scripts.Scriptable_Objects;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace _Scripts.Player
 {
-    public class PlayerDiceHand : PlayerControllerStartSetUpDependency
+    public class PlayerDiceHand : PlayerControllerCompositionDependency
     {
         private readonly Dictionary<int, HandDice> _containerIndexToHandDiceDictionary = new Dictionary<int, HandDice>();
-        protected override void GameSetUp()
-        {
-            
-        }
-
+      
         public HandDice GetHandDice(int diceContainerIndex)
         {
             _containerIndexToHandDiceDictionary.TryGetValue(diceContainerIndex, out var handDice);
@@ -30,8 +27,8 @@ namespace _Scripts.Player
         public HandDice CreateDiceHand(DiceContainer diceContainer, int diceContainerIndex)
         {
             var diceDescription = GameResourceManager.Instance.GetDiceDescription(diceContainer.DiceID);
-            var handDice = Instantiate(GameResourceManager.Instance.HandDice);
-            handDice.Initialize(this, diceDescription,  diceContainerIndex, PlayerController.OwnerClientId);
+            var handDice = Instantiate(GameResourceManager.Instance.HandDicePrefab);
+            handDice.Initialize(this, diceDescription,  diceContainerIndex, NetworkManager.ServerClientId);
             return handDice;
         }
 

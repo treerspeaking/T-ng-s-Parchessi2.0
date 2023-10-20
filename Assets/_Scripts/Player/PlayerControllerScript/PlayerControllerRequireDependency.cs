@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
-public class PlayerControllerDependency : NetworkBehaviour
+public class PlayerControllerRequireDependency : NetworkBehaviour
 {
     protected PlayerController PlayerController;
 

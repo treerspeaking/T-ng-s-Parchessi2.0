@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using _Scripts.Player;
 using _Scripts.Player.Pawn;
 using _Scripts.Scriptable_Objects;
 using UnityEngine;
@@ -9,10 +10,13 @@ using UnityUtilities;
 
 public class GameResourceManager : SingletonMonoBehaviour<GameResourceManager>
 {
-    public HandCard HandCard;
-    public HandDice HandDice;
-    public MapPawn MapPawn;
+    public PlayerCardHand PlayerCardHandPrefab;
+    public PlayerDiceHand PlayerDiceHandPrefab;
     
+    public HandCard HandCardPrefab;
+    public HandDice HandDicePrefab;
+    public MapPawn MapPawnPrefab;
+
     private readonly Dictionary<int, CardDescription> _cardDescriptionsDictionary = new();
     private readonly Dictionary<int, DiceDescription> _diceDescriptionsDictionary = new();
     private readonly Dictionary<int, PawnDescription> _pawnDescriptionsDictionary = new();

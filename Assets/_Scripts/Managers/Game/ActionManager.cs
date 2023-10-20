@@ -57,12 +57,12 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
             case TargetType.Tile:
                 break;
             case TargetType.Card:
-                return GameManager.Instance.GetPlayerController(targeterContainer.TargetClientOwnerId)
-                    .PlayerResourceController.PlayerCardHand.GetHandCard(targeterContainer.TargetContainerIndex);
+                return HandManager.Instance.GetPlayerCardHand(targeterContainer.TargetClientOwnerId)
+                    .GetHandCard(targeterContainer.TargetContainerIndex);
                 break;
             case TargetType.Dice:
-                return GameManager.Instance.GetPlayerController(targeterContainer.TargetClientOwnerId)
-                    .PlayerResourceController.PlayerDiceHand.GetHandDice(targeterContainer.TargetContainerIndex);
+                return HandManager.Instance.GetPlayerDiceHand(targeterContainer.TargetClientOwnerId)
+                    .GetHandDice(targeterContainer.TargetContainerIndex);
             case TargetType.DiceConverter:
             default:
                 return null;
@@ -86,12 +86,12 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
             case TargetType.Tile:
                 break;
             case TargetType.Card:
-                return GameManager.Instance.GetPlayerController(targeteeContainer.TargetClientOwnerId)
-                    .PlayerResourceController.PlayerCardHand.GetHandCard(targeteeContainer.TargetContainerIndex);
+                return HandManager.Instance.GetPlayerCardHand(targeteeContainer.TargetClientOwnerId)
+                    .GetHandCard(targeteeContainer.TargetContainerIndex);
                 break;
             case TargetType.Dice:
-                return GameManager.Instance.GetPlayerController(targeteeContainer.TargetClientOwnerId)
-                    .PlayerResourceController.PlayerDiceHand.GetHandDice(targeteeContainer.TargetContainerIndex);
+                return HandManager.Instance.GetPlayerDiceHand(targeteeContainer.TargetClientOwnerId)
+                    .GetHandDice(targeteeContainer.TargetContainerIndex);
                 break;
             default:
                 return null;
@@ -107,7 +107,7 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
     {
         var targetContainer = CreateActionContainer(targeterMonoBehaviour, targeteeMonoBehaviour);
 
-        GameManager.Instance.ClientOwnerPlayerController.PlayerActionController.PlayTargetServerRPC(targetContainer);
+        GameManager.Instance.ClientOwnerPlayerController.PlayerActionControllerRequire.PlayTargetServerRPC(targetContainer);
     }
 
 

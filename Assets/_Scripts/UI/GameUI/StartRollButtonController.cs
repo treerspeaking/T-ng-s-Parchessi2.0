@@ -7,6 +7,6 @@ public class StartRollButtonController : PhaseManipulateButtonControllerDependen
 {
     protected override void GameSetUp()
     {
-        Button.onClick.AddListener(GameManager.Instance.ClientOwnerPlayerController.PlayerTurnController.StartRollPhaseServerRPC);
+        Button.onClick.AddListener(GameManager.Instance.ClientOwnerPlayerController.PlayerTurnControllerRequire.StartRollPhaseServerRPC);
     }
 }

@@ -9,7 +9,7 @@ using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerTurnController : PlayerControllerDependency
+public class PlayerTurnControllerRequire : PlayerControllerRequireDependency
 {
     public enum PlayerPhase : byte
     {

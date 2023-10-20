@@ -24,7 +24,7 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
         GameEnd
     }
 
-    [SerializeField, ShowImmutable] private List<PlayerController> _playerControllers = new();
+    [SerializeField] public List<PlayerController> PlayerControllers { get; private set; } = new();
     [SerializeField, ShowImmutable] private GameState _gameState = GameState.NetworkSetup;
     
     
@@ -33,25 +33,28 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     
     public PlayerController ClientOwnerPlayerController;
     public Action OnNetworkSetUp { get; set; }
-    public Action OnGameSetUp { get; set; }
+    public Action OnPlayerJoinGameSetUp { get; set; }
+    public Action OnGameStart { get; set; }
+    public Action OnGameEnd { get; set; }
+    public Action OnGamePause { get; set; }
 
     [SerializeField] private List<DiceDescription> _incomeDiceContainers = new();
 
     public PlayerController GetPlayerController(ulong clientId)
     {
-        return _playerControllers.FirstOrDefault(playerController => playerController.OwnerClientId == clientId);
+        return PlayerControllers.FirstOrDefault(playerController => playerController.OwnerClientId == clientId);
     }
 
     public void StartPlayerController(PlayerController playerController)
     {
-        _playerControllers.Add(playerController);
+        PlayerControllers.Add(playerController);
         if (playerController.IsOwner)
         {
             ClientOwnerPlayerController = playerController;
             
             _gameState = GameState.GameSetup;
-            OnGameSetUp.Invoke();
-            //OnGameSetUp = null;
+            OnPlayerJoinGameSetUp.Invoke();
+            //OnPlayerJoinGameSetUp = null;
         }
     }
 
@@ -61,7 +64,9 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     {
         _gameState = GameState.GamePlay;
         
-        foreach (var playerController in _playerControllers)
+        OnGameStart.Invoke();
+        
+        foreach (var playerController in PlayerControllers)
         {
             foreach (var diceDescription in _incomeDiceContainers)
             {
@@ -75,7 +80,7 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
             }
         }
         
-        StartPlayerTurn(_playerControllers[_playerIdTurn.Value]);
+        StartPlayerTurn(PlayerControllers[_playerIdTurn.Value]);
     }
     
     
@@ -83,20 +88,20 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     public void StartNextPlayerTurnServerRPC()
     {
         _playerIdTurn.Value++;
-        if (_playerIdTurn.Value >= _playerControllers.Count)
+        if (_playerIdTurn.Value >= PlayerControllers.Count)
         {
             _playerIdTurn.Value = 0;
         }
 
-        StartPlayerTurn(_playerControllers[_playerIdTurn.Value]);
+        StartPlayerTurn(PlayerControllers[_playerIdTurn.Value]);
         
-        Debug.Log($"Player {_playerControllers[_playerIdTurn.Value].OwnerClientId} start turn");
+        Debug.Log($"Player {PlayerControllers[_playerIdTurn.Value].OwnerClientId} start turn");
 
     }
 
     private void StartPlayerTurn(PlayerController playerController)
     {
-        playerController.PlayerTurnController.StartPreparationPhaseServerRPC();
+        playerController.PlayerTurnControllerRequire.StartPreparationPhaseServerRPC();
         playerController.PlayerResourceController.GainIncomeServerRPC();
     }
     

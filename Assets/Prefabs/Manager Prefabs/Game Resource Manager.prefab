@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9297467f1008984aad3503e97e0d578, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HandCard: {fileID: -313294548724005488, guid: 8acfe556bbf875c4d9f115e9ad9599a7, type: 3}
-  HandDice: {fileID: 8914028338790642072, guid: ef0034253842238438eb5f5304433e3f, type: 3}
-  MapPawn: {fileID: 6143088622980807473, guid: f26bc0cba1f3bea4a812221916e03214, type: 3}
+  PlayerCardHandPrefab: {fileID: 4586256182373145385, guid: 6f07b9fba8ff41641a01994248c06f17, type: 3}
+  PlayerDiceHandPrefab: {fileID: 4409146107537927211, guid: 67ef1c24d0fd073408868aa3c4b6d2a0, type: 3}
+  HandCardPrefab: {fileID: -313294548724005488, guid: 8acfe556bbf875c4d9f115e9ad9599a7, type: 3}
+  HandDicePrefab: {fileID: 8914028338790642072, guid: ef0034253842238438eb5f5304433e3f, type: 3}
+  MapPawnPrefab: {fileID: 6143088622980807473, guid: f26bc0cba1f3bea4a812221916e03214, type: 3}

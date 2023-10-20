@@ -3,14 +3,9 @@ using System.Collections.Generic;
 using _Scripts.NetworkContainter;
 using UnityEngine;
 
-public class PlayerCardHand : PlayerControllerStartSetUpDependency
+public class PlayerCardHand : PlayerControllerCompositionDependency
 {
     private readonly Dictionary<int, HandCard> _containerIndexToHandCardDictionary = new Dictionary<int, HandCard>();
-
-    protected override void GameSetUp()
-    {
-
-    }
 
     public HandCard GetHandCard(int cardContainerIndex)
     {
@@ -28,7 +23,7 @@ public class PlayerCardHand : PlayerControllerStartSetUpDependency
     public HandCard CreateCardHand(CardContainer cardContainer, int cardContainerIndex)
     {
         var cardDescription = GameResourceManager.Instance.GetCardDescription(cardContainer.CardID);
-        var handCard = Instantiate(GameResourceManager.Instance.HandCard);
+        var handCard = Instantiate(GameResourceManager.Instance.HandCardPrefab);
         handCard.Initialize(this, cardDescription, cardContainerIndex, PlayerController.OwnerClientId);
         return handCard;
     }
