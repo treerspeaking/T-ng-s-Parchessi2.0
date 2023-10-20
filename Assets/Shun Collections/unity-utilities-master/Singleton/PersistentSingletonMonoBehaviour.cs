@@ -61,9 +61,9 @@ namespace UnityUtilities
         /// 
         /// Note: This also means that you need to use
         /// 
-        ///     protected override void OnDestroy()
+        ///     protected override void Destroy()
         ///     {
-        ///         base.OnDestroy();
+        ///         base.Destroy();
         ///         // [Your code]
         ///     }
         /// 
@@ -90,7 +90,7 @@ namespace UnityUtilities
 
         /// <summary>
         /// This method is called when the registered instance of the persistent singleton is either
-        /// destroyed manually by calling OnDestroy() or the application is closed. This is not called
+        /// destroyed manually by calling Destroy() or the application is closed. This is not called
         /// if this is a second instance (which is destroyed automatically immediately).
         /// </summary>
         protected virtual void OnPersistentSingletonDestroyed()

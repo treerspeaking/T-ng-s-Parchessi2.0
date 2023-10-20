@@ -42,7 +42,17 @@ public class PlayerCardHand : PlayerControllerCompositionDependency
 
     public void PlayCard(HandCard handCard)
     {
-        PlayerController.PlayerResourceController.RemoveCardFromHandServerRPC(handCard.ContainerIndex);
-        _containerIndexToHandCardDictionary.Remove(handCard.ContainerIndex);
+        if (IsOwner)
+        {
+            PlayerController.PlayerResourceController.RemoveCardFromHandServerRPC(handCard.ContainerIndex);
+            _containerIndexToHandCardDictionary.Remove(handCard.ContainerIndex);
+
+        }
+        else
+        {
+            _handCardRegion.RemoveCard(handCard.GetComponent<HandCardDragAndTargeter>());
+            _containerIndexToHandCardDictionary.Remove(handCard.ContainerIndex);
+
+        }
     }
 }

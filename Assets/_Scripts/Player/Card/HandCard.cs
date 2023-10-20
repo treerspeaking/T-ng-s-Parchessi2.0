@@ -42,7 +42,7 @@ public class HandCard : PlayerEntity, ITargeter
             _playerCardHand.PlayCard(this);
             
             if( TryGetComponent<BaseDraggableObject>(out var baseDraggableObject))
-                baseDraggableObject.OnDestroy();
+                baseDraggableObject.Destroy();
             Destroy(gameObject);
             return null;
         });

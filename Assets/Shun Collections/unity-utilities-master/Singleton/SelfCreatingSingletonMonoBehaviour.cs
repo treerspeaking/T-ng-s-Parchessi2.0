@@ -57,9 +57,9 @@ namespace UnityUtilities
         /// 
         /// Note: This also means that you need to use
         /// 
-        ///     protected override void OnDestroy()
+        ///     protected override void Destroy()
         ///     {
-        ///         base.OnDestroy();
+        ///         base.Destroy();
         ///         // [Your code]
         ///     }
         /// 

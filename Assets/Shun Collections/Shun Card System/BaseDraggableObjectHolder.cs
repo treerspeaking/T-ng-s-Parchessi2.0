@@ -40,11 +40,16 @@ namespace Shun_Card_System
             BaseDraggableObject detachedDraggable = DraggableObject;
             
             detachedDraggable.transform.SetParent(DraggableObjectRegion.transform.parent, true);
-            
-            
-            DraggableObject = null;
 
+            DetachCardVisual();
+            DraggableObject = null;
+            
             return detachedDraggable;
+        }
+
+        protected virtual void DetachCardVisual()
+        {
+            
         }
 
         protected virtual void AttachCardVisual()

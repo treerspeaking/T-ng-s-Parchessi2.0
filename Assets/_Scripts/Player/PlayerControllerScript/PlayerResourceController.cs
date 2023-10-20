@@ -110,7 +110,6 @@ public class PlayerResourceController : NetworkBehaviour
     [ServerRpc]
     public void RemoveDiceServerRPC(int index)
     {
-        //CurrentTurnDices.RemoveAt(index);
         CurrentTurnDices[index] = EmptyDiceContainer;
     }
     
@@ -118,7 +117,6 @@ public class PlayerResourceController : NetworkBehaviour
     public void RemoveCardFromHandServerRPC(int handCardContainerIndex)
     {
         DiscardCards.Add(HandCards[handCardContainerIndex]);
-        //HandCards.RemoveAt(handCardContainerIndex);
         HandCards[handCardContainerIndex] = EmptyCardContainer;
     }
 

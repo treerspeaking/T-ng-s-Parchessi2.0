@@ -8,7 +8,7 @@ namespace UnityUtilities.Examples
      * 
      * This is available even before SingletonEntityManager.Awake() is called.
      * 
-     * If you want to use OnDestroy(), you have to override it like shown in the example below. All other MonoBehaviour
+     * If you want to use Destroy(), you have to override it like shown in the example below. All other MonoBehaviour
      * callbacks can be used as usual.
     */
 
@@ -26,7 +26,7 @@ namespace UnityUtilities.Examples
             entities = new List<GameObject>();
         }
 
-        // If you want to use OnDestroy(), you have to override it like this
+        // If you want to use Destroy(), you have to override it like this
         protected override void OnDestroy()
         {
             base.OnDestroy();

@@ -107,23 +107,23 @@ namespace Shun_Card_System
             return null;
         }
 
-        public bool AddCard(BaseDraggableObject draggableObject, BaseDraggableObjectHolder draggableObjectHolder = null)
+        public bool AddCard(BaseDraggableObject draggableObject, BaseDraggableObjectHolder draggableObjectHolder = null, bool isReAdd = false)
         {
             if ( draggableObjectHolder == null || draggableObjectHolder.IndexInRegion >= CardHoldingCount)
             {
-                return AddCardAtBack(draggableObject);
+                return AddCardAtBack(draggableObject, isReAdd);
             }
 
             return CardMiddleInsertionStyle switch
             {
-                MiddleInsertionStyle.AlwaysBack => AddCardAtBack(draggableObject),
-                MiddleInsertionStyle.InsertInMiddle => AddCardAtMiddle(draggableObject, draggableObjectHolder.IndexInRegion),
+                MiddleInsertionStyle.AlwaysBack => AddCardAtBack(draggableObject, isReAdd),
+                MiddleInsertionStyle.InsertInMiddle => AddCardAtMiddle(draggableObject, draggableObjectHolder.IndexInRegion, isReAdd),
                 MiddleInsertionStyle.Cannot => false,
                 _ => false
             };
         }
 
-        private bool AddCardAtBack(BaseDraggableObject draggableObject)
+        private bool AddCardAtBack(BaseDraggableObject draggableObject, bool isReAdd = false)
         {
             if (CardHoldingCount >= MaxCardHold || !CheckCompatibleObject(draggableObject))
             {
@@ -136,12 +136,12 @@ namespace Shun_Card_System
             
             CardHoldingCount ++;
             
-            OnSuccessfullyAddCard(draggableObject, cardPlaceHolder, index);
+            OnSuccessfullyAddCard(draggableObject, cardPlaceHolder, index, isReAdd);
                 
             return true;
         }
         
-        private  bool AddCardAtMiddle(BaseDraggableObject draggableObject, int index)
+        private  bool AddCardAtMiddle(BaseDraggableObject draggableObject, int index, bool isReAdd = false)
         {
             if (CardHoldingCount >= MaxCardHold || !CheckCompatibleObject(draggableObject))
             {
@@ -155,7 +155,7 @@ namespace Shun_Card_System
             
             CardHoldingCount++;
             
-            OnSuccessfullyAddCard(draggableObject, cardPlaceHolder, index);
+            OnSuccessfullyAddCard(draggableObject, cardPlaceHolder, index, isReAdd);
             
             return true;
         }
@@ -246,7 +246,7 @@ namespace Shun_Card_System
         
         public virtual void ReAddTemporary(BaseDraggableObject baseDraggableObject)
         {
-            AddCard(baseDraggableObject, TemporaryBaseDraggableObjectHolder);
+            AddCard(baseDraggableObject, TemporaryBaseDraggableObjectHolder, true);
             
             TemporaryBaseDraggableObjectHolder = null;
         }
@@ -268,14 +268,20 @@ namespace Shun_Card_System
         {
             return true;
         }
-
-        protected virtual void OnSuccessfullyAddCard(BaseDraggableObject baseDraggableObject, BaseDraggableObjectHolder baseDraggableObjectHolder, int index)
+        
+        private void RemoveDestroyedCard(BaseDraggableObject card)
         {
-            
+            RemoveCard(card);
         }
+        
+        protected virtual void OnSuccessfullyAddCard(BaseDraggableObject baseDraggableObject, BaseDraggableObjectHolder baseDraggableObjectHolder, int index, bool isReAdd = false)
+        {
+            if(!isReAdd) baseDraggableObject.OnDestroy += RemoveDestroyedCard;
+        }
+
         protected virtual void OnSuccessfullyRemoveCard(BaseDraggableObject baseDraggableObject, BaseDraggableObjectHolder baseDraggableObjectHolder, int index)
         {
-            
+            baseDraggableObject.OnDestroy -= RemoveDestroyedCard;
         }
 
         public void StartHover()

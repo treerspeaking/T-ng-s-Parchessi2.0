@@ -34,16 +34,21 @@ namespace _Scripts.Player
         }
         
         protected override void OnSuccessfullyAddCard(BaseDraggableObject baseDraggableObject,
-            BaseDraggableObjectHolder baseDraggableObjectHolder, int index)
+            BaseDraggableObjectHolder baseDraggableObjectHolder, int index, bool isReAdd = false)
         {
+            base.OnSuccessfullyAddCard(baseDraggableObject, baseDraggableObjectHolder, index, isReAdd);
             MiddleAlign();
+            //if(!isReAdd) baseDraggableObject.OnDestroy += () => _moveSequence.Kill();
             if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX(_addCardSfx);
         }
 
         protected override void OnSuccessfullyRemoveCard(BaseDraggableObject baseDraggableObject,
             BaseDraggableObjectHolder baseDraggableObjectHolder, int index)
         {
+            base.OnSuccessfullyRemoveCard(baseDraggableObject, baseDraggableObjectHolder, index);
             MiddleAlign();
+            
+            //baseDraggableObject.OnDestroy -= () => _moveSequence.Kill();
         }
 
         private void MiddleAlign()

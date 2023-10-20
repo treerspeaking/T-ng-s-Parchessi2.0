@@ -11,9 +11,9 @@ namespace _Scripts.Player
     public class PlayerDiceHand : PlayerControllerCompositionDependency
     {
         [SerializeField] private int _maxDices = 3;
-        private HandDiceRegion _handDiceRegion;
+        
         private readonly Dictionary<int, HandDice> _containerIndexToHandDiceDictionary = new Dictionary<int, HandDice>();
-
+        private HandDiceRegion _handDiceRegion;
         private void Awake()
         {
             _handDiceRegion = gameObject.GetComponent<HandDiceRegion>();
@@ -46,16 +46,31 @@ namespace _Scripts.Player
 
         public void PlayDice(HandDice handDice)
         {
-            PlayerController.PlayerResourceController.RemoveDiceServerRPC(handDice.ContainerIndex);
-            _containerIndexToHandDiceDictionary.Remove(handDice.ContainerIndex);
+            if (IsOwner)
+            {
+                PlayerController.PlayerResourceController.RemoveDiceServerRPC(handDice.ContainerIndex);
+            }
+            else
+            {
+                _handDiceRegion.RemoveCard(handDice.GetComponent<HandDiceDragAndTargeter>());
+            }
             
+            _containerIndexToHandDiceDictionary.Remove(handDice.ContainerIndex);
         }
 
         public void ConvertToCard(HandDice handDice)
         {
-            PlayerController.PlayerResourceController.RemoveDiceServerRPC(handDice.ContainerIndex);
+            if (IsOwner)
+            {
+                PlayerController.PlayerResourceController.RemoveDiceServerRPC(handDice.ContainerIndex);
+                PlayerController.PlayerResourceController.AddCardToHandServerRPC();
+            }
+            else
+            {
+                _handDiceRegion.RemoveCard(handDice.GetComponent<HandDiceDragAndTargeter>());
+            }
+            
             _containerIndexToHandDiceDictionary.Remove(handDice.ContainerIndex);
-            PlayerController.PlayerResourceController.AddCardToHandServerRPC();
         }
         
     }
