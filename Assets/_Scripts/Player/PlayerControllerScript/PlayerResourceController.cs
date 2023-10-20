@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using _Scripts.NetworkContainter;
 using _Scripts.Player;
 using Shun_Unity_Editor;
@@ -27,26 +28,14 @@ public class PlayerResourceController : NetworkBehaviour
     private void Awake()
     {
         DeckCards = new();        
-        HandCards = new(new CardContainer[CARD_HAND_SIZE]);        
+        HandCards = new(Enumerable.Repeat(EmptyCardContainer, CARD_HAND_SIZE).ToArray());        
         DiscardCards = new();     
-                          
-        IncomeDices = new();      
-        CurrentTurnDices = new(new DiceContainer[DICE_HAND_SIZE]);
-
-    }
-
-    private void Start()
-    {
-        for (var index = 0; index < HandCards.Count; index++)
-        {
-            HandCards[index] = EmptyCardContainer;
-        }
         
-        for (var index = 0; index < CurrentTurnDices.Count; index++)
-        {
-            CurrentTurnDices[index] = EmptyDiceContainer;
-        }
+        IncomeDices = new();      
+        CurrentTurnDices = new(Enumerable.Repeat(EmptyDiceContainer, DICE_HAND_SIZE).ToArray());
+
     }
+
 
     public override void OnNetworkSpawn()
     {
