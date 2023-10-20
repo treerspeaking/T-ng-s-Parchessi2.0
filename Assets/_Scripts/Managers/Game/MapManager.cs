@@ -5,6 +5,7 @@ using _Scripts.Map;
 using _Scripts.NetworkContainter;
 using _Scripts.Player.Dice;
 using _Scripts.Player.Pawn;
+using QFSW.QC;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -26,11 +27,13 @@ namespace _Scripts.Managers.Game
         {
             _mapPawnContainers = new NetworkList<PawnContainer>();
         }
-
-        private void Start()
+        
+        [Command()]
+        public void PlayerSpawnPawnToMapServer( )
         {
-            GameManager.Instance.OnGameSetUp += () => SpawnPawnToMap(new PawnContainer{PawnID = 0} ,0,0);
+            SpawnPawnToMapServerRPC(new PawnContainer{PawnID = 0}, _containerIndexToMapPawnDictionary.Count, NetworkManager.LocalClientId);
         }
+        
 
         public MapPawn GetPlayerPawn(int pawnContainerIndex)
         {
@@ -43,12 +46,12 @@ namespace _Scripts.Managers.Game
             return _diceCardConverter;
         }
         
-        public void SpawnPawnToMap(PawnContainer pawnContainer, int pawnContainerIndex, ulong ownerClientId)
+        [ServerRpc(RequireOwnership = false)]
+        public void SpawnPawnToMapServerRPC(PawnContainer pawnContainer, int pawnContainerIndex, ulong ownerClientId)
         {
             var mapPawn = CreateMapPawn(pawnContainer, pawnContainerIndex, ownerClientId);
             _containerIndexToMapPawnDictionary.Add(pawnContainerIndex, mapPawn);
         }
-        
         
         public MapPawn CreateMapPawn(PawnContainer pawnContainer, int pawnContainerIndex, ulong ownerClientId)
         {
