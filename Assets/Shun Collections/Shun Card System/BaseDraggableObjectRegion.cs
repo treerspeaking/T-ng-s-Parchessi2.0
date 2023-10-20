@@ -15,6 +15,10 @@ namespace Shun_Card_System
             Cannot,
             Swap,
         }
+        
+        
+        [SerializeField]
+        private bool _interactable = true;
         [SerializeField] protected BaseDraggableObjectHolder DraggableObjectHolderPrefab;
         [SerializeField] protected Transform SpawnPlace;
         [SerializeField] protected Vector3 CardOffset = new Vector3(5f, 0 ,0);
@@ -26,9 +30,6 @@ namespace Shun_Card_System
         protected BaseDraggableObjectHolder TemporaryBaseDraggableObjectHolder;
         public int CardHoldingCount { get; private set; } 
         
-        
-        [SerializeField]
-        private bool _interactable;
         public bool IsHoverable { get => _interactable; protected set => _interactable = value;}
         public bool IsHovering { get; protected set; }
 
@@ -229,13 +230,13 @@ namespace Shun_Card_System
         
         public virtual bool TryAddCard(BaseDraggableObject draggableObject, BaseDraggableObjectHolder draggableObjectHolder = null)
         {
-            if (!IsHoverable) return false;
+            if (!_interactable) return false;
             return AddCard(draggableObject, draggableObjectHolder);
         }
         
         public virtual bool TakeOutTemporary(BaseDraggableObject draggableObject,BaseDraggableObjectHolder draggableObjectHolder)
         {
-            if (!IsHoverable) return false;
+            if (!_interactable) return false;
 
             if (!RemoveCard(draggableObject, draggableObjectHolder)) return false;
             
@@ -292,15 +293,15 @@ namespace Shun_Card_System
         public virtual void DisableInteractable()
         {
             
-            if (!IsHoverable) return;
-            IsHoverable = false;
+            if (!_interactable) return;
+            _interactable = false;
             if(IsHovering) EndHover();
         }
         
         public virtual void EnableInteractable()
         {
-            if (IsHoverable) return;
-            IsHoverable = true;
+            if (_interactable) return;
+            _interactable = true;
         }
     }
 }

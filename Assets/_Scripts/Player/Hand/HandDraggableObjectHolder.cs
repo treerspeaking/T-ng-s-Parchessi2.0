@@ -3,7 +3,7 @@ using Shun_Card_System;
 using UnityEngine;
 
 
-public class HandCardHolder : BaseDraggableObjectHolder
+public class HandDraggableObjectHolder : BaseDraggableObjectHolder
 {
     [Header("Tween")] 
     [SerializeField] private float _addDuration = 0.25f;
