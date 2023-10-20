@@ -16,7 +16,7 @@ namespace _Scripts.Managers.Game
         [SerializeField] private Transform _mapParent;
         [SerializeField] private List<MapPath> _mapPaths = new ();
         
-        [SerializeField] private DiceCardConverter _diceCardConverter;
+        [SerializeField] private PlayerDeck _playerDeck;
         private NetworkList<PawnContainer> _mapPawnContainers;
         
         private Dictionary<int, MapPawn> _containerIndexToMapPawnDictionary = new();
@@ -41,9 +41,9 @@ namespace _Scripts.Managers.Game
             return mapPawn;
         }
 
-        public DiceCardConverter GetDiceCardConverter()
+        public PlayerDeck GetDiceCardConverter()
         {
-            return _diceCardConverter;
+            return _playerDeck;
         }
         
         [ServerRpc(RequireOwnership = false)]

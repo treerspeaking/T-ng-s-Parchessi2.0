@@ -1,6 +1,6 @@
 ﻿namespace _Scripts.Player.Dice
 {
-    public class DiceCardConverter : PlayerEntity
+    public class PlayerDeck : PlayerEntity
     {
         
     }

@@ -135,7 +135,7 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         {
             HandDice => TargetType.Dice,
             MapPawn => TargetType.Pawn,
-            DiceCardConverter => TargetType.DiceConverter,
+            PlayerDeck => TargetType.DiceConverter,
             HandCard => TargetType.Card,
             _ => TargetType.Empty
         };
@@ -157,7 +157,7 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         TargetType targetType;
         if (monoBehavior is HandDice) targetType = TargetType.Dice;
         else if (monoBehavior is MapPawn) targetType = TargetType.Pawn;
-        else if (monoBehavior is DiceCardConverter) targetType = TargetType.DiceConverter;
+        else if (monoBehavior is PlayerDeck) targetType = TargetType.DiceConverter;
         else targetType = TargetType.Empty; 
 
         return new TargetContainer

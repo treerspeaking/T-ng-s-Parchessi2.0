@@ -5,6 +5,7 @@ using Shun_Unity_Editor;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class PlayerResourceController : NetworkBehaviour
 {
@@ -47,6 +48,12 @@ public class PlayerResourceController : NetworkBehaviour
     }
     
     [ServerRpc(RequireOwnership = false)]
+    public void AddCardToDeckServerRPC(CardContainer cardContainer)
+    {
+        DeckCards.Add(cardContainer);
+    }
+    
+    [ServerRpc(RequireOwnership = false)]
     public void GainIncomeServerRPC()
     {
         DiceContainer[] addDiceContainers = new DiceContainer[IncomeDices.Count]; // RPC came before NetworkList 
@@ -76,6 +83,22 @@ public class PlayerResourceController : NetworkBehaviour
             Debug.Log($"Not Owner Gain Income {OwnerClientId}, {NetworkManager.LocalClientId}");
         }
     }
+
+    [ServerRpc]
+    public void AddCardToHandServerRPC()
+    {
+        int index = Random.Range(0, DeckCards.Count);
+        var card = DeckCards[index];
+        DeckCards.RemoveAt(index);
+        HandCards.Add(card);
+        AddCardToHandClientRPC(card, HandCards.Count - 1);
+    }
+    
+    [ClientRpc]
+    public void AddCardToHandClientRPC(CardContainer cardContainer, int containerIndex)
+    {
+        _playerCardHand.AddCardToHand(cardContainer, containerIndex);    
+    }
     
     [ServerRpc]
     public void RemoveDiceServerRPC(int index)
@@ -84,9 +107,10 @@ public class PlayerResourceController : NetworkBehaviour
     }
     
     [ServerRpc]
-    public void RemoveCardServerRPC(int handCardContainerIndex)
+    public void RemoveCardFromHandServerRPC(int handCardContainerIndex)
     {
         DiscardCards.Add(HandCards[handCardContainerIndex]);
         HandCards.RemoveAt(handCardContainerIndex);
     }
+
 }

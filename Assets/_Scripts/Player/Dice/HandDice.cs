@@ -50,10 +50,11 @@ public class HandDice : PlayerEntity, ITargeter
                 Debug.Log(name + " Dice drag to Pawn " + playerPawn.name);
 
             }
-            else if (targetee is DiceCardConverter)
+            else if (targetee is PlayerDeck)
             {
                 Debug.Log("Draw a card");
-                _playerDiceHand.PlayDice(this);
+                _playerDiceHand.ConvertToCard(this);
+                
             }
 
             if (TryGetComponent<BaseDraggableObject>(out var baseDraggableObject))

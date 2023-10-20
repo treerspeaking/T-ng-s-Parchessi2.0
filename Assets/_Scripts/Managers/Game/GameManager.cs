@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _Scripts.Managers.Network;
 using _Scripts.NetworkContainter;
+using _Scripts.Scriptable_Objects;
 using QFSW.QC;
 using Shun_Unity_Editor;
 using Unity.Netcode;
@@ -38,7 +39,9 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     public Action OnGameEnd { get; set; }
     public Action OnGamePause { get; set; }
 
-    [SerializeField] private List<DiceDescription> _incomeDiceContainers = new();
+    [SerializeField] private List<DiceDescription> _incomeDiceDescriptions = new();
+    [SerializeField] private List<PawnDescription> _pawnDescriptions = new();
+    [SerializeField] private List<CardDescription> _deckCardDescriptions = new();
 
     public PlayerController GetPlayerController(ulong clientId)
     {
@@ -65,10 +68,23 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     {
         _gameState = GameState.GamePlay;
         StartGameClientRPC();
+        LoadPlayerSetup();
+        StartPlayerTurn(PlayerControllers[_playerIdTurn.Value]);
+    }
+
+    [ClientRpc]
+    public void StartGameClientRPC()
+    {
+        
+        OnGameStart.Invoke();
+    }
+
+    private void LoadPlayerSetup()
+    {
         
         foreach (var playerController in PlayerControllers)
         {
-            foreach (var diceDescription in _incomeDiceContainers)
+            foreach (var diceDescription in _incomeDiceDescriptions)
             {
                 playerController.PlayerResourceController.AddIncomeServerRPC(new DiceContainer
                 {
@@ -78,16 +94,18 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
                 Debug.Log($"Dice {diceDescription.DiceID} : ");
                 
             }
-        }
-        
-        StartPlayerTurn(PlayerControllers[_playerIdTurn.Value]);
-    }
 
-    [ClientRpc]
-    public void StartGameClientRPC()
-    {
-        
-        OnGameStart.Invoke();
+            foreach (var cardDescription in _deckCardDescriptions)
+            {
+                playerController.PlayerResourceController.AddCardToDeckServerRPC(new CardContainer
+                {
+                    CardID = cardDescription.CardID
+                });
+                
+                Debug.Log($"Card {cardDescription.CardID} : ");
+            }
+        }
+
     }
     
     

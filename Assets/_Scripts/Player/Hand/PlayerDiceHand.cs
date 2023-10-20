@@ -50,6 +50,14 @@ namespace _Scripts.Player
             _containerIndexToHandDiceDictionary.Remove(handDice.ContainerIndex);
             
         }
+
+        public void ConvertToCard(HandDice handDice)
+        {
+            PlayerController.PlayerResourceController.RemoveDiceServerRPC(handDice.ContainerIndex);
+            _containerIndexToHandDiceDictionary.Remove(handDice.ContainerIndex);
+            PlayerController.PlayerResourceController.AddCardToHandServerRPC();
+        }
+        
     }
 
     
