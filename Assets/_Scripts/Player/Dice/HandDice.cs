@@ -1,16 +1,15 @@
 using System;
 using System.Collections;
 
-using System.Collections.Generic;
 using _Scripts.Player;
 using _Scripts.Player.Dice;
 using _Scripts.Player.Pawn;
+using _Scripts.Simulation;
 using Shun_Card_System;
 using Shun_Unity_Editor;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Random = UnityEngine.Random;
 
 public class HandDice : PlayerEntity, ITargeter
 {
@@ -30,32 +29,39 @@ public class HandDice : PlayerEntity, ITargeter
 
     protected virtual int GetNumber()
     {
-        return Random.Range(_diceDescription.DiceLowerRange, _diceDescription.DiceUpperRange);
+        var random = new System.Random();
+        return random.Next(_diceDescription.DiceLowerRange, _diceDescription.DiceUpperRange);
     }
 
 
 
-    public virtual void ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : ITargetee
+    public virtual CoroutineSimulationPackage ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : ITargetee
     {
-        if (targetee is MapPawn playerPawn)
+        var package = new CoroutineSimulationPackage();
+        package.AddToPackage(() =>
         {
-            
-            playerPawn.Move(GetNumber());
-            _playerDiceHand.PlayDice(this);
-        
-            // Inherit this class and write Dice effect
-            Debug.Log(name + " Dice drag to Pawn " + playerPawn.name);
-            
-        }
-        else if (targetee is DiceCardConverter)
-        {
-            Debug.Log("Draw a card");
-            _playerDiceHand.PlayDice(this);
-        }
+            if (targetee is MapPawn playerPawn)
+            {
 
-        if( TryGetComponent<BaseDraggableObject>(out var baseDraggableObject))
-            baseDraggableObject.OnDestroy();
-        Destroy(gameObject);
+                playerPawn.Move(GetNumber());
+                _playerDiceHand.PlayDice(this);
+
+                // Inherit this class and write Dice effect
+                Debug.Log(name + " Dice drag to Pawn " + playerPawn.name);
+
+            }
+            else if (targetee is DiceCardConverter)
+            {
+                Debug.Log("Draw a card");
+                _playerDiceHand.PlayDice(this);
+            }
+
+            if (TryGetComponent<BaseDraggableObject>(out var baseDraggableObject))
+                baseDraggableObject.OnDestroy();
+            Destroy(gameObject);
+        });
+        
+        return package;
     }
 
 }

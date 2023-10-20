@@ -5,6 +5,7 @@ using _Scripts.Managers.Game;
 using _Scripts.NetworkContainter;
 using _Scripts.Player.Dice;
 using _Scripts.Player.Pawn;
+using _Scripts.Simulation;
 using Shun_Unity_Editor;
 using UnityEngine;
 using UnityUtilities;
@@ -34,13 +35,14 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         
     }
 
-    public void SimulateAction(ActionContainer actionContainer)
+    public async void SimulateAction(ActionContainer actionContainer)
     {
         var targeter = GetTargeter(actionContainer.TargeterContainer);
         var targetee = GetTargetee(actionContainer.TargeteeContainer);
-        
-        targeter.ExecuteTargeter(targetee);
-        targetee.ExecuteTargetee(targeter);
+
+        CoroutineSimulationManager.Instance.AddCoroutineSimulationObject(targeter.ExecuteTargeter(targetee));
+        CoroutineSimulationManager.Instance.AddCoroutineSimulationObject(targetee.ExecuteTargetee(targeter));
+        CoroutineSimulationManager.Instance.ExecuteAllCoroutineSimulationsThenClear();
     }
 
 

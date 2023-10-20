@@ -1,7 +1,9 @@
 ﻿
 using System;
+using System.Threading.Tasks;
 using _Scripts.Player.Pawn;
 using _Scripts.Scriptable_Objects;
+using _Scripts.Simulation;
 using Shun_Card_System;
 using TMPro;
 using UnityEngine;
@@ -23,21 +25,29 @@ public class HandCard : PlayerEntity, ITargeter
 
 
 
-    public virtual void ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : ITargetee
+    public virtual CoroutineSimulationPackage ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : ITargetee
     {
         if (targetee is not MapPawn playerPawn)
         {
             Debug.LogError("Card drag to not Pawn");
-            return;
+            return null;
         }
         
-        // Inherit this class and write Card effect
-        Debug.Log(name + " Card drag to Pawn " + playerPawn.name);
-        _playerCardHand.PlayCard(this);
         
-        if( TryGetComponent<BaseDraggableObject>(out var baseDraggableObject))
-            baseDraggableObject.OnDestroy();
-        Destroy(gameObject);
+        var package = new CoroutineSimulationPackage();
+        package.AddToPackage(() =>
+        {
+            // Inherit this class and write Card effect
+            Debug.Log(name + " Card drag to Pawn " + playerPawn.name);
+            _playerCardHand.PlayCard(this);
+            
+            if( TryGetComponent<BaseDraggableObject>(out var baseDraggableObject))
+                baseDraggableObject.OnDestroy();
+            Destroy(gameObject);
+            return null;
+        });
+        
+        return package;
     }
 
 }

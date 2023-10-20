@@ -1,5 +1,6 @@
 ﻿using System;
 using _Scripts.Map;
+using _Scripts.Simulation;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
@@ -49,9 +50,9 @@ namespace _Scripts.Player.Pawn
         }
 
 
-        public void ExecuteTargetee<TTargeter>(TTargeter targeter) where TTargeter : ITargeter
+        public CoroutineSimulationPackage ExecuteTargetee<TTargeter>(TTargeter targeter) where TTargeter : ITargeter
         {
-            
+            return null;
         }
     }
 }

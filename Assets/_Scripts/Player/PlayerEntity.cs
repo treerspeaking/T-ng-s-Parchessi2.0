@@ -1,4 +1,5 @@
 ﻿using System;
+using _Scripts.Simulation;
 using UnityEngine;
 
 public class PlayerEntity : MonoBehaviour, ITargetee
@@ -31,9 +32,9 @@ public class PlayerEntity : MonoBehaviour, ITargetee
         _ownerClientID = ownerClientID;
     }
 
-    public virtual void ExecuteTargetee<TTargeter>(TTargeter targeter) where TTargeter : ITargeter
+    public virtual CoroutineSimulationPackage ExecuteTargetee<TTargeter>(TTargeter targeter) where TTargeter : ITargeter
     {
-        
+        return null;
     }
 
 }
