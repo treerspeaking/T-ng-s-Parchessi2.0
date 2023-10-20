@@ -7,6 +7,6 @@ namespace _Scripts.Map
     [Serializable]
     public class MapPath
     {
-        [SerializeField] private List<MapCell> _path = new ();
+        public List<MapCell> Path = new ();
     }
 }

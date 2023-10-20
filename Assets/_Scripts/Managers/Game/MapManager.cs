@@ -53,7 +53,8 @@ namespace _Scripts.Managers.Game
         public MapPawn CreateMapPawn(PawnContainer pawnContainer, int pawnContainerIndex, ulong ownerClientId)
         {
             var pawnDescription = GameResourceManager.Instance.GetPawnDescription(pawnContainer.PawnID);
-            var mapPawn = Instantiate(GameResourceManager.Instance.MapPawn, _mapParent);
+            Transform spawnTransform = _mapPaths[(int)ownerClientId].Path[0].transform;
+            var mapPawn = Instantiate(GameResourceManager.Instance.MapPawn, spawnTransform.position, spawnTransform.rotation, _mapParent);
             mapPawn.Initialize(_mapPaths[(int)ownerClientId], pawnDescription,  pawnContainerIndex, ownerClientId);
             mapPawn.NetworkObject.SpawnWithOwnership(ownerClientId);
             return mapPawn;

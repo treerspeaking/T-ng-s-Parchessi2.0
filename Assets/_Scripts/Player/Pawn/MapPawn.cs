@@ -33,8 +33,8 @@ namespace _Scripts.Player.Pawn
 
         private MapPath _mapPath;
         private PawnDescription _pawnDescription;
-        
-        
+
+        private int _currentMapIndex;
 
         public void Initialize(MapPath playerMapPawn, PawnDescription pawnDescription , int containerIndex, ulong ownerClientId)
         {
@@ -47,6 +47,9 @@ namespace _Scripts.Player.Pawn
         public void Move(int stepCount)
         {
             Debug.Log("Player Pawn move "+ stepCount);
+            _currentMapIndex += stepCount;
+            transform.position = _mapPath.Path[_currentMapIndex].transform.position;
+
         }
 
 
