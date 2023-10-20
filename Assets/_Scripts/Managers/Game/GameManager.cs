@@ -38,6 +38,11 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     public Action OnGameStart { get; set; }
     public Action OnGameEnd { get; set; }
     public Action OnGamePause { get; set; }
+    public Action OnGameResume { get; set; }
+    public Action OnGameQuit { get; set; }
+    
+    public Action<PlayerController> OnPlayerTurnStart { get; set; }
+    public Action<PlayerController> OnPlayerTurnEnd { get; set; }
 
     [SerializeField] private List<DiceDescription> _incomeDiceDescriptions = new();
     [SerializeField] private List<PawnDescription> _pawnDescriptions = new();
@@ -68,7 +73,9 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     {
         _gameState = GameState.GamePlay;
         StartGameClientRPC();
+        
         LoadPlayerSetup();
+        StartPlayerTurnClientRPC(PlayerControllers[_playerIdTurn.Value].OwnerClientId);
         StartPlayerTurn(PlayerControllers[_playerIdTurn.Value]);
     }
 
@@ -112,6 +119,8 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     [ServerRpc]
     public void StartNextPlayerTurnServerRPC()
     {
+        EndPlayerTurnClientRPC(PlayerControllers[_playerIdTurn.Value].OwnerClientId);
+        
         _playerIdTurn.Value++;
         if (_playerIdTurn.Value >= PlayerControllers.Count)
         {
@@ -120,10 +129,24 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
 
         StartPlayerTurn(PlayerControllers[_playerIdTurn.Value]);
         
-        Debug.Log($"Player {PlayerControllers[_playerIdTurn.Value].OwnerClientId} start turn");
+        StartPlayerTurnClientRPC(PlayerControllers[_playerIdTurn.Value].OwnerClientId);
 
     }
 
+    [ClientRpc]
+    private void EndPlayerTurnClientRPC(ulong clientId)
+    {
+        OnPlayerTurnEnd.Invoke(GetPlayerController(clientId));
+        Debug.Log($"Player {PlayerControllers[_playerIdTurn.Value].OwnerClientId} end turn");
+    }
+    
+    [ClientRpc]
+    private void StartPlayerTurnClientRPC(ulong clientId)
+    {
+        OnPlayerTurnStart.Invoke(GetPlayerController(clientId));
+        Debug.Log($"Player {PlayerControllers[_playerIdTurn.Value].OwnerClientId} start turn");
+    }
+    
     private void StartPlayerTurn(PlayerController playerController)
     {
         playerController.PlayerTurnControllerRequire.StartPreparationPhaseServerRPC();

@@ -40,7 +40,7 @@ namespace _Scripts.Player
         {
             var diceDescription = GameResourceManager.Instance.GetDiceDescription(diceContainer.DiceID);
             var handDice = Instantiate(GameResourceManager.Instance.HandDicePrefab);
-            handDice.Initialize(this, diceDescription,  diceContainerIndex, NetworkManager.ServerClientId);
+            handDice.Initialize(this, diceDescription,  diceContainerIndex, PlayerController.OwnerClientId);
             return handDice;
         }
 

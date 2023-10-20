@@ -37,11 +37,6 @@ public class PlayerResourceController : NetworkBehaviour
     }
 
 
-    public override void OnNetworkSpawn()
-    {
-        if (!IsOwner) return;
-    }
-
     public void InitializeHand(PlayerDiceHand playerDiceHand, PlayerCardHand playerCardHand)
     {
         _playerDiceHand = playerDiceHand;
@@ -78,17 +73,9 @@ public class PlayerResourceController : NetworkBehaviour
     [ClientRpc]
     private void GainIncomeClientRPC(DiceContainer[] addDiceContainers = default)
     {
-        if (IsOwner)
+        for (int i = 0; i < addDiceContainers.Length; i++)
         {
-
-            for (int i = 0; i < addDiceContainers.Length; i++)
-            {
-                _playerDiceHand.AddDiceToHand(addDiceContainers[i], i);
-            }
-        }
-        else
-        {
-            Debug.Log($"Not Owner Gain Income {OwnerClientId}, {NetworkManager.LocalClientId}");
+            _playerDiceHand.AddDiceToHand(addDiceContainers[i], i);
         }
     }
 
@@ -135,6 +122,17 @@ public class PlayerResourceController : NetworkBehaviour
         HandCards[handCardContainerIndex] = EmptyCardContainer;
     }
 
-    
+    public bool CheckEndRollPhaseTurn()
+    {
+        foreach (var currentDiceContainer in CurrentTurnDices)
+        {
+            if (!currentDiceContainer.Equals(EmptyDiceContainer))
+            {
+                return false;
+            }    
+        }
+
+        return true;
+    }
     
 }
