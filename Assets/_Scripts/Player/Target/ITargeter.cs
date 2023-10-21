@@ -5,7 +5,7 @@ using UnityEngine;
 
 public interface ITargeter
 {
-    public ulong ClientOwnerID { get; set; }
+    public ulong OwnerClientID { get; set; }
     public int ContainerIndex { get; set; }
     public TargetType TargetType { get; set; }
     public SimulationPackage ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : ITargetee;

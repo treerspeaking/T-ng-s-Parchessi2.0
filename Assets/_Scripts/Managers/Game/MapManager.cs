@@ -56,8 +56,9 @@ namespace _Scripts.Managers.Game
             var pawnDescription = GameResourceManager.Instance.GetPawnDescription(pawnContainer.PawnID);
             Transform spawnTransform = _mapPaths[(int)ownerClientId].Path[0].transform;
             var mapPawn = Instantiate(GameResourceManager.Instance.MapPawnPrefab, spawnTransform.position, spawnTransform.rotation, _mapParent);
+            
             mapPawn.Initialize(_mapPaths[(int)ownerClientId], pawnDescription,  pawnContainerIndex, ownerClientId);
-            mapPawn.NetworkObject.SpawnWithOwnership(ownerClientId);
+            
             return mapPawn;
         }
 
@@ -72,11 +73,17 @@ namespace _Scripts.Managers.Game
                 if (mapPawnContainer.Equals(EmptyPawnContainer))
                 {
                     _mapPawnContainers[index] = pawnContainer;
-                    var mapPawn = CreateMapPawn(pawnContainer, index, ownerClientId);
-                    _containerIndexToMapPawnDictionary.Add(index, mapPawn);
+                    SpawnPawnToMapClientRPC(pawnContainer, index, ownerClientId);
                     break;
                 }
             }
+        }
+
+        [ClientRpc]
+        public void SpawnPawnToMapClientRPC(PawnContainer pawnContainer, int containerIndex, ulong ownerClientId)
+        {
+            var mapPawn = CreateMapPawn(pawnContainer, containerIndex, ownerClientId);
+            _containerIndexToMapPawnDictionary.Add(containerIndex, mapPawn);
         }
         
         [ServerRpc(RequireOwnership = false)]

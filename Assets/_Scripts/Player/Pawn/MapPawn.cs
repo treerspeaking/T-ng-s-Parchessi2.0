@@ -8,30 +8,8 @@ using UnityEngine;
 
 namespace _Scripts.Player.Pawn
 {
-    public class MapPawn : NetworkBehaviour, ITargetee
+    public class MapPawn : PlayerEntity
     {
-        
-        public int ContainerIndex
-        { 
-            get => _containerIndex;
-            set { }
-        }
-        public ulong ClientOwnerID 
-        { 
-            get => _ownerClientID;
-            set { }
-        }
-    
-        public TargetType TargetType
-        {
-            get => _targeteeType;
-            set {}
-        }
-
-        [SerializeField] private TargetType _targeteeType;
-        private ulong _ownerClientID;
-        private int _containerIndex;
-
         private MapPath _mapPath;
         private PawnDescription _pawnDescription;
 
@@ -42,15 +20,15 @@ namespace _Scripts.Player.Pawn
         {
             _mapPath = playerMapPawn;
             _pawnDescription = pawnDescription;
-            _containerIndex = containerIndex;
-            _ownerClientID = ownerClientId;    
+
+            Initialize(containerIndex, ownerClientId);
         }
 
         public void Move(int stepCount)
         {
             Debug.Log("Player Pawn move "+ stepCount);
             _finalMapCellIndex += stepCount;
-            MapManager.Instance.UpdatePawnPositionServerRPC(_containerIndex, _finalMapCellIndex);
+            MapManager.Instance.UpdatePawnPositionServerRPC(InternalContainerIndex, _finalMapCellIndex);
         }
         
         public SimulationPackage MoveAnimation(int endMapCellIndex)
@@ -60,7 +38,7 @@ namespace _Scripts.Player.Pawn
             
             simulationPackage.AddToPackage(() =>
             {
-                _currentMapCellIndex += endMapCellIndex;
+                _currentMapCellIndex = endMapCellIndex;
                 transform.position = _mapPath.Path[_currentMapCellIndex].transform.position; // Teleport to the end position
             });
             

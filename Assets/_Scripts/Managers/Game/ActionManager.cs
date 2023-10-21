@@ -143,7 +143,7 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         return new TargetContainer
         {
             TargetType = targetType,
-            TargetClientOwnerId = targeter.ClientOwnerID,
+            TargetClientOwnerId = targeter.OwnerClientID,
             TargetContainerIndex = targeter.ContainerIndex
         };
         
@@ -163,7 +163,7 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         return new TargetContainer
         {
             TargetType = targetType,
-            TargetClientOwnerId = targeter.ClientOwnerID,
+            TargetClientOwnerId = targeter.OwnerClientID,
             TargetContainerIndex = targeter.ContainerIndex
         };
         
