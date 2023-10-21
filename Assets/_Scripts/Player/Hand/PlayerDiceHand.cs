@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using _Scripts.Managers.Game;
 using _Scripts.NetworkContainter;
 using _Scripts.Player.Dice;
+using _Scripts.Player.Pawn;
 using _Scripts.Scriptable_Objects;
 using Unity.Netcode;
 using UnityEngine;
@@ -44,11 +46,13 @@ namespace _Scripts.Player
             return handDice;
         }
 
-        public void PlayDice(HandDice handDice)
+        public void PlayDice(HandDice handDice, MapPawn mapPawn)
         {
             if (IsOwner)
             {
                 PlayerController.PlayerResourceController.RemoveDiceServerRPC(handDice.ContainerIndex);
+                MapManager.Instance.MovePawnServerRPC(mapPawn.ContainerIndex, handDice.DiceLowerRange, handDice.DiceUpperRange);
+
             }
             else
             {
@@ -58,6 +62,8 @@ namespace _Scripts.Player
             _containerIndexToHandDiceDictionary.Remove(handDice.ContainerIndex);
         }
 
+        
+        
         public void ConvertToCard(HandDice handDice)
         {
             if (IsOwner)

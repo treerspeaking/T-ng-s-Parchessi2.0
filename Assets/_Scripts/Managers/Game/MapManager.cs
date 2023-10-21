@@ -92,7 +92,24 @@ namespace _Scripts.Managers.Game
             _containerIndexToMapPawnDictionary.Remove(pawnContainerIndex);
             _mapPawnContainers[pawnContainerIndex] = EmptyPawnContainer;
         }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void MovePawnServerRPC(int pawnContainerIndex, int lowerDiceRange, int upperDiceRange)
+        {
+            var mapPawnContainer = _mapPawnContainers[pawnContainerIndex];
+            var stepCount = UnityEngine.Random.Range(lowerDiceRange, upperDiceRange);
+            
+            mapPawnContainer.StandingMapCell += stepCount;
+            _mapPawnContainers[pawnContainerIndex] = mapPawnContainer;
+            MovePawnClientRPC(pawnContainerIndex, mapPawnContainer.StandingMapCell);
+        }
         
+        [ClientRpc]
+        private void MovePawnClientRPC(int pawnContainerIndex, int stepCount)
+        {
+            var mapPawn = GetPlayerPawn(pawnContainerIndex);
+            SimulationManager.Instance.AddCoroutineSimulationObject(mapPawn.MoveAnimation(stepCount));
+        }
 
         [ServerRpc(RequireOwnership = false)]
         public void UpdatePawnPositionServerRPC(int pawnContainerIndex, int finalMapCellIndex)

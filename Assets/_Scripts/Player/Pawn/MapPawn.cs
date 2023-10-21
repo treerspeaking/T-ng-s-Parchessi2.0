@@ -14,7 +14,6 @@ namespace _Scripts.Player.Pawn
         private PawnDescription _pawnDescription;
 
         private int _currentMapCellIndex = 0;
-        private int _finalMapCellIndex = 0;
 
         public void Initialize(MapPath playerMapPawn, PawnDescription pawnDescription , int containerIndex, ulong ownerClientId)
         {
@@ -24,16 +23,10 @@ namespace _Scripts.Player.Pawn
             Initialize(containerIndex, ownerClientId);
         }
 
-        public void Move(int stepCount)
-        {
-            Debug.Log("Player Pawn move "+ stepCount);
-            _finalMapCellIndex += stepCount;
-            MapManager.Instance.UpdatePawnPositionServerRPC(InternalContainerIndex, _finalMapCellIndex);
-        }
+        
         
         public SimulationPackage MoveAnimation(int endMapCellIndex)
         {
-            _finalMapCellIndex = endMapCellIndex;
             var simulationPackage = new SimulationPackage();
             
             simulationPackage.AddToPackage(() =>
