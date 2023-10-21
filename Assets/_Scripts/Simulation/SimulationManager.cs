@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Priority_Queue;
 using UnityEngine;
@@ -6,14 +7,14 @@ using UnityUtilities;
 
 namespace _Scripts.Simulation
 {
-    public class CoroutineSimulationManager : SingletonMonoBehaviour<CoroutineSimulationManager>
+    public class SimulationManager : SingletonMonoBehaviour<SimulationManager>
     {
-        private SimplePriorityQueue<CoroutineSimulationPackage> _simulationQueue = new();
+        private SimplePriorityQueue<SimulationPackage> _simulationQueue = new();
 
 
         private bool _isExecuting;
 
-        public void AddCoroutineSimulationObject(CoroutineSimulationPackage simulationPackage)
+        public void AddCoroutineSimulationObject(SimulationPackage simulationPackage)
         {
             if (simulationPackage == null || _simulationQueue.Contains(simulationPackage))
             {
@@ -22,7 +23,7 @@ namespace _Scripts.Simulation
             _simulationQueue.Enqueue(simulationPackage, simulationPackage.Priority);
         }
 
-        public void RemoveCoroutineSimulationObject(CoroutineSimulationPackage simulationPackage)
+        public void RemoveCoroutineSimulationObject(SimulationPackage simulationPackage)
         {
             if (simulationPackage == null || !_simulationQueue.Contains(simulationPackage))
             {
@@ -36,18 +37,11 @@ namespace _Scripts.Simulation
             _simulationQueue.Clear();
         }
 
-        public void ExecuteAllCoroutineSimulations()
+        private void FixedUpdate()
         {
             StartCoroutine(ExecuteAll());
         }
         
-        
-        public void ExecuteAllCoroutineSimulationsThenClear()
-        {
-            StartCoroutine(ExecuteAll());
-            
-            _simulationQueue.Clear();
-        }
 
         IEnumerator ExecuteAll()
         {
@@ -65,7 +59,7 @@ namespace _Scripts.Simulation
 
             _isExecuting = false;
         }
-        IEnumerator ExecuteCoroutineSimulationConcurrent(CoroutineSimulationPackage simulationPackage)
+        IEnumerator ExecuteCoroutineSimulationConcurrent(SimulationPackage simulationPackage)
         {
             foreach (var enumerator in simulationPackage.ExecuteEvents)
             {
@@ -75,7 +69,7 @@ namespace _Scripts.Simulation
             yield return null;
 }
         
-        IEnumerator ExecuteCoroutineSimulationParallel(CoroutineSimulationPackage simulationPackage)
+        IEnumerator ExecuteCoroutineSimulationParallel(SimulationPackage simulationPackage)
         {
             List<Coroutine> runningCoroutines = new List<Coroutine>();
 

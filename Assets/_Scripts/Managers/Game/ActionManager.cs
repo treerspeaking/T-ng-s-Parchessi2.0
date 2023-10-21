@@ -40,9 +40,9 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         var targeter = GetTargeter(actionContainer.TargeterContainer);
         var targetee = GetTargetee(actionContainer.TargeteeContainer);
 
-        CoroutineSimulationManager.Instance.AddCoroutineSimulationObject(targeter.ExecuteTargeter(targetee));
-        CoroutineSimulationManager.Instance.AddCoroutineSimulationObject(targetee.ExecuteTargetee(targeter));
-        CoroutineSimulationManager.Instance.ExecuteAllCoroutineSimulationsThenClear();
+        SimulationManager.Instance.AddCoroutineSimulationObject(targeter.ExecuteTargeter(targetee));
+        SimulationManager.Instance.AddCoroutineSimulationObject(targetee.ExecuteTargetee(targeter));
+        
     }
 
 

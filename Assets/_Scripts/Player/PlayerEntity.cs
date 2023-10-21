@@ -32,7 +32,7 @@ public class PlayerEntity : MonoBehaviour, ITargetee
         _ownerClientID = ownerClientID;
     }
 
-    public virtual CoroutineSimulationPackage ExecuteTargetee<TTargeter>(TTargeter targeter) where TTargeter : ITargeter
+    public virtual SimulationPackage ExecuteTargetee<TTargeter>(TTargeter targeter) where TTargeter : ITargeter
     {
         return null;
     }

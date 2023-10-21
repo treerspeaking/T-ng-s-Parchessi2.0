@@ -35,9 +35,9 @@ public class HandDice : PlayerEntity, ITargeter
 
 
 
-    public virtual CoroutineSimulationPackage ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : ITargetee
+    public virtual SimulationPackage ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : ITargetee
     {
-        var package = new CoroutineSimulationPackage();
+        var package = new SimulationPackage();
         package.AddToPackage(() =>
         {
             if (targetee is MapPawn playerPawn)
