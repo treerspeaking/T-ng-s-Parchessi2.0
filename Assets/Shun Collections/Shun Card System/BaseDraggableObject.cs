@@ -66,7 +66,7 @@ namespace Shun_Card_System
         public void Destroy()
         {
             IsDestroyed = true;
-            OnDestroy.Invoke(this);
+            OnDestroy?.Invoke(this);
         }
     }
 }

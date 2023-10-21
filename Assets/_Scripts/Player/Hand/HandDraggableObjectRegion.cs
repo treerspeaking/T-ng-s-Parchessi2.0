@@ -43,9 +43,9 @@ namespace _Scripts.Player
         }
 
         protected override void OnSuccessfullyRemoveCard(BaseDraggableObject baseDraggableObject,
-            BaseDraggableObjectHolder baseDraggableObjectHolder, int index)
+            BaseDraggableObjectHolder baseDraggableObjectHolder, int index, bool isTakeOutTemporary = false)
         {
-            base.OnSuccessfullyRemoveCard(baseDraggableObject, baseDraggableObjectHolder, index);
+            base.OnSuccessfullyRemoveCard(baseDraggableObject, baseDraggableObjectHolder, index, isTakeOutTemporary);
             MiddleAlign();
             
             //baseDraggableObject.OnDestroy -= () => _moveSequence.Kill();

@@ -209,7 +209,7 @@ namespace Shun_Card_System
             return false;
         }
         
-        public virtual bool RemoveCard(BaseDraggableObject draggableObject,BaseDraggableObjectHolder draggableObjectHolder)
+        public virtual bool RemoveCard(BaseDraggableObject draggableObject,BaseDraggableObjectHolder draggableObjectHolder, bool isTakeOutTemporary = false)
         {
             if (draggableObjectHolder == null || draggableObjectHolder.DraggableObject != draggableObject) return false;
 
@@ -219,7 +219,7 @@ namespace Shun_Card_System
             ShiftLeft(index);
             CardHoldingCount--;
 
-            OnSuccessfullyRemoveCard(draggableObject, draggableObjectHolder, index);
+            OnSuccessfullyRemoveCard(draggableObject, draggableObjectHolder, index, isTakeOutTemporary);
             return true;
         }
         
@@ -237,8 +237,8 @@ namespace Shun_Card_System
         public virtual bool TakeOutTemporary(BaseDraggableObject draggableObject,BaseDraggableObjectHolder draggableObjectHolder)
         {
             if (!_interactable) return false;
-
-            if (!RemoveCard(draggableObject, draggableObjectHolder)) return false;
+            
+            if (!RemoveCard(draggableObject, draggableObjectHolder, true)) return false;
             
             TemporaryBaseDraggableObjectHolder = draggableObjectHolder;
             return true;
@@ -246,6 +246,7 @@ namespace Shun_Card_System
         
         public virtual void ReAddTemporary(BaseDraggableObject baseDraggableObject)
         {
+            if (baseDraggableObject == null) return;
             AddCard(baseDraggableObject, TemporaryBaseDraggableObjectHolder, true);
             
             TemporaryBaseDraggableObjectHolder = null;
@@ -253,6 +254,8 @@ namespace Shun_Card_System
 
         public virtual void RemoveTemporary(BaseDraggableObject baseDraggableObject)
         {
+            if (baseDraggableObject == null) return;
+            
             TemporaryBaseDraggableObjectHolder = null;
         }
         
@@ -279,9 +282,9 @@ namespace Shun_Card_System
             if(!isReAdd) baseDraggableObject.OnDestroy += RemoveDestroyedCard;
         }
 
-        protected virtual void OnSuccessfullyRemoveCard(BaseDraggableObject baseDraggableObject, BaseDraggableObjectHolder baseDraggableObjectHolder, int index)
+        protected virtual void OnSuccessfullyRemoveCard(BaseDraggableObject baseDraggableObject, BaseDraggableObjectHolder baseDraggableObjectHolder, int index, bool isTakeOutTemporary = false)
         {
-            baseDraggableObject.OnDestroy -= RemoveDestroyedCard;
+            if(!isTakeOutTemporary) baseDraggableObject.OnDestroy -= RemoveDestroyedCard;
         }
 
         public void StartHover()

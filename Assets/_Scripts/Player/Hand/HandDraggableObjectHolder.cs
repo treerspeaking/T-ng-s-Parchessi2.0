@@ -28,6 +28,7 @@ public class HandDraggableObjectHolder : BaseDraggableObjectHolder
     {
         if (_moveTween != null && _moveTween.IsActive()) _moveTween.Kill();
         if (_scaleTween != null && _scaleTween.IsActive()) _scaleTween.Kill();
+        if(DraggableObject != null) DraggableObject.EnableDrag();
     }
 
     protected override void DetachCardVisual()
@@ -35,7 +36,8 @@ public class HandDraggableObjectHolder : BaseDraggableObjectHolder
         // Check if the tweens are active and kill them if necessary
         if (_moveTween != null && _moveTween.IsActive()) _moveTween.Kill();
         if (_scaleTween != null && _scaleTween.IsActive()) _scaleTween.Kill();
-
+        
+        DraggableObject.EnableDrag();
         DraggableObject.OnDestroy -= KillTween;
         
         // Additional code to move the card back to its original position, for example:
