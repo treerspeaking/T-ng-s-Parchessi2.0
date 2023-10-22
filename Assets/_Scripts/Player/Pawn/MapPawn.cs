@@ -11,6 +11,7 @@ namespace _Scripts.Player.Pawn
 {
     public class MapPawn : PlayerEntity
     {
+        protected MapManager MapManager => MapManager.Instance;
         private MapPath _mapPath;
         private PawnDescription _pawnDescription;
 
@@ -38,14 +39,40 @@ namespace _Scripts.Player.Pawn
             MovementSpeed = new ObservableData<int>(_pawnDescription.PawnMovementSpeed);
         }
 
-        public SimulationPackage Move(int endMapCellIndex)
+        public SimulationPackage StartMove(int startMapCellIndex, int stepCount)
         {
             var simulationPackage = new SimulationPackage();
             
             simulationPackage.AddToPackage(() =>
             {
-                _currentMapCellIndex = endMapCellIndex;
-                transform.position = _mapPath.Path[_currentMapCellIndex].transform.position; // Teleport to the end position
+                // Teleport to the end position
+                //transform.position = _mapPath.Path[_currentMapCellIndex].transform.position;
+                
+                for (var index = startMapCellIndex; index < stepCount + startMapCellIndex; index++)
+                {
+                    var mapCell = _mapPath.Path[index];
+                    
+                    _mapPath.Path[startMapCellIndex].RemovePawn(this);
+                    
+                    if (mapCell.CheckEnterable())
+                    {
+                        var allPawn = mapCell.GetAllPawn();
+                        if (allPawn.Count > 0)
+                        {
+                            foreach (var pawn in allPawn)
+                            {
+                                //MapManager.PawmAttack(this, pawn);
+                            }
+                        
+                            mapCell.EnterPawn(this);    
+                        }
+                        
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
             });
             
             return simulationPackage;
@@ -53,10 +80,29 @@ namespace _Scripts.Player.Pawn
          
         }
 
+        public SimulationPackage EndMove(int endMapCellIndex)
+        {
+            
+            var simulationPackage = new SimulationPackage();
+            
+            simulationPackage.AddToPackage(() =>
+            {
+                // Teleport to the end position
+                _currentMapCellIndex = endMapCellIndex;
+                transform.position = _mapPath.Path[_currentMapCellIndex].transform.position; 
+            });
+            
+            return simulationPackage;
+
+        }
+        
 
         public SimulationPackage ExecuteTargetee<TTargeter>(TTargeter targeter) where TTargeter : ITargeter
         {
             return null;
         }
+        
+        
+        
     }
 }

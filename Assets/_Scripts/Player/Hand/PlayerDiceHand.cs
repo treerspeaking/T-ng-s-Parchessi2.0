@@ -54,7 +54,7 @@ namespace _Scripts.Player
             if (IsOwner)
             {
                 PlayerController.PlayerResourceController.RemoveDiceServerRPC(handDice.ContainerIndex);
-                MapManager.Instance.MovePawnServerRPC(mapPawn.ContainerIndex, handDice.DiceValue);
+                MapManager.Instance.StartMovePawnServerRPC(mapPawn.ContainerIndex, handDice.DiceValue);
 
             }
             else

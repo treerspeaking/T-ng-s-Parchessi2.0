@@ -94,54 +94,51 @@ namespace _Scripts.Managers.Game
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void MovePawnServerRPC(int pawnContainerIndex, int stepCount, ServerRpcParams serverRpcParams = default)
+        public void StartMovePawnServerRPC(int pawnContainerIndex, int stepCount, ServerRpcParams serverRpcParams = default)
         {
             var clientId = serverRpcParams.Receive.SenderClientId;
             if (!NetworkManager.ConnectedClients.ContainsKey(clientId)) return;
             
-            var client = NetworkManager.ConnectedClients[clientId];
             var mapPawnContainer = _mapPawnContainers[pawnContainerIndex];
-            
             if (mapPawnContainer.ClientOwnerID != clientId) return;
+
+            stepCount += mapPawnContainer.PawnStatContainer.MovementSpeed;
             
-            
-            mapPawnContainer.StandingMapCell += stepCount;
-            _mapPawnContainers[pawnContainerIndex] = mapPawnContainer;
-            MovePawnClientRPC(pawnContainerIndex, mapPawnContainer.StandingMapCell);
+            StartMovePawnClientRPC(pawnContainerIndex, mapPawnContainer.StandingMapCell, stepCount);
             
         }
         
         [ClientRpc]
-        private void MovePawnClientRPC(int pawnContainerIndex, int stepCount)
+        private void StartMovePawnClientRPC(int pawnContainerIndex, int startMapCellIndex ,int stepCount)
         {
             var mapPawn = GetPlayerPawn(pawnContainerIndex);
-            SimulationManager.Instance.AddCoroutineSimulationObject(mapPawn.Move(stepCount));
+            
+            SimulationManager.Instance.AddCoroutineSimulationObject(mapPawn.StartMove(startMapCellIndex, stepCount));
         }
         
         
 
         [ServerRpc(RequireOwnership = false)]
-        public void UpdatePawnPositionServerRPC(int pawnContainerIndex, int finalMapCellIndex, ServerRpcParams serverRpcParams = default)
+        public void EndMovePawnServerRPC(int pawnContainerIndex, int finalMapCellIndex, ServerRpcParams serverRpcParams = default)
         {
             var clientId = serverRpcParams.Receive.SenderClientId;
             if (!NetworkManager.ConnectedClients.ContainsKey(clientId)) return;
             
-            var client = NetworkManager.ConnectedClients[clientId];
             var mapPawnContainer = _mapPawnContainers[pawnContainerIndex];
-            
             if (mapPawnContainer.ClientOwnerID != clientId) return;
             
-            mapPawnContainer.StandingMapCell += finalMapCellIndex;
+            
+            mapPawnContainer.StandingMapCell = finalMapCellIndex;
             
             _mapPawnContainers[pawnContainerIndex] = mapPawnContainer;
-            UpdatePawnPositionClientRPC(pawnContainerIndex, finalMapCellIndex);
+            EndMovePawnClientRPC(pawnContainerIndex, finalMapCellIndex);
         }
 
         [ClientRpc]
-        private void UpdatePawnPositionClientRPC(int pawnContainerIndex, int finalMapCellIndex)
+        private void EndMovePawnClientRPC(int pawnContainerIndex, int finalMapCellIndex)
         {
             var mapPawn = GetPlayerPawn(pawnContainerIndex);
-            SimulationManager.Instance.AddCoroutineSimulationObject(mapPawn.Move(finalMapCellIndex));
+            SimulationManager.Instance.AddCoroutineSimulationObject(mapPawn.EndMove(finalMapCellIndex));
             
         } 
         

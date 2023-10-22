@@ -32,7 +32,7 @@ public class MapCell : PlayerEntity
         return _stayingPlayerPawns;
     }
 
-    public bool CheckMovable()
+    public bool CheckEnterable()
     {
         return _stayingPlayerPawns.Count < _mapSpotTransforms.Count;
     }
