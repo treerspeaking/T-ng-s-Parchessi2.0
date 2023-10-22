@@ -10,12 +10,15 @@ public struct PawnContainer: INetworkSerializable, IEquatable<PawnContainer>
     public int StandingMapCell;
     public int StandingMapSpot;
     
+    public PawnStatContainer PawnStatContainer;
+    
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
         serializer.SerializeValue(ref PawnID);
         serializer.SerializeValue(ref ClientOwnerID);
         serializer.SerializeValue(ref StandingMapCell);
         serializer.SerializeValue(ref StandingMapSpot);
+        serializer.SerializeValue(ref PawnStatContainer);
     }
 
     public bool Equals(PawnContainer other)

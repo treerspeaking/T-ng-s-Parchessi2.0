@@ -102,14 +102,17 @@ namespace _Scripts.Managers.Game
             mapPawnContainer.StandingMapCell += stepCount;
             _mapPawnContainers[pawnContainerIndex] = mapPawnContainer;
             MovePawnClientRPC(pawnContainerIndex, mapPawnContainer.StandingMapCell);
+            
         }
         
         [ClientRpc]
         private void MovePawnClientRPC(int pawnContainerIndex, int stepCount)
         {
             var mapPawn = GetPlayerPawn(pawnContainerIndex);
-            SimulationManager.Instance.AddCoroutineSimulationObject(mapPawn.MoveAnimation(stepCount));
+            SimulationManager.Instance.AddCoroutineSimulationObject(mapPawn.Move(stepCount));
         }
+        
+        
 
         [ServerRpc(RequireOwnership = false)]
         public void UpdatePawnPositionServerRPC(int pawnContainerIndex, int finalMapCellIndex)
@@ -126,7 +129,7 @@ namespace _Scripts.Managers.Game
         private void UpdatePawnPositionClientRPC(int pawnContainerIndex, int finalMapCellIndex)
         {
             var mapPawn = GetPlayerPawn(pawnContainerIndex);
-            SimulationManager.Instance.AddCoroutineSimulationObject(mapPawn.MoveAnimation(finalMapCellIndex));
+            SimulationManager.Instance.AddCoroutineSimulationObject(mapPawn.Move(finalMapCellIndex));
             
         } 
         
