@@ -57,12 +57,11 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
             case TargetType.Tile:
                 break;
             case TargetType.Card:
-                return HandManager.Instance.GetPlayerCardHand(targeterContainer.TargetClientOwnerId)
-                    .GetHandCard(targeterContainer.TargetContainerIndex);
+                return GetHandCard(targeterContainer.TargetContainerIndex, targeterContainer.TargetClientOwnerId);
                 break;
             case TargetType.Dice:
-                return HandManager.Instance.GetPlayerDiceHand(targeterContainer.TargetClientOwnerId)
-                    .GetHandDice(targeterContainer.TargetContainerIndex);
+                return GetHandDice(targeterContainer.TargetContainerIndex, targeterContainer.TargetClientOwnerId);
+                break;
             case TargetType.DiceConverter:
             default:
                 return null;
@@ -78,20 +77,18 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
             case TargetType.Empty:
                 break;
             case TargetType.DiceConverter:
-                return MapManager.Instance.GetDiceCardConverter();
+                return GetDiceCardConverter();
                 break;
             case TargetType.Pawn:
-                return MapManager.Instance.GetPlayerPawn(targeteeContainer.TargetContainerIndex);
+                return GetMapPawn(targeteeContainer.TargetContainerIndex);
                 break;
             case TargetType.Tile:
                 break;
             case TargetType.Card:
-                return HandManager.Instance.GetPlayerCardHand(targeteeContainer.TargetClientOwnerId)
-                    .GetHandCard(targeteeContainer.TargetContainerIndex);
+                return GetHandCard(targeteeContainer.TargetContainerIndex, targeteeContainer.TargetClientOwnerId);
                 break;
             case TargetType.Dice:
-                return HandManager.Instance.GetPlayerDiceHand(targeteeContainer.TargetClientOwnerId)
-                    .GetHandDice(targeteeContainer.TargetContainerIndex);
+                return GetHandDice(targeteeContainer.TargetContainerIndex, targeteeContainer.TargetClientOwnerId);
                 break;
             default:
                 return null;
@@ -168,7 +165,26 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         };
         
     }
+
+    public HandDice GetHandDice(int diceContainerIndex, ulong ownerClientID)
+    {
+        return HandManager.Instance.GetPlayerDiceHand(ownerClientID)
+            .GetHandDice(diceContainerIndex);
+    }
     
+    public HandCard GetHandCard(int cardContainerIndex, ulong ownerClientID)
+    {
+        return HandManager.Instance.GetPlayerCardHand(ownerClientID)
+            .GetHandCard(cardContainerIndex);
+    }
     
+    public MapPawn GetMapPawn(int pawnContainerIndex)
+    {
+        return MapManager.Instance.GetPlayerPawn(pawnContainerIndex);
+    }
     
+    public PlayerDeck GetDiceCardConverter()
+    {
+        return MapManager.Instance.GetDiceCardConverter();
+    }
 }

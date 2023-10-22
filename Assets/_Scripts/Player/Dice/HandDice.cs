@@ -15,8 +15,7 @@ public class HandDice : PlayerEntity, ITargeter
 {
 
     public Action OnTargeterDestroy { get; set; }
-    public int DiceLowerRange => _diceDescription.DiceLowerRange;
-    public int DiceUpperRange => _diceDescription.DiceUpperRange;
+    public int DiceValue;
 
     private PlayerDiceHand _playerDiceHand;
     [SerializeField, ShowImmutable] DiceDescription _diceDescription;
@@ -27,9 +26,25 @@ public class HandDice : PlayerEntity, ITargeter
         _playerDiceHand = playerDiceHand;
         _diceDescription = diceDescription;
         base.Initialize(containerIndex, ownerClientID);
+        
+    }
+
+    private void Start()
+    {
+        _playerDiceHand.RollDice(this, _diceDescription.DiceLowerRange, _diceDescription.DiceUpperRange);
+    }
+
+    public virtual SimulationPackage SetDiceValue(int value)
+    {
+        var simulationPackage = new SimulationPackage();
+        simulationPackage.AddToPackage(() =>
+        {
+            DiceValue = value;
+            Debug.Log($"Dice Value: {DiceValue}");
+        });
+        return simulationPackage;
     }
     
-
 
     public virtual SimulationPackage ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : ITargetee
     {
@@ -38,7 +53,7 @@ public class HandDice : PlayerEntity, ITargeter
         {
             if (targetee is MapPawn playerPawn)
             {
-                _playerDiceHand.PlayDice(this, playerPawn);
+                _playerDiceHand.PlayDiceToPawn(this, playerPawn);
                 
                 // Inherit this class and write Dice effect
                 Debug.Log(name + " Dice drag to Pawn " + playerPawn.name);

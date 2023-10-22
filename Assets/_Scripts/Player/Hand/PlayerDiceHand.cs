@@ -13,9 +13,12 @@ namespace _Scripts.Player
     public class PlayerDiceHand : PlayerControllerCompositionDependency
     {
         [SerializeField] private int _maxDices = 3;
-        
-        private readonly Dictionary<int, HandDice> _containerIndexToHandDiceDictionary = new Dictionary<int, HandDice>();
+
+        private readonly Dictionary<int, HandDice>
+            _containerIndexToHandDiceDictionary = new Dictionary<int, HandDice>();
+
         private HandDiceRegion _handDiceRegion;
+
         private void Awake()
         {
             _handDiceRegion = gameObject.GetComponent<HandDiceRegion>();
@@ -26,44 +29,44 @@ namespace _Scripts.Player
             _containerIndexToHandDiceDictionary.TryGetValue(diceContainerIndex, out var handDice);
             return handDice;
         }
-        
+
 
         public void AddDiceToHand(DiceContainer diceContainer, int diceContainerIndex)
         {
-            if(_containerIndexToHandDiceDictionary.Count >= _maxDices ) return;
+            if (_containerIndexToHandDiceDictionary.Count >= _maxDices) return;
             var handDice = CreateDiceHand(diceContainer, diceContainerIndex);
             _containerIndexToHandDiceDictionary.Add(diceContainerIndex, handDice);
-            
+
             _handDiceRegion.TryAddCard(handDice.GetComponent<HandDiceDragAndTargeter>());
         }
-        
-        
+
+
         public HandDice CreateDiceHand(DiceContainer diceContainer, int diceContainerIndex)
         {
             var diceDescription = GameResourceManager.Instance.GetDiceDescription(diceContainer.DiceID);
             var handDice = Instantiate(GameResourceManager.Instance.HandDicePrefab);
-            handDice.Initialize(this, diceDescription,  diceContainerIndex, PlayerController.OwnerClientId);
+            handDice.Initialize(this, diceDescription, diceContainerIndex, PlayerController.OwnerClientId);
             return handDice;
         }
 
-        public void PlayDice(HandDice handDice, MapPawn mapPawn)
+        public void PlayDiceToPawn(HandDice handDice, MapPawn mapPawn)
         {
             if (IsOwner)
             {
                 PlayerController.PlayerResourceController.RemoveDiceServerRPC(handDice.ContainerIndex);
-                MapManager.Instance.MovePawnServerRPC(mapPawn.ContainerIndex, handDice.DiceLowerRange, handDice.DiceUpperRange);
+                MapManager.Instance.MovePawnServerRPC(mapPawn.ContainerIndex, handDice.DiceValue);
 
             }
             else
             {
                 _handDiceRegion.RemoveCard(handDice.GetComponent<HandDiceDragAndTargeter>());
             }
-            
+
             _containerIndexToHandDiceDictionary.Remove(handDice.ContainerIndex);
         }
 
-        
-        
+
+
         public void ConvertToCard(HandDice handDice)
         {
             if (IsOwner)
@@ -75,11 +78,19 @@ namespace _Scripts.Player
             {
                 _handDiceRegion.RemoveCard(handDice.GetComponent<HandDiceDragAndTargeter>());
             }
-            
+
             _containerIndexToHandDiceDictionary.Remove(handDice.ContainerIndex);
         }
-        
+
+        public void RollDice(HandDice handDice, int lowerRange, int upperRange)
+        {
+            if (IsOwner)
+            {
+                PlayerController.PlayerResourceController.RollDiceServerRPC(handDice.ContainerIndex, lowerRange, upperRange);
+            }
+        }
+
     }
 
-    
+
 }

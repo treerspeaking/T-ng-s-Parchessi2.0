@@ -94,10 +94,16 @@ namespace _Scripts.Managers.Game
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void MovePawnServerRPC(int pawnContainerIndex, int lowerDiceRange, int upperDiceRange)
+        public void MovePawnServerRPC(int pawnContainerIndex, int stepCount, ServerRpcParams serverRpcParams = default)
         {
+            var clientId = serverRpcParams.Receive.SenderClientId;
+            if (!NetworkManager.ConnectedClients.ContainsKey(clientId)) return;
+            
+            var client = NetworkManager.ConnectedClients[clientId];
             var mapPawnContainer = _mapPawnContainers[pawnContainerIndex];
-            var stepCount = UnityEngine.Random.Range(lowerDiceRange, upperDiceRange);
+            
+            if (mapPawnContainer.ClientOwnerID != clientId) return;
+            
             
             mapPawnContainer.StandingMapCell += stepCount;
             _mapPawnContainers[pawnContainerIndex] = mapPawnContainer;
@@ -115,9 +121,15 @@ namespace _Scripts.Managers.Game
         
 
         [ServerRpc(RequireOwnership = false)]
-        public void UpdatePawnPositionServerRPC(int pawnContainerIndex, int finalMapCellIndex)
+        public void UpdatePawnPositionServerRPC(int pawnContainerIndex, int finalMapCellIndex, ServerRpcParams serverRpcParams = default)
         {
+            var clientId = serverRpcParams.Receive.SenderClientId;
+            if (!NetworkManager.ConnectedClients.ContainsKey(clientId)) return;
+            
+            var client = NetworkManager.ConnectedClients[clientId];
             var mapPawnContainer = _mapPawnContainers[pawnContainerIndex];
+            
+            if (mapPawnContainer.ClientOwnerID != clientId) return;
             
             mapPawnContainer.StandingMapCell += finalMapCellIndex;
             

@@ -2,6 +2,7 @@
 using System.Linq;
 using _Scripts.NetworkContainter;
 using _Scripts.Player;
+using _Scripts.Simulation;
 using Shun_Unity_Editor;
 using Unity.Collections;
 using Unity.Netcode;
@@ -119,6 +120,22 @@ public class PlayerResourceController : NetworkBehaviour
         DiscardCards.Add(HandCards[handCardContainerIndex]);
         HandCards[handCardContainerIndex] = EmptyCardContainer;
     }
+    
+    [ServerRpc]
+    public void RollDiceServerRPC(int containerIndex, int lowerBound, int upperBound)
+    {
+        var dice = CurrentTurnDices[containerIndex];
+        dice.Value = Random.Range(lowerBound, upperBound);
+        CurrentTurnDices[containerIndex] = dice;
+        RollDiceClientRPC(containerIndex, dice.Value);
+    }
+
+    [ClientRpc]
+    private void RollDiceClientRPC(int containerIndex, int value)
+    {
+        HandDice handDice = ActionManager.Instance.GetHandDice(containerIndex, OwnerClientId);
+        SimulationManager.Instance.AddCoroutineSimulationObject( handDice.SetDiceValue(value));
+    }
 
     public bool CheckEndRollPhaseTurn()
     {
@@ -132,5 +149,7 @@ public class PlayerResourceController : NetworkBehaviour
 
         return true;
     }
+    
+    
     
 }
