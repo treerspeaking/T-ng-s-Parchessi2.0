@@ -86,7 +86,7 @@ namespace _Scripts.Player
         {
             if (IsOwner)
             {
-                PlayerController.PlayerResourceController.RollDiceServerRPC(handDice.ContainerIndex, lowerRange, upperRange);
+                PlayerController.PlayerActionController.RollDiceServerRPC(handDice.ContainerIndex, lowerRange, upperRange);
             }
         }
 
