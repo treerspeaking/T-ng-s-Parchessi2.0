@@ -107,7 +107,7 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
     {
         var targetContainer = CreateActionContainer(targeterMonoBehaviour, targeteeMonoBehaviour);
 
-        GameManager.Instance.ClientOwnerPlayerController.PlayerActionControllerRequire.PlayTargetServerRPC(targetContainer);
+        GameManager.Instance.ClientOwnerPlayerController.PlayerActionController.PlayTargetServerRPC(targetContainer);
     }
 
 

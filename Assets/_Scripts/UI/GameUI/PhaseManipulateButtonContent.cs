@@ -24,7 +24,7 @@ public class PhaseManipulateButtonContent : MonoBehaviour
     private void GameSetUp()
     {
         _playerController = GameManager.Instance.ClientOwnerPlayerController;
-        _playerController.PlayerTurnControllerRequire.CurrentPlayerPhase.OnValueChanged += CurrentPlayerPhaseChanged;
+        _playerController.PlayerTurnController.CurrentPlayerPhase.OnValueChanged += CurrentPlayerPhaseChanged;
     }
     
     private void DisableAllExceptWait()
@@ -37,20 +37,20 @@ public class PhaseManipulateButtonContent : MonoBehaviour
         _currentActiveButton = _waitButton.gameObject;
     }
     
-    private void CurrentPlayerPhaseChanged(PlayerTurnControllerRequire.PlayerPhase previousValue, PlayerTurnControllerRequire.PlayerPhase newValue)
+    private void CurrentPlayerPhaseChanged(PlayerTurnController.PlayerPhase previousValue, PlayerTurnController.PlayerPhase newValue)
     {
         switch (newValue)
         {
-            case PlayerTurnControllerRequire.PlayerPhase.Wait:
+            case PlayerTurnController.PlayerPhase.Wait:
                 SwapButton(_waitButton.gameObject);
                 break;
-            case PlayerTurnControllerRequire.PlayerPhase.Preparation:
+            case PlayerTurnController.PlayerPhase.Preparation:
                 SwapButton(_startRollButtonController.gameObject);
                 break;
-            case PlayerTurnControllerRequire.PlayerPhase.Roll:
+            case PlayerTurnController.PlayerPhase.Roll:
                 SwapButton(_endRollButtonController.gameObject);
                 break;
-            case PlayerTurnControllerRequire.PlayerPhase.Subsequence:
+            case PlayerTurnController.PlayerPhase.Subsequence:
                 SwapButton(_endTurnButtonController.gameObject);
                 break;
             default:

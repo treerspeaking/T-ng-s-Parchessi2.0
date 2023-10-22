@@ -6,7 +6,7 @@ namespace _Scripts.UI.GameUI
     {
         protected override void GameSetUp()
         {
-            Button.onClick.AddListener(GameManager.Instance.ClientOwnerPlayerController.PlayerTurnControllerRequire.EndRollPhaseServerRPC);
+            Button.onClick.AddListener(GameManager.Instance.ClientOwnerPlayerController.PlayerTurnController.EndRollPhaseServerRPC);
         }
     }
 }

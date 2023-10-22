@@ -3,7 +3,7 @@ using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerActionControllerRequire : PlayerControllerRequireDependency
+public class PlayerActionController : PlayerControllerRequireDependency
 {
     NetworkList <ActionContainer> _targetContainers;
 

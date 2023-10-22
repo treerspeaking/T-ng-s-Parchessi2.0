@@ -149,7 +149,7 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     
     private void StartPlayerTurn(PlayerController playerController)
     {
-        playerController.PlayerTurnControllerRequire.StartPreparationPhaseServerRPC();
+        playerController.PlayerTurnController.StartPreparationPhaseServerRPC();
         playerController.PlayerResourceController.GainIncomeServerRPC();
     }
     
