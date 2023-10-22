@@ -141,10 +141,22 @@ namespace _Scripts.Managers.Game
             SimulationManager.Instance.AddCoroutineSimulationObject(mapPawn.EndMove(finalMapCellIndex));
             
         }
-        
-        public void MakeCombat(MapPawn attacker, MapPawn defender)
+
+
+        [ServerRpc]
+        public void MakeCombatServerRPC(int attackerPawnContainerIndex, int defenderPawnContainerIndex)
         {
             
+            MakeCombatClientRPC(attackerPawnContainerIndex, defenderPawnContainerIndex);
+        }
+        
+        [ClientRpc]
+        private void MakeCombatClientRPC(int attackerPawnContainerIndex, int defenderPawnContainerIndex)
+        {
+            var attackerMapPawn = GetPlayerPawn(attackerPawnContainerIndex);
+            var defenderMapPawn = GetPlayerPawn(defenderPawnContainerIndex);
+            
+            SimulationManager.Instance.AddCoroutineSimulationObject(attackerMapPawn.MakeCombat(defenderMapPawn));
         }
         
     }

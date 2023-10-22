@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using _Scripts.DataWrapper;
 using _Scripts.Managers.Game;
 using _Scripts.Map;
@@ -15,7 +16,7 @@ namespace _Scripts.Player.Pawn
         private MapPath _mapPath;
         private PawnDescription _pawnDescription;
 
-        private int _currentMapCellIndex = 0;
+        public int StandingMapCellIndex = 0;
 
         public ObservableData<int> AttackDamage;
         public ObservableData<int> MaxHealth;
@@ -39,6 +40,52 @@ namespace _Scripts.Player.Pawn
             MovementSpeed = new ObservableData<int>(_pawnDescription.PawnMovementSpeed);
         }
 
+        
+
+        private bool TryMove(int startMapCellIndex, int stepCount)
+        {
+            bool isMovable = true;
+            int endMapCellIndex = stepCount + startMapCellIndex;
+                
+            for (var index = startMapCellIndex; index <= stepCount + startMapCellIndex; index++)
+            {
+                var mapCell = _mapPath.Path[index];
+
+                if (mapCell.CheckEnterable()) continue;
+                    
+                isMovable = false;
+                break;
+
+            }
+                
+            if (isMovable && _mapPath.Path[endMapCellIndex].CheckEnterable()) 
+                // If the last cell , try to make combat to find empty slot
+            {
+                isMovable = !TryMakeCombatToFindEmptySlot(this, _mapPath.Path[endMapCellIndex]);
+                    
+            }
+
+            return isMovable;
+        }
+
+        private bool TryMakeCombatToFindEmptySlot(MapPawn attacker, MapCell mapCell)
+        {
+            bool emptySlot = mapCell.CheckEnterable();
+            var defenders = mapCell.GetAllPawn();
+            foreach (var defender in defenders)
+            {
+                int damage = attacker.AttackDamage.Value;
+                int currentHealth = defender.CurrentHealth.Value;
+                
+                if (currentHealth - damage <= 0)
+                {
+                    emptySlot = true; 
+                }
+            }
+
+            return emptySlot; // If there is an empty slot, the attacker can move to that slot
+        }
+        
         public SimulationPackage StartMove(int startMapCellIndex, int stepCount)
         {
             var simulationPackage = new SimulationPackage();
@@ -46,41 +93,26 @@ namespace _Scripts.Player.Pawn
             simulationPackage.AddToPackage(() =>
             {
                 // Teleport to the end position
-                //transform.position = _mapPath.Path[_currentMapCellIndex].transform.position;
+                //transform.position = _mapPath.Path[_standingMapCellIndex].transform.position;
                 
-                for (var index = startMapCellIndex; index < stepCount + startMapCellIndex; index++)
+                if(TryMove(startMapCellIndex, stepCount))
                 {
-                    var mapCell = _mapPath.Path[index];
-                    
-                    _mapPath.Path[startMapCellIndex].RemovePawn(this);
-                    
-                    if (mapCell.CheckEnterable())
+                    var endMapCellIndex = stepCount + startMapCellIndex;
+
+                    foreach (var mapPawn in _mapPath.Path[endMapCellIndex].GetAllPawn())
                     {
-                        var allPawn = mapCell.GetAllPawn();
-                        if (allPawn.Count > 0)
-                        {
-                            foreach (var pawn in allPawn)
-                            {
-                                MapManager.MakeCombat(this, pawn);
-                            }
-                        
-                            mapCell.EnterPawn(this);    
-                        }
-                        else
-                        {
-                            
-                        }
-                        
+                        MapManager.MakeCombatServerRPC(ContainerIndex, mapPawn.ContainerIndex);
                     }
-                    else
-                    {
-                        break;
-                    }
+                    
+                    MapManager.EndMovePawnServerRPC(ContainerIndex, endMapCellIndex);
+                }
+                else
+                {
+                    
                 }
             });
             
             return simulationPackage;
-        
          
         }
 
@@ -92,8 +124,8 @@ namespace _Scripts.Player.Pawn
             simulationPackage.AddToPackage(() =>
             {
                 // Teleport to the end position
-                _currentMapCellIndex = endMapCellIndex;
-                transform.position = _mapPath.Path[_currentMapCellIndex].transform.position; 
+                StandingMapCellIndex = endMapCellIndex;
+                transform.position = _mapPath.Path[StandingMapCellIndex].transform.position; 
             });
             
             return simulationPackage;
@@ -105,8 +137,11 @@ namespace _Scripts.Player.Pawn
         {
             return null;
         }
-        
-        
-        
+
+
+        public SimulationPackage MakeCombat(MapPawn defenderMapPawn)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
