@@ -140,7 +140,12 @@ namespace _Scripts.Managers.Game
             var mapPawn = GetPlayerPawn(pawnContainerIndex);
             SimulationManager.Instance.AddCoroutineSimulationObject(mapPawn.EndMove(finalMapCellIndex));
             
-        } 
+        }
+        
+        public void MakeCombat(MapPawn attacker, MapPawn defender)
+        {
+            
+        }
         
     }
 }

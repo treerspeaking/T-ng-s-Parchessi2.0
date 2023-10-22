@@ -61,10 +61,14 @@ namespace _Scripts.Player.Pawn
                         {
                             foreach (var pawn in allPawn)
                             {
-                                //MapManager.PawmAttack(this, pawn);
+                                MapManager.MakeCombat(this, pawn);
                             }
                         
                             mapCell.EnterPawn(this);    
+                        }
+                        else
+                        {
+                            
                         }
                         
                     }
