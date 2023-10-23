@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using _Scripts.NetworkContainter;
 using _Scripts.Player.Card;
+using _Scripts.Simulation;
 using UnityEngine;
 
 public class PlayerCardHand : PlayerControllerCompositionDependency
@@ -27,8 +28,17 @@ public class PlayerCardHand : PlayerControllerCompositionDependency
         if (_maxCards <= _containerIndexToHandCardDictionary.Count) return;
         
         var handCard = CreateCardHand(cardContainer, cardContainerIndex);
-        _containerIndexToHandCardDictionary.Add(cardContainerIndex, handCard);
-        _handCardRegion.TryAddCard(handCard.GetComponent<HandCardDragAndTargeter>());
+
+        if (cardContainerIndex == -1)
+        {
+            SimulationManager.Instance.AddCoroutineSimulationObject(handCard.Discard());
+        }
+        else
+        {
+            _containerIndexToHandCardDictionary.Add(cardContainerIndex, handCard);
+            _handCardRegion.TryAddCard(handCard.GetComponent<HandCardDragAndTargeter>());
+
+        }
     }
 
 
@@ -39,6 +49,7 @@ public class PlayerCardHand : PlayerControllerCompositionDependency
         handCard.Initialize(this, cardDescription, cardContainerIndex, PlayerController.OwnerClientId);
         return handCard;
     }
+
 
     public void PlayCard(HandCard handCard)
     {

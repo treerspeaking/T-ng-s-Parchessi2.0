@@ -67,12 +67,18 @@ public class HandDice : PlayerEntity, ITargeter
                 
             }
 
-            if (TryGetComponent<BaseDraggableObject>(out var baseDraggableObject))
-                baseDraggableObject.Destroy();
-            Destroy(gameObject);
+            Destroy();
         });
         
         return package;
     }
 
+    public void Destroy()
+    {
+        
+        if (TryGetComponent<BaseDraggableObject>(out var baseDraggableObject))
+            baseDraggableObject.Destroy();
+        Destroy(gameObject);
+    }
+    
 }
