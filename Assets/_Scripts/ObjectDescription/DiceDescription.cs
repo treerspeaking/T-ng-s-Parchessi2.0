@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using _Scripts.NetworkContainter;
+using UnityEditor;
 using UnityEngine;
 
 
@@ -15,6 +16,13 @@ public class DiceDescription : ScriptableObject
     public HandDice GetHandDicePrefab()
     {
         return _handDicePrefab;
+    }
+    
+    public DiceContainer GetDiceContainer()
+    {
+        return new DiceContainer{
+            DiceID = DiceID,
+        };
     }
     
 }

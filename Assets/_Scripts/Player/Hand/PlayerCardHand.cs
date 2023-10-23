@@ -41,12 +41,26 @@ public class PlayerCardHand : PlayerControllerCompositionDependency
         SimulationManager.Instance.AddCoroutineSimulationObject(handCard.Discard());
     }
 
-    public HandCard CreateCardHand(CardContainer cardContainer, int cardContainerIndex)
+    private HandCard CreateCardHand(CardContainer cardContainer, int cardContainerIndex)
     {
-        var cardDescription = GameResourceManager.Instance.GetCardDescription(cardContainer.CardID);
-        var handCard = Instantiate(cardDescription.GetHandCardPrefab());
-        handCard.Initialize(this, cardDescription, cardContainerIndex, PlayerController.OwnerClientId);
-        return handCard;
+        switch (cardContainer.CardType)
+        {
+            case CardType.Action:
+                var cardDescription = GameResourceManager.Instance.GetCardDescription(cardContainer.CardID);
+                var handCard = Instantiate(cardDescription.GetHandCardPrefab());
+                handCard.Initialize(this, cardDescription, cardContainerIndex, PlayerController.OwnerClientId);
+                return handCard;
+            
+            case CardType.Pawn:
+                var pawnCardDescription = GameResourceManager.Instance.GetPawnCardDescription(cardContainer.CardID);
+                var pawnHandCard = Instantiate(pawnCardDescription.GetPawnHandCardPrefab());
+                pawnHandCard.Initialize(this, pawnCardDescription, cardContainerIndex, PlayerController.OwnerClientId);
+                return pawnHandCard;
+            
+            default:
+                return null;
+        }
+        
     }
 
 

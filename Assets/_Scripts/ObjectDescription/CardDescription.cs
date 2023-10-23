@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using _Scripts.NetworkContainter;
+using _Scripts.Player.Card;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,11 +16,20 @@ namespace _Scripts.Scriptable_Objects
         public string CardEffectDescription;
         public int CardCost;
         
-        [SerializeField] private HandCard _handCardPrefab;
+        [SerializeField] protected HandCard HandCardPrefab;
         
         public HandCard GetHandCardPrefab()
         {
-            return _handCardPrefab;
+            return HandCardPrefab;
+        }
+        
+        public virtual CardContainer GetCardContainer()
+        {
+            return new CardContainer{
+                CardID = CardID,
+                CardType = CardType.Action
+                
+            };
         }
     }
 }

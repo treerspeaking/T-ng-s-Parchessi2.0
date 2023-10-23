@@ -1,4 +1,4 @@
-﻿
+﻿using _Scripts.NetworkContainter;
 using _Scripts.Player.Pawn;
 using UnityEditor;
 using UnityEngine;
@@ -13,9 +13,26 @@ public class PawnDescription : ScriptableObject
     public int PawnMovementSpeed;
 
     [SerializeField] private MapPawn _mapPawnPrefab;
-    
+
     public MapPawn GetMapPawnPrefab()
     {
         return _mapPawnPrefab;
+    }
+
+    public PawnContainer GetPawnContainer()
+    {
+        return new PawnContainer
+        {
+            PawnID = PawnID,
+            
+            PawnStatContainer = new PawnStatContainer()
+            {
+                CurrentHealth = PawnMaxHealth,
+                MaxHealth = PawnMaxHealth,
+                AttackDamage = PawnAttackDamage,
+                MovementSpeed = PawnMovementSpeed
+            }
+            
+        };
     }
 }

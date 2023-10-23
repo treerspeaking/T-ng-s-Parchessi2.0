@@ -1,4 +1,6 @@
-﻿using _Scripts.Player.Pawn;
+﻿using _Scripts.NetworkContainter;
+using _Scripts.Player.Card;
+using _Scripts.Player.Pawn;
 using UnityEngine;
 
 namespace _Scripts.Scriptable_Objects
@@ -8,11 +10,17 @@ namespace _Scripts.Scriptable_Objects
     {
         public PawnDescription PawnDescription;
         
-        [SerializeField] private PawnHandCard _mapPawnPrefab;
-        
         public PawnHandCard GetPawnHandCardPrefab()
         {
-            return _mapPawnPrefab;
+            return HandCardPrefab as PawnHandCard;
+        }
+        
+        public override CardContainer GetCardContainer()
+        {
+            return new CardContainer{
+                CardID = CardID,
+                CardType = CardType.Pawn
+            };
         }
     }
 }

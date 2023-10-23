@@ -16,16 +16,20 @@ public class GameResourceManager : SingletonMonoBehaviour<GameResourceManager>
     private readonly Dictionary<int, CardDescription> _cardDescriptionsDictionary = new();
     private readonly Dictionary<int, DiceDescription> _diceDescriptionsDictionary = new();
     private readonly Dictionary<int, PawnDescription> _pawnDescriptionsDictionary = new();
-
+    private readonly Dictionary<int, PawnCardDescription> _pawnCardDescriptionsDictionary = new();
+    
     const string CARD_DESCRIPTIONS_PATH = "CardDescriptions";
     const string DICE_DESCRIPTIONS_PATH = "DiceDescriptions";
     const string PAWN_DESCRIPTIONS_PATH = "PawnDescriptions";
+    const string PAWN_CARD_DESCRIPTIONS_PATH = "PawnCardDescriptions";
+    
     
     private void Awake()
     {
         LoadCardDescriptions();
         LoadDiceDescriptions();
         LoadPawnDescriptions();
+        LoadPawnCardDescriptions();
     }
 
     private void LoadCardDescriptions()
@@ -88,4 +92,23 @@ public class GameResourceManager : SingletonMonoBehaviour<GameResourceManager>
         return null;
     }
     
+    private void LoadPawnCardDescriptions()
+    {
+        PawnCardDescription[] pawnCardDescriptions = Resources.LoadAll<PawnCardDescription>(PAWN_CARD_DESCRIPTIONS_PATH);
+        foreach (PawnCardDescription pawnCardDescription in pawnCardDescriptions)
+        {
+            _pawnCardDescriptionsDictionary[pawnCardDescription.CardID] = pawnCardDescription;
+        }
+    }
+    
+    public PawnCardDescription GetPawnCardDescription(int pawnCardID)
+    {
+        if (_pawnCardDescriptionsDictionary.TryGetValue(pawnCardID, out PawnCardDescription pawnCardDescription))
+        {
+            return pawnCardDescription;
+        }
+
+        Debug.LogWarning("PawnCardDescription not found for PawnCardID: " + pawnCardID);
+        return null;
+    }
 }

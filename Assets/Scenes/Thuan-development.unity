@@ -4621,105 +4621,25 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
-      propertyPath: _pawnDescriptions.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
-      propertyPath: _pawnDescriptions.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
-    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
-      propertyPath: _pawnDescriptions.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
-    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
-      propertyPath: _pawnDescriptions.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
-    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
-      propertyPath: _pawnDescriptions.Array.data[3]
-      value: 
-      objectReference: {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
-    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
-      propertyPath: _pawnDescriptions.Array.data[4]
-      value: 
-      objectReference: {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
-    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
-      propertyPath: _pawnDescriptions.Array.data[5]
-      value: 
-      objectReference: {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
-    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
-      propertyPath: _pawnDescriptions.Array.data[6]
-      value: 
-      objectReference: {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
-    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
-      propertyPath: _pawnDescriptions.Array.data[7]
-      value: 
-      objectReference: {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
-    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
-      propertyPath: _pawnDescriptions.Array.data[8]
-      value: 
-      objectReference: {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
-    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
-      propertyPath: _pawnDescriptions.Array.data[9]
-      value: 
-      objectReference: {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
-    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
-      propertyPath: _deckCardDescriptions.Array.size
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
-      propertyPath: _incomeDiceDescriptions.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
-      propertyPath: _deckCardDescriptions.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
-    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
-      propertyPath: _deckCardDescriptions.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
-    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
-      propertyPath: _deckCardDescriptions.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
-    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
-      propertyPath: _deckCardDescriptions.Array.data[3]
-      value: 
-      objectReference: {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
-    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
-      propertyPath: _deckCardDescriptions.Array.data[4]
-      value: 
-      objectReference: {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
-    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
       propertyPath: _deckCardDescriptions.Array.data[5]
       value: 
-      objectReference: {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
+      objectReference: {fileID: 11400000, guid: f9207e407fee5734796cc1d2a2131b57, type: 2}
     - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
       propertyPath: _deckCardDescriptions.Array.data[6]
       value: 
-      objectReference: {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
+      objectReference: {fileID: 11400000, guid: f9207e407fee5734796cc1d2a2131b57, type: 2}
     - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
       propertyPath: _deckCardDescriptions.Array.data[7]
       value: 
-      objectReference: {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
+      objectReference: {fileID: 11400000, guid: f9207e407fee5734796cc1d2a2131b57, type: 2}
     - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
       propertyPath: _deckCardDescriptions.Array.data[8]
       value: 
-      objectReference: {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
+      objectReference: {fileID: 11400000, guid: f9207e407fee5734796cc1d2a2131b57, type: 2}
     - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
       propertyPath: _deckCardDescriptions.Array.data[9]
       value: 
-      objectReference: {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
-    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
-      propertyPath: _incomeDiceDescriptions.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 88f6d5eb9dd88b542b0c3ec68fe84d9f, type: 2}
-    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
-      propertyPath: _incomeDiceDescriptions.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 88f6d5eb9dd88b542b0c3ec68fe84d9f, type: 2}
+      objectReference: {fileID: 11400000, guid: f9207e407fee5734796cc1d2a2131b57, type: 2}
     - target: {fileID: 8876226823398608456, guid: f213e618ddf18064380e88583ab7a709, type: 3}
       propertyPath: m_Name
       value: Game Manager

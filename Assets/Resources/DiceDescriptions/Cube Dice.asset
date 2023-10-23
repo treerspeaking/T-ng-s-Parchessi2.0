@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39a6c58eec4846138fbb9c8a8fd21128, type: 3}
   m_Name: Cube Dice
   m_EditorClassIdentifier: 
+  DiceID: 0
   DiceLowerRange: 1
   DiceUpperRange: 6
+  _handDicePrefab: {fileID: 8914028338790642072, guid: ef0034253842238438eb5f5304433e3f, type: 3}
