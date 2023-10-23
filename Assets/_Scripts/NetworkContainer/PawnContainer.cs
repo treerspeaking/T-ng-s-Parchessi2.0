@@ -24,9 +24,7 @@ public struct PawnContainer: INetworkSerializable, IEquatable<PawnContainer>
     public bool Equals(PawnContainer other)
     {
         return PawnID == other.PawnID && 
-               ClientOwnerID == other.ClientOwnerID && 
-               StandingMapCell == other.StandingMapCell && 
-               StandingMapSpot == other.StandingMapSpot;
+               ClientOwnerID == other.ClientOwnerID;
     }
         
         
