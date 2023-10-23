@@ -40,9 +40,9 @@ public class HandCard : PlayerEntity, ITargeter
                 // Inherit this class and write Card effect
                 Debug.Log(name + " Card drag to Pawn " + playerPawn.name);
                 _playerCardHand.PlayCard(this);
-            
+
                 Destroy();
-                return null;
+                
             });
         }
         
@@ -57,7 +57,6 @@ public class HandCard : PlayerEntity, ITargeter
         {
             Debug.Log("Discard Card");
             Destroy();
-            return null;
         });
         return package;
     }

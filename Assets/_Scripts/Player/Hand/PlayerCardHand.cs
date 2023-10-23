@@ -28,19 +28,18 @@ public class PlayerCardHand : PlayerControllerCompositionDependency
         if (_maxCards <= _containerIndexToHandCardDictionary.Count) return;
         
         var handCard = CreateCardHand(cardContainer, cardContainerIndex);
-
-        if (cardContainerIndex == -1)
-        {
-            SimulationManager.Instance.AddCoroutineSimulationObject(handCard.Discard());
-        }
-        else
-        {
-            _containerIndexToHandCardDictionary.Add(cardContainerIndex, handCard);
-            _handCardRegion.TryAddCard(handCard.GetComponent<HandCardDragAndTargeter>());
-
-        }
+        
+        _containerIndexToHandCardDictionary.Add(cardContainerIndex, handCard);
+        _handCardRegion.TryAddCard(handCard.GetComponent<HandCardDragAndTargeter>());
+        
     }
 
+    public void FailAddCardToHand(CardContainer cardContainer)
+    {
+        var handCard = CreateCardHand(cardContainer, -1);
+
+        SimulationManager.Instance.AddCoroutineSimulationObject(handCard.Discard());
+    }
 
     public HandCard CreateCardHand(CardContainer cardContainer, int cardContainerIndex)
     {

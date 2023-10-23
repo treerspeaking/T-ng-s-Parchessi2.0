@@ -84,13 +84,15 @@ public class PlayerResourceController : NetworkBehaviour
     [ServerRpc]
     public void AddCardToHandServerRPC()
     {
-        var card = DeckCards[0];
+        CardContainer card ;
         if (DeckCards.Count == 0)
         {
             ShuffleDiscardIntoDeck();
+            card = DeckCards[0];
         }
         else
         {
+            card = DeckCards[0];
             DeckCards.RemoveAt(0);
         }
 
@@ -107,7 +109,22 @@ public class PlayerResourceController : NetworkBehaviour
         }
 
 
-        AddCardToHandClientRPC(card, handCardContainerIndex);
+        if (handCardContainerIndex != -1)
+        {
+            AddCardToHandClientRPC(card, handCardContainerIndex);
+        }
+        else
+        {
+            DiscardCards.Add(card);
+            FailAddCardToHandClientRPC(card);
+        }
+    }
+    
+    [ClientRpc]
+    private void FailAddCardToHandClientRPC(CardContainer cardContainer)
+    {
+        _playerCardHand.FailAddCardToHand(cardContainer);
+        
     }
     
     // Shuffle the discard pile into the deck
@@ -117,7 +134,7 @@ public class PlayerResourceController : NetworkBehaviour
         List<CardContainer> nonEmptyDiscard = new List<CardContainer>();
         for (var index = 0; index < DiscardCards.Count; index++)
         {
-            nonEmptyDiscard[index] = DiscardCards[index];
+            nonEmptyDiscard.Add( DiscardCards[index] );
         }
         
         DiscardCards.Clear();
@@ -130,7 +147,6 @@ public class PlayerResourceController : NetworkBehaviour
         {
             DeckCards.Add(shuffleList[index]);
         }
-        
     }
 
     
