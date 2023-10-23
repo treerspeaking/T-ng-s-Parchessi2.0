@@ -40,9 +40,9 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         var targeter = GetTargeter(actionContainer.TargeterContainer);
         var targetee = GetTargetee(actionContainer.TargeteeContainer);
 
-        CoroutineSimulationManager.Instance.AddCoroutineSimulationObject(targeter.ExecuteTargeter(targetee));
-        CoroutineSimulationManager.Instance.AddCoroutineSimulationObject(targetee.ExecuteTargetee(targeter));
-        CoroutineSimulationManager.Instance.ExecuteAllCoroutineSimulationsThenClear();
+        SimulationManager.Instance.AddCoroutineSimulationObject(targeter.ExecuteTargeter(targetee));
+        SimulationManager.Instance.AddCoroutineSimulationObject(targetee.ExecuteTargetee(targeter));
+        
     }
 
 
@@ -57,12 +57,11 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
             case TargetType.Tile:
                 break;
             case TargetType.Card:
-                return HandManager.Instance.GetPlayerCardHand(targeterContainer.TargetClientOwnerId)
-                    .GetHandCard(targeterContainer.TargetContainerIndex);
+                return GetHandCard(targeterContainer.TargetContainerIndex, targeterContainer.TargetClientOwnerId);
                 break;
             case TargetType.Dice:
-                return HandManager.Instance.GetPlayerDiceHand(targeterContainer.TargetClientOwnerId)
-                    .GetHandDice(targeterContainer.TargetContainerIndex);
+                return GetHandDice(targeterContainer.TargetContainerIndex, targeterContainer.TargetClientOwnerId);
+                break;
             case TargetType.DiceConverter:
             default:
                 return null;
@@ -78,20 +77,18 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
             case TargetType.Empty:
                 break;
             case TargetType.DiceConverter:
-                return MapManager.Instance.GetDiceCardConverter();
+                return GetDiceCardConverter();
                 break;
             case TargetType.Pawn:
-                return MapManager.Instance.GetPlayerPawn(targeteeContainer.TargetContainerIndex);
+                return GetMapPawn(targeteeContainer.TargetContainerIndex);
                 break;
             case TargetType.Tile:
                 break;
             case TargetType.Card:
-                return HandManager.Instance.GetPlayerCardHand(targeteeContainer.TargetClientOwnerId)
-                    .GetHandCard(targeteeContainer.TargetContainerIndex);
+                return GetHandCard(targeteeContainer.TargetContainerIndex, targeteeContainer.TargetClientOwnerId);
                 break;
             case TargetType.Dice:
-                return HandManager.Instance.GetPlayerDiceHand(targeteeContainer.TargetClientOwnerId)
-                    .GetHandDice(targeteeContainer.TargetContainerIndex);
+                return GetHandDice(targeteeContainer.TargetContainerIndex, targeteeContainer.TargetClientOwnerId);
                 break;
             default:
                 return null;
@@ -107,7 +104,7 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
     {
         var targetContainer = CreateActionContainer(targeterMonoBehaviour, targeteeMonoBehaviour);
 
-        GameManager.Instance.ClientOwnerPlayerController.PlayerActionControllerRequire.PlayTargetServerRPC(targetContainer);
+        GameManager.Instance.ClientOwnerPlayerController.PlayerActionController.PlayTargetServerRPC(targetContainer);
     }
 
 
@@ -135,7 +132,7 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         {
             HandDice => TargetType.Dice,
             MapPawn => TargetType.Pawn,
-            DiceCardConverter => TargetType.DiceConverter,
+            PlayerDeck => TargetType.DiceConverter,
             HandCard => TargetType.Card,
             _ => TargetType.Empty
         };
@@ -143,7 +140,7 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         return new TargetContainer
         {
             TargetType = targetType,
-            TargetClientOwnerId = targeter.ClientOwnerID,
+            TargetClientOwnerId = targeter.OwnerClientID,
             TargetContainerIndex = targeter.ContainerIndex
         };
         
@@ -157,18 +154,37 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         TargetType targetType;
         if (monoBehavior is HandDice) targetType = TargetType.Dice;
         else if (monoBehavior is MapPawn) targetType = TargetType.Pawn;
-        else if (monoBehavior is DiceCardConverter) targetType = TargetType.DiceConverter;
+        else if (monoBehavior is PlayerDeck) targetType = TargetType.DiceConverter;
         else targetType = TargetType.Empty; 
 
         return new TargetContainer
         {
             TargetType = targetType,
-            TargetClientOwnerId = targeter.ClientOwnerID,
+            TargetClientOwnerId = targeter.OwnerClientID,
             TargetContainerIndex = targeter.ContainerIndex
         };
         
     }
+
+    public HandDice GetHandDice(int diceContainerIndex, ulong ownerClientID)
+    {
+        return HandManager.Instance.GetPlayerDiceHand(ownerClientID)
+            .GetHandDice(diceContainerIndex);
+    }
     
+    public HandCard GetHandCard(int cardContainerIndex, ulong ownerClientID)
+    {
+        return HandManager.Instance.GetPlayerCardHand(ownerClientID)
+            .GetHandCard(cardContainerIndex);
+    }
     
+    public MapPawn GetMapPawn(int pawnContainerIndex)
+    {
+        return MapManager.Instance.GetPlayerPawn(pawnContainerIndex);
+    }
     
+    public PlayerDeck GetDiceCardConverter()
+    {
+        return MapManager.Instance.GetDiceCardConverter();
+    }
 }

@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class PlayerEntity : MonoBehaviour, ITargetee
 {
+    
+    [SerializeField] private TargetType _targeteeType;
+    protected ulong InternalOwnerClientID;
+    protected int InternalContainerIndex;
+
     public int ContainerIndex
     { 
-        get => _containerIndex;
+        get => InternalContainerIndex;
         set { }
     }
-    public ulong ClientOwnerID 
+    public ulong OwnerClientID 
     { 
-        get => _ownerClientID;
+        get => InternalOwnerClientID;
         set { }
     }
     
@@ -21,18 +26,15 @@ public class PlayerEntity : MonoBehaviour, ITargetee
         set {}
     }
 
-    [SerializeField] private TargetType _targeteeType;
-    private ulong _ownerClientID;
-    private int _containerIndex;
-
-
     protected virtual void Initialize(int containerIndex, ulong ownerClientID)
     {
-        _containerIndex = containerIndex;
-        _ownerClientID = ownerClientID;
+        InternalContainerIndex = containerIndex;
+        InternalOwnerClientID = ownerClientID;
     }
+    
 
-    public virtual CoroutineSimulationPackage ExecuteTargetee<TTargeter>(TTargeter targeter) where TTargeter : ITargeter
+
+    public virtual SimulationPackage ExecuteTargetee<TTargeter>(TTargeter targeter) where TTargeter : ITargeter
     {
         return null;
     }

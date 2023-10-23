@@ -24,7 +24,7 @@ namespace _Scripts.DataWrapper
 
         public event Action<T, T> OnChangeValue;
 
-        public ObservableData(T value)
+        public ObservableData(T value = default)
         {
             this._value = value;
         }

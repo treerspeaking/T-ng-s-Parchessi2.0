@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using _Scripts.Player;
+using _Scripts.Player.Dice;
 using Shun_Unity_Editor;
 using UnityEngine;
 using UnityUtilities;
@@ -14,10 +15,14 @@ namespace _Scripts.Managers.Game
 
         [SerializeField] private Transform _playerCardHandParent;
         [SerializeField] private Transform _playerDiceHandParent;
+        [SerializeField] private Transform _offScreenCardHandParent;
+        [SerializeField] private Transform _offScreenDiceHandParent;
         
         private void Awake()
         {
             GameManager.Instance.OnGameStart += OnGameStartSetUp;
+            GameManager.Instance.OnPlayerTurnStart += ShowPlayerHand;
+            GameManager.Instance.OnPlayerTurnEnd += HidePlayerHand;
         }
 
         public PlayerDiceHand GetPlayerDiceHand(ulong clientOwnerID)
@@ -43,9 +48,46 @@ namespace _Scripts.Managers.Game
                 
                 _playerCardHands.Add(playerController.OwnerClientId, playerCardHand);
                 _playerDiceHands.Add(playerController.OwnerClientId, playerDiceHand);
+                
+                HidePlayerHand(playerController);
             }
         }
         
+        private void ShowPlayerHand(PlayerController playerController)
+        {
+            ShowCardHand(_playerCardHands[playerController.OwnerClientId]);
+            ShowDiceHand(_playerDiceHands[playerController.OwnerClientId]);
+        }
+        
+        private void HidePlayerHand(PlayerController playerController)
+        {
+            HideCardHand(_playerCardHands[playerController.OwnerClientId]);
+            HideDiceHand(_playerDiceHands[playerController.OwnerClientId]);
+        }
+
+        private void ShowCardHand(PlayerCardHand playerCardHand)
+        {
+            playerCardHand.transform.SetParent(_playerCardHandParent);
+            playerCardHand.transform.position = _playerCardHandParent.position;
+        }
+
+        private void HideCardHand(PlayerCardHand playerCardHand)
+        {
+            playerCardHand.transform.SetParent(_offScreenCardHandParent);
+            playerCardHand.transform.position = _offScreenCardHandParent.position;
+        }
+        
+        private void ShowDiceHand(PlayerDiceHand playerDiceHand)
+        {
+            playerDiceHand.transform.SetParent(_playerDiceHandParent);
+            playerDiceHand.transform.position = _playerDiceHandParent.position;
+        }
+        
+        private void HideDiceHand(PlayerDiceHand playerDiceHand)
+        {
+            playerDiceHand.transform.SetParent(_offScreenDiceHandParent);
+            playerDiceHand.transform.position = _offScreenDiceHandParent.position;
+        }
         
     }
 }

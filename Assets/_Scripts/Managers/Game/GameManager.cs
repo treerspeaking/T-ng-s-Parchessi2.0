@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _Scripts.Managers.Network;
 using _Scripts.NetworkContainter;
+using _Scripts.Scriptable_Objects;
 using QFSW.QC;
 using Shun_Unity_Editor;
 using Unity.Netcode;
@@ -37,8 +38,15 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     public Action OnGameStart { get; set; }
     public Action OnGameEnd { get; set; }
     public Action OnGamePause { get; set; }
+    public Action OnGameResume { get; set; }
+    public Action OnGameQuit { get; set; }
+    
+    public Action<PlayerController> OnPlayerTurnStart { get; set; }
+    public Action<PlayerController> OnPlayerTurnEnd { get; set; }
 
-    [SerializeField] private List<DiceDescription> _incomeDiceContainers = new();
+    [SerializeField] private List<DiceDescription> _incomeDiceDescriptions = new();
+    [SerializeField] private List<PawnDescription> _pawnDescriptions = new();
+    [SerializeField] private List<CardDescription> _deckCardDescriptions = new();
 
     public PlayerController GetPlayerController(ulong clientId)
     {
@@ -59,16 +67,31 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     }
 
 
+    [ServerRpc]
     [Command]
-    public void StartGame()
+    public void StartGameServerRPC()
     {
         _gameState = GameState.GamePlay;
+        StartGameClientRPC();
+        
+        LoadPlayerSetup();
+        StartPlayerTurnClientRPC(PlayerControllers[_playerIdTurn.Value].OwnerClientId);
+        StartPlayerTurn(PlayerControllers[_playerIdTurn.Value]);
+    }
+
+    [ClientRpc]
+    public void StartGameClientRPC()
+    {
         
         OnGameStart.Invoke();
+    }
+
+    private void LoadPlayerSetup()
+    {
         
         foreach (var playerController in PlayerControllers)
         {
-            foreach (var diceDescription in _incomeDiceContainers)
+            foreach (var diceDescription in _incomeDiceDescriptions)
             {
                 playerController.PlayerResourceController.AddIncomeServerRPC(new DiceContainer
                 {
@@ -78,15 +101,26 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
                 Debug.Log($"Dice {diceDescription.DiceID} : ");
                 
             }
+
+            foreach (var cardDescription in _deckCardDescriptions)
+            {
+                playerController.PlayerResourceController.AddCardToDeckServerRPC(new CardContainer
+                {
+                    CardID = cardDescription.CardID
+                });
+                
+                Debug.Log($"Card {cardDescription.CardID} : ");
+            }
         }
-        
-        StartPlayerTurn(PlayerControllers[_playerIdTurn.Value]);
+
     }
     
     
     [ServerRpc]
     public void StartNextPlayerTurnServerRPC()
     {
+        EndPlayerTurnClientRPC(PlayerControllers[_playerIdTurn.Value].OwnerClientId);
+        
         _playerIdTurn.Value++;
         if (_playerIdTurn.Value >= PlayerControllers.Count)
         {
@@ -95,13 +129,27 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
 
         StartPlayerTurn(PlayerControllers[_playerIdTurn.Value]);
         
-        Debug.Log($"Player {PlayerControllers[_playerIdTurn.Value].OwnerClientId} start turn");
+        StartPlayerTurnClientRPC(PlayerControllers[_playerIdTurn.Value].OwnerClientId);
 
     }
 
+    [ClientRpc]
+    private void EndPlayerTurnClientRPC(ulong clientId)
+    {
+        OnPlayerTurnEnd.Invoke(GetPlayerController(clientId));
+        Debug.Log($"Player {PlayerControllers[_playerIdTurn.Value].OwnerClientId} end turn");
+    }
+    
+    [ClientRpc]
+    private void StartPlayerTurnClientRPC(ulong clientId)
+    {
+        OnPlayerTurnStart.Invoke(GetPlayerController(clientId));
+        Debug.Log($"Player {PlayerControllers[_playerIdTurn.Value].OwnerClientId} start turn");
+    }
+    
     private void StartPlayerTurn(PlayerController playerController)
     {
-        playerController.PlayerTurnControllerRequire.StartPreparationPhaseServerRPC();
+        playerController.PlayerTurnController.StartPreparationPhaseServerRPC();
         playerController.PlayerResourceController.GainIncomeServerRPC();
     }
     

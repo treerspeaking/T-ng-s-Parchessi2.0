@@ -7,8 +7,8 @@ using UnityEngine;
 
 public class PlayerController : NetworkBehaviour
 {
-    public PlayerTurnControllerRequire PlayerTurnControllerRequire { get; internal set; }
-    public PlayerActionControllerRequire PlayerActionControllerRequire { get; internal set; }
+    public PlayerTurnController PlayerTurnController { get; internal set; }
+    public PlayerActionController PlayerActionController { get; internal set; }
     public PlayerResourceController PlayerResourceController { get; internal set; }
 
     public ClientRpcParams MyClientRpcParams;
@@ -26,8 +26,8 @@ public class PlayerController : NetworkBehaviour
 
     private void Start()
     {
-        PlayerTurnControllerRequire = GetComponent<PlayerTurnControllerRequire>();
-        PlayerActionControllerRequire = GetComponent<PlayerActionControllerRequire>();
+        PlayerTurnController = GetComponent<PlayerTurnController>();
+        PlayerActionController = GetComponent<PlayerActionController>();
         PlayerResourceController = GetComponent<PlayerResourceController>();
         GameManager.Instance.StartPlayerController(this);
     }

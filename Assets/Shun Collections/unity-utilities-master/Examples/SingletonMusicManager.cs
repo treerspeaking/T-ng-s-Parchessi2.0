@@ -7,7 +7,7 @@ namespace UnityUtilities.Examples
        You could make this SingletonMusicManager a prefab and drop it in multiple scenes that you work on. If at any time there are two `SingletonMusicManager`,
        the one from the previous scene survives and the new one is destroyed. (For that reason, you should never create an Awake() method in a
        PersistentSingletonMonoBehaviour. Instead, use `OnPersistentSingletonAwake()` because it is only called on "surviving" instances. Similarily, you shouldn't
-       have an OnDestroy() method which would be called if this is ever destroyed via OnDestroy(); instead, use OnPersistentSingletonDestroyed().)
+       have an Destroy() method which would be called if this is ever destroyed via Destroy(); instead, use OnPersistentSingletonDestroyed().)
 
        Note that SingletonMusicManager.Instance is only available after SingletonMusicManager.Awake() was called, so if you need it in another Awake()
        call, you should put the SingletonMusicManager higher in the Script Execution Order: http://docs.unity3d.com/Manual/class-ScriptExecution.html.
@@ -35,7 +35,7 @@ namespace UnityUtilities.Examples
         {
             base.OnPersistentSingletonDestroyed();
 
-            // Stop the music when OnDestroy() was called on the active instance.
+            // Stop the music when Destroy() was called on the active instance.
             StopMusic();
         }
 

@@ -39,7 +39,7 @@ namespace _Scripts.Managers.Network
                 {
                     // If the instance is not in the current scene, UpdateInstance will be called on every call.
                     // I could fix this by introducting a static "instanceUpdated" boolean, but then I would
-                    // need to set instanceUpdated to false in OnDestroy() (for scene changes) and I don't want
+                    // need to set instanceUpdated to false in Destroy() (for scene changes) and I don't want
                     // to introduce the complexity of virtual MonoBehaviour event methods to this class.
                     UpdateInstance(true);
                 }
@@ -79,9 +79,9 @@ namespace _Scripts.Managers.Network
         /// 
         /// Note: This also means that you need to use
         /// 
-        ///     protected override void OnDestroy()
+        ///     protected override void Destroy()
         ///     {
-        ///         base.OnDestroy();
+        ///         base.Destroy();
         ///         // [Your code]
         ///     }
         /// 

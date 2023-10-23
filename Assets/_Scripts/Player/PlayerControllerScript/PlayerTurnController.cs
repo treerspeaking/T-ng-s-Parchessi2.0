@@ -9,7 +9,7 @@ using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerTurnControllerRequire : PlayerControllerRequireDependency
+public class PlayerTurnController : PlayerControllerRequireDependency
 {
     public enum PlayerPhase : byte
     {
@@ -72,16 +72,17 @@ public class PlayerTurnControllerRequire : PlayerControllerRequireDependency
     [ServerRpc]
     public void EndRollPhaseServerRPC()
     {
-        if (PlayerController.PlayerResourceController.CurrentTurnDices.Count > 0)
-        {
-            StartPreparationPhaseServerRPC();
-        }
-        else
+        if (PlayerController.PlayerResourceController.CheckEndRollPhaseTurn())
         {
             StartSubsequencePhaseServerRPC();
         }
+        else
+        {
+            StartPreparationPhaseServerRPC();
+        }
     }
-    
+
+
     [ServerRpc]
     private void StartSubsequencePhaseServerRPC()
     {

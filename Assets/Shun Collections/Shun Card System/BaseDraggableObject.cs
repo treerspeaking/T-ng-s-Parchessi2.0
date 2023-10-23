@@ -9,6 +9,7 @@ namespace Shun_Card_System
     [RequireComponent(typeof(Collider2D))]
     public class BaseDraggableObject : MonoBehaviour, IMouseDraggable, IMouseHoverable
     {
+        public Action<BaseDraggableObject> OnDestroy { get; set; }
         public bool IsDestroyed { get; protected set; }
         public bool IsDraggable; 
         public bool IsDragging { get; private set; }
@@ -62,9 +63,10 @@ namespace Shun_Card_System
             IsDraggable = true;
         }
 
-        public void OnDestroy()
+        public void Destroy()
         {
             IsDestroyed = true;
+            OnDestroy?.Invoke(this);
         }
     }
 }

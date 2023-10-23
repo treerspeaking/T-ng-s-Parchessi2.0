@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace _Scripts.Simulation
 {
-    public class CoroutineSimulationPackage
+    public class SimulationPackage
     {
         public float Priority { get; set; }
         public readonly List<Func<IEnumerator>> ExecuteEvents = new();

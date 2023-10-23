@@ -281,8 +281,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 93351247}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -2, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -355,7 +355,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &136503912
 PrefabInstance:
@@ -628,7 +628,7 @@ MonoBehaviour:
     - {fileID: 1900109928}
     - {fileID: 136503914}
     - {fileID: 311122501}
-  _diceCardConverter: {fileID: 4127222123604188344}
+  _playerDeck: {fileID: 4127222123604188344}
 --- !u!114 &299585050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -741,8 +741,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 314058089}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -6, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -832,6 +832,8 @@ Transform:
   m_Children:
   - {fileID: 314058090}
   - {fileID: 93351248}
+  - {fileID: 1889332435}
+  - {fileID: 1003574520}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -892,8 +894,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7777816597649316932, guid: cbc2cb5f61ddaa649b2def2253bdd015, type: 3}
       propertyPath: _mapSpotTransforms.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7777816597649316932, guid: cbc2cb5f61ddaa649b2def2253bdd015, type: 3}
+      propertyPath: _mapSpotTransforms.Array.data[1]
+      value: 
+      objectReference: {fileID: 1174449311}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cbc2cb5f61ddaa649b2def2253bdd015, type: 3}
 --- !u!4 &385318412 stripped
@@ -1093,6 +1099,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerCardHandParent: {fileID: 314058090}
   _playerDiceHandParent: {fileID: 93351248}
+  _offScreenCardHandParent: {fileID: 1003574520}
+  _offScreenDiceHandParent: {fileID: 1889332435}
 --- !u!1 &511124455
 GameObject:
   m_ObjectHideFlags: 0
@@ -1129,7 +1137,7 @@ Transform:
   - {fileID: 2046623354}
   - {fileID: 454749063}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &649241024
 GameObject:
@@ -1684,6 +1692,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e2a7299f3024dcfab3efdd6c7493240, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1003574519
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1003574520}
+  m_Layer: 0
+  m_Name: Off Screen Card Hand Parent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1003574520
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1003574519}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -20, z: 10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 323963999}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1004020042
 GameObject:
   m_ObjectHideFlags: 0
@@ -1752,7 +1791,7 @@ Transform:
   - {fileID: 1900109927}
   - {fileID: 1486405620}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1154224985
 GameObject:
@@ -1876,6 +1915,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1154224985}
   m_CullTransparentMesh: 1
+--- !u!4 &1174449311 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7091291278601499341, guid: cbc2cb5f61ddaa649b2def2253bdd015, type: 3}
+  m_PrefabInstance: {fileID: 385318411}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1486405619
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1978,7 +2022,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1534760750
 GameObject:
@@ -2487,7 +2531,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4845161671150009267, guid: 2da3dcc22749e7f4280737786d898334, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4845161671150009267, guid: 2da3dcc22749e7f4280737786d898334, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2611,7 +2655,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4845276930943762971, guid: 2da3dcc22749e7f4280737786d898334, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000030517578
+      value: -0.000061035156
       objectReference: {fileID: 0}
     - target: {fileID: 4845637959249703711, guid: 2da3dcc22749e7f4280737786d898334, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2975,6 +3019,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1844971957}
   m_CullTransparentMesh: 1
+--- !u!1 &1889332434
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1889332435}
+  m_Layer: 0
+  m_Name: Off Screen Dice Hand Parent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1889332435
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889332434}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -20, z: 10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 323963999}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1900109926
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3208,7 +3283,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4127222123669354916, guid: 813586be25d3cb8468831cf7ed93b481, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4127222123669354916, guid: 813586be25d3cb8468831cf7ed93b481, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3252,7 +3327,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4127222123669354919, guid: 813586be25d3cb8468831cf7ed93b481, type: 3}
       propertyPath: m_Name
-      value: Dice Converter
+      value: 'Player Deck '
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 813586be25d3cb8468831cf7ed93b481, type: 3}
@@ -3389,7 +3464,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6852762984510330937, guid: f01c1e4b17965be42859cd55d71c0d97, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6852762984510330937, guid: f01c1e4b17965be42859cd55d71c0d97, type: 3}
       propertyPath: m_AnchorMax.x
@@ -3520,6 +3595,106 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _pawnDescriptions.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _pawnDescriptions.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _pawnDescriptions.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _pawnDescriptions.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _pawnDescriptions.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _pawnDescriptions.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _pawnDescriptions.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _pawnDescriptions.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _pawnDescriptions.Array.data[7]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _pawnDescriptions.Array.data[8]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _pawnDescriptions.Array.data[9]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _deckCardDescriptions.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _incomeDiceDescriptions.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _deckCardDescriptions.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _deckCardDescriptions.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _deckCardDescriptions.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _deckCardDescriptions.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _deckCardDescriptions.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _deckCardDescriptions.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _deckCardDescriptions.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _deckCardDescriptions.Array.data[7]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _deckCardDescriptions.Array.data[8]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _deckCardDescriptions.Array.data[9]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _incomeDiceDescriptions.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 88f6d5eb9dd88b542b0c3ec68fe84d9f, type: 2}
+    - target: {fileID: 7695238754754329727, guid: f213e618ddf18064380e88583ab7a709, type: 3}
+      propertyPath: _incomeDiceDescriptions.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 88f6d5eb9dd88b542b0c3ec68fe84d9f, type: 2}
     - target: {fileID: 8876226823398608456, guid: f213e618ddf18064380e88583ab7a709, type: 3}
       propertyPath: m_Name
       value: Game Manager

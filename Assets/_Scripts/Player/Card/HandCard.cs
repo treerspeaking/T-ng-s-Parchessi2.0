@@ -25,7 +25,7 @@ public class HandCard : PlayerEntity, ITargeter
 
 
 
-    public virtual CoroutineSimulationPackage ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : ITargetee
+    public virtual SimulationPackage ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : ITargetee
     {
         if (targetee is not MapPawn playerPawn)
         {
@@ -34,7 +34,7 @@ public class HandCard : PlayerEntity, ITargeter
         }
         
         
-        var package = new CoroutineSimulationPackage();
+        var package = new SimulationPackage();
         package.AddToPackage(() =>
         {
             // Inherit this class and write Card effect
@@ -42,7 +42,7 @@ public class HandCard : PlayerEntity, ITargeter
             _playerCardHand.PlayCard(this);
             
             if( TryGetComponent<BaseDraggableObject>(out var baseDraggableObject))
-                baseDraggableObject.OnDestroy();
+                baseDraggableObject.Destroy();
             Destroy(gameObject);
             return null;
         });
