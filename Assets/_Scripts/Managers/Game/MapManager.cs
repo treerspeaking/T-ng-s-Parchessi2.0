@@ -22,6 +22,7 @@ namespace _Scripts.Managers.Game
         [SerializeField] private List<MapPath> _mapPaths = new ();
         
         [SerializeField] private PlayerDeck _playerDeck;
+        [SerializeField] private PlayerEmptyTarget _playerEmptyTarget;
         
         private NetworkList<PawnContainer> _mapPawnContainers;
         
@@ -46,9 +47,14 @@ namespace _Scripts.Managers.Game
             return mapPawn;
         }
 
-        public PlayerDeck GetDiceCardConverter()
+        public PlayerDeck GetDeck()
         {
             return _playerDeck;
+        }
+        
+        public ITargetee GetEmptyTarget()
+        {
+            return _playerEmptyTarget;
         }
 
         public MapPawn CreateMapPawn(PawnContainer pawnContainer, int pawnContainerIndex, ulong ownerClientId)
@@ -171,9 +177,6 @@ namespace _Scripts.Managers.Game
             
             var attackerPawnContainer = _mapPawnContainers[attackerPawnContainerIndex];
             if (attackerPawnContainer.ClientOwnerID != clientId) return;   
-            
-            
-            
             
             // Attack Logic
             var defenderPawnContainer = _mapPawnContainers[defenderPawnContainerIndex];

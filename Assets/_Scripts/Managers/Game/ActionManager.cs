@@ -105,9 +105,10 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         switch (targeteeContainer.TargetType)
         {
             case TargetType.Empty:
+                return GetEmptyTarget();
                 break;
             case TargetType.Deck:
-                return GetDiceCardConverter();
+                return GetDeck();
                 break;
             case TargetType.Pawn:
                 return GetMapPawn(targeteeContainer.TargetContainerIndex);
@@ -213,8 +214,14 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         return MapManager.Instance.GetPlayerPawn(pawnContainerIndex);
     }
     
-    public PlayerDeck GetDiceCardConverter()
+    public PlayerDeck GetDeck()
     {
-        return MapManager.Instance.GetDiceCardConverter();
+        return MapManager.Instance.GetDeck();
     }
+    
+    private ITargetee GetEmptyTarget()
+    {
+        return MapManager.Instance.GetEmptyTarget();
+    }
+
 }

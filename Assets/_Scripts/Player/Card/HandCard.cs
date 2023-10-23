@@ -45,6 +45,19 @@ public class HandCard : PlayerEntity, ITargeter
                 
             });
         }
+        else if (targetee is PlayerEmptyTarget playerEmptyTarget)
+        {
+            package.AddToPackage(() =>
+            {
+            
+                // Inherit this class and write Card effect
+                Debug.Log(name + " Card drag to Empty ");
+                PlayerCardHand.PlayCard(this);
+
+                Destroy();
+                
+            });
+        }
         
         
         return package;

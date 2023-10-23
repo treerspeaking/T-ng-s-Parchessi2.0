@@ -9,8 +9,12 @@ namespace _Scripts.Player.Dice
 
         public ulong OwnerClientID { get; set; }
         public int ContainerIndex { get; set; }
-        public TargetType TargetType { get; set; }
-        
+        public TargetType TargetType
+        {
+            get => _targeteeType;
+            set { }
+        }
+
         public SimulationPackage ExecuteTargetee<TTargeter>(TTargeter targeter) where TTargeter : ITargeter
         {
             return null;

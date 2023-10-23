@@ -148,7 +148,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targeteeType: 6
-  DiceValue: 0
+  DiceValue:
+    _value: 0
   _diceDescription: {fileID: 0}
 --- !u!114 &5995340789764069458
 MonoBehaviour:
@@ -165,4 +166,4 @@ MonoBehaviour:
   IsDraggable: 1
   IsHoverable: 1
   ActivateOnValidate: 0
-  _targetTypes: 0100000002000000
+  _targetTypes: 0200000003000000

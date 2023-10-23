@@ -1114,7 +1114,7 @@ MonoBehaviour:
   IsDraggable: 1
   IsHoverable: 1
   ActivateOnValidate: 0
-  _targetTypes: 02000000
+  _targetTypes: 0300000001000000
 --- !u!1 &5892810086544425642
 GameObject:
   m_ObjectHideFlags: 0
