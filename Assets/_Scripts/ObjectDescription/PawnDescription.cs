@@ -1,4 +1,5 @@
 ﻿
+using _Scripts.Player.Pawn;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,4 +12,10 @@ public class PawnDescription : ScriptableObject
     public int PawnAttackDamage;
     public int PawnMovementSpeed;
 
+    [SerializeField] private MapPawn _mapPawnPrefab;
+    
+    public MapPawn GetMapPawnPrefab()
+    {
+        return _mapPawnPrefab;
+    }
 }

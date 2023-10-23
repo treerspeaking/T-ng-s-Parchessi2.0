@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using _Scripts.Player.Pawn;
+using UnityEngine;
 
 namespace _Scripts.Scriptable_Objects
 {
@@ -7,6 +8,11 @@ namespace _Scripts.Scriptable_Objects
     {
         public PawnDescription PawnDescription;
         
+        [SerializeField] private PawnHandCard _mapPawnPrefab;
         
+        public PawnHandCard GetPawnHandCardPrefab()
+        {
+            return _mapPawnPrefab;
+        }
     }
 }

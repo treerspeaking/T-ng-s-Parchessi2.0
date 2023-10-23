@@ -44,7 +44,7 @@ public class PlayerCardHand : PlayerControllerCompositionDependency
     public HandCard CreateCardHand(CardContainer cardContainer, int cardContainerIndex)
     {
         var cardDescription = GameResourceManager.Instance.GetCardDescription(cardContainer.CardID);
-        var handCard = Instantiate(GameResourceManager.Instance.HandCardPrefab);
+        var handCard = Instantiate(cardDescription.GetHandCardPrefab());
         handCard.Initialize(this, cardDescription, cardContainerIndex, PlayerController.OwnerClientId);
         return handCard;
     }

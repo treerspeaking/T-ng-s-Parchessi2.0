@@ -12,10 +12,6 @@ public class GameResourceManager : SingletonMonoBehaviour<GameResourceManager>
 {
     public PlayerCardHand PlayerCardHandPrefab;
     public PlayerDiceHand PlayerDiceHandPrefab;
-    
-    public HandCard HandCardPrefab;
-    public HandDice HandDicePrefab;
-    public MapPawn MapPawnPrefab;
 
     private readonly Dictionary<int, CardDescription> _cardDescriptionsDictionary = new();
     private readonly Dictionary<int, DiceDescription> _diceDescriptionsDictionary = new();

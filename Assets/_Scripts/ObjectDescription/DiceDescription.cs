@@ -10,5 +10,11 @@ public class DiceDescription : ScriptableObject
     public int DiceLowerRange;
     public int DiceUpperRange;
 
+    [SerializeField] private HandDice _handDicePrefab;
+    
+    public HandDice GetHandDicePrefab()
+    {
+        return _handDicePrefab;
+    }
     
 }

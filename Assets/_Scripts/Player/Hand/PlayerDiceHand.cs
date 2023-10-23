@@ -44,7 +44,7 @@ namespace _Scripts.Player
         public HandDice CreateDiceHand(DiceContainer diceContainer, int diceContainerIndex)
         {
             var diceDescription = GameResourceManager.Instance.GetDiceDescription(diceContainer.DiceID);
-            var handDice = Instantiate(GameResourceManager.Instance.HandDicePrefab);
+            var handDice = Instantiate(diceDescription.GetHandDicePrefab());
             handDice.Initialize(this, diceDescription, diceContainerIndex, PlayerController.OwnerClientId);
             return handDice;
         }
