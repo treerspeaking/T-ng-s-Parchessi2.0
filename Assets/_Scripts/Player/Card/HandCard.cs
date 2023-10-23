@@ -12,14 +12,14 @@ using UnityEngine.UI;
 
 public class HandCard : PlayerEntity, ITargeter
 {
-    private PlayerCardHand _playerCardHand;
+    protected PlayerCardHand PlayerCardHand;
     public CardDescription CardDescription { get; protected set; }
 
-    public Action OnTargeterDestroy { get; set; }
+    
 
     public void Initialize(PlayerCardHand playerCardHand, CardDescription cardDescription, int containerIndex, ulong ownerClientID)
     {
-        _playerCardHand = playerCardHand;
+        PlayerCardHand = playerCardHand;
         CardDescription = cardDescription;
         Initialize(containerIndex, ownerClientID);
     }
@@ -39,7 +39,7 @@ public class HandCard : PlayerEntity, ITargeter
             
                 // Inherit this class and write Card effect
                 Debug.Log(name + " Card drag to Pawn " + playerPawn.name);
-                _playerCardHand.PlayCard(this);
+                PlayerCardHand.PlayCard(this);
 
                 Destroy();
                 
@@ -50,7 +50,7 @@ public class HandCard : PlayerEntity, ITargeter
         return package;
     }
 
-    public SimulationPackage Discard()
+    public virtual SimulationPackage Discard()
     {
         var package = new SimulationPackage();
         package.AddToPackage(() =>
@@ -61,7 +61,7 @@ public class HandCard : PlayerEntity, ITargeter
         return package;
     }
 
-    private void Destroy()
+    protected virtual void Destroy()
     {
         if (TryGetComponent<BaseDraggableObject>(out var baseDraggableObject))
             baseDraggableObject.Destroy();

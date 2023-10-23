@@ -92,7 +92,7 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
             case TargetType.Dice:
                 return GetHandDice(targeterContainer.TargetContainerIndex, targeterContainer.TargetClientOwnerId);
                 break;
-            case TargetType.DiceConverter:
+            case TargetType.Deck:
             default:
                 return null;
         }
@@ -106,7 +106,7 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         {
             case TargetType.Empty:
                 break;
-            case TargetType.DiceConverter:
+            case TargetType.Deck:
                 return GetDiceCardConverter();
                 break;
             case TargetType.Pawn:
@@ -162,7 +162,7 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         {
             HandDice => TargetType.Dice,
             MapPawn => TargetType.Pawn,
-            PlayerDeck => TargetType.DiceConverter,
+            PlayerDeck => TargetType.Deck,
             HandCard => TargetType.Card,
             _ => TargetType.Empty
         };
@@ -184,7 +184,7 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         TargetType targetType;
         if (monoBehavior is HandDice) targetType = TargetType.Dice;
         else if (monoBehavior is MapPawn) targetType = TargetType.Pawn;
-        else if (monoBehavior is PlayerDeck) targetType = TargetType.DiceConverter;
+        else if (monoBehavior is PlayerDeck) targetType = TargetType.Deck;
         else targetType = TargetType.Empty; 
 
         return new TargetContainer
