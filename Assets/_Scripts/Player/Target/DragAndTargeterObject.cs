@@ -21,9 +21,17 @@ public abstract class DragAndTargeterObject : BaseDraggableObject
         
     }
 
+    public override void StartDrag()
+    {
+        base.StartDrag();
+        ActionManager.Instance.StartHighlightTargetee(_targeterObject, CheckValid);
+        
+    }
 
     public override void EndDrag()
     {
+        ActionManager.Instance.EndHighlightTargetee();
+        
         if (TryDrop()) return;
         base.EndDrag();
     }

@@ -13,12 +13,41 @@ using UnityUtilities;
 public class ActionManager : SingletonMonoBehaviour<ActionManager>
 {
     
-    [SerializeField, ShowImmutable] private List<TargetEntity> _mapTargets;
-
-    public void AddTargetEntity(TargetEntity targetEntity)
+    [SerializeField, ShowImmutable] private List<ITargetee> _mapTargets = new();
+    private List<ITargetee> _highlightingTargetees = new();
+    
+    
+    public void AddTargetEntity(ITargetee targetEntity)
     {
         _mapTargets.Add(targetEntity);
     }
+    
+    public void RemoveTargetEntity(ITargetee targetEntity)
+    {
+        _mapTargets.Remove(targetEntity);
+    }
+    
+    public void StartHighlightTargetee(ITargeter targeter, Func<ITargetee, bool> targeteeCondition)
+    {
+        foreach (var targetee in _mapTargets)
+        {
+            if (targeteeCondition.Invoke(targetee))
+            {
+                targetee.StartHighlight();
+                _highlightingTargetees.Add(targetee);
+            }
+        }
+    }
+
+    public void EndHighlightTargetee()
+    {
+        foreach (var highlightingTargetee in _highlightingTargetees)
+        {
+            highlightingTargetee.EndHighlight();
+        }
+        _highlightingTargetees.Clear();
+    }
+    
     
     
     public void ExecuteTarget<TTargeter, TTargetee>(TTargeter targeter, TTargetee targetee) 
@@ -45,6 +74,7 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         
     }
 
+    
 
     private ITargeter GetTargeter(TargetContainer targeterContainer)
     {

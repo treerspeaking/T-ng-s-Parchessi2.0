@@ -31,12 +31,29 @@ public class PlayerEntity : MonoBehaviour, ITargetee
         InternalContainerIndex = containerIndex;
         InternalOwnerClientID = ownerClientID;
     }
-    
 
+    protected virtual void Awake()
+    {
+        ActionManager.Instance.AddTargetEntity(this);
+    }
 
     public virtual SimulationPackage ExecuteTargetee<TTargeter>(TTargeter targeter) where TTargeter : ITargeter
     {
         return null;
     }
 
+    public virtual void StartHighlight()
+    {
+        transform.localScale = transform.localScale * 1.2f;
+    }
+
+    public virtual void EndHighlight()
+    {
+        transform.localScale = transform.localScale / 1.2f;
+    }
+
+    protected virtual void OnDestroy()
+    {
+        ActionManager.Instance.RemoveTargetEntity(this);
+    }
 }
