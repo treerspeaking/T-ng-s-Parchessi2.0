@@ -124,5 +124,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 003cf308152845de8290efe817606318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targeteeType: 2
-  _targeteeType: 2
+  _targeteeType: 3
+  StandingMapCellIndex: 0
+  AttackDamage:
+    _value: 0
+  MaxHealth:
+    _value: 0
+  CurrentHealth:
+    _value: 0
+  MovementSpeed:
+    _value: 0

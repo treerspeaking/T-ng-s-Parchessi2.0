@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4127222123669354915}
   - component: {fileID: 3486664529726510977}
   m_Layer: 0
-  m_Name: Dice Convertere
+  m_Name: Player Deck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124,4 +124,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ef6249e608f42fb852677b549e16bc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targeteeType: 1
+  _targeteeType: 2
