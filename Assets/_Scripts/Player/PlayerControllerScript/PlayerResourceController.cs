@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using _Scripts.NetworkContainter;
 using _Scripts.Player;
@@ -83,9 +84,17 @@ public class PlayerResourceController : NetworkBehaviour
     [ServerRpc]
     public void AddCardToHandServerRPC()
     {
-        int index = Random.Range(0, DeckCards.Count);
-        var card = DeckCards[index];
-        DeckCards.RemoveAt(index);
+        CardContainer card ;
+        if (DeckCards.Count == 0)
+        {
+            ShuffleDiscardIntoDeck();
+            card = DeckCards[0];
+        }
+        else
+        {
+            card = DeckCards[0];
+            DeckCards.RemoveAt(0);
+        }
 
         int handCardContainerIndex = -1;
         for (var i = 0; i < HandCards.Count; i++)
@@ -99,8 +108,47 @@ public class PlayerResourceController : NetworkBehaviour
             }
         }
 
-        AddCardToHandClientRPC(card, handCardContainerIndex);
+
+        if (handCardContainerIndex != -1)
+        {
+            AddCardToHandClientRPC(card, handCardContainerIndex);
+        }
+        else
+        {
+            DiscardCards.Add(card);
+            FailAddCardToHandClientRPC(card);
+        }
     }
+    
+    [ClientRpc]
+    private void FailAddCardToHandClientRPC(CardContainer cardContainer)
+    {
+        _playerCardHand.FailAddCardToHand(cardContainer);
+        
+    }
+    
+    // Shuffle the discard pile into the deck
+    public void ShuffleDiscardIntoDeck()
+    {
+        // Filter out empty cards from the discard pile
+        List<CardContainer> nonEmptyDiscard = new List<CardContainer>();
+        for (var index = 0; index < DiscardCards.Count; index++)
+        {
+            nonEmptyDiscard.Add( DiscardCards[index] );
+        }
+        
+        DiscardCards.Clear();
+        DeckCards.Clear();
+        
+        // Shuffle the non-empty discard pile
+        var shuffleList = Shun_Utility.SetOperations.ShuffleList(nonEmptyDiscard);
+
+        for (int index = 0; index < shuffleList.Count; index++)
+        {
+            DeckCards.Add(shuffleList[index]);
+        }
+    }
+
     
     [ClientRpc]
     public void AddCardToHandClientRPC(CardContainer cardContainer, int containerIndex)
@@ -117,6 +165,8 @@ public class PlayerResourceController : NetworkBehaviour
     [ServerRpc]
     public void RemoveCardFromHandServerRPC(int handCardContainerIndex)
     {
+        if (handCardContainerIndex < 0) return;
+        
         DiscardCards.Add(HandCards[handCardContainerIndex]);
         HandCards[handCardContainerIndex] = EmptyCardContainer;
     }

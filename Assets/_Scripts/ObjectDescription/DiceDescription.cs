@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using _Scripts.NetworkContainter;
+using UnityEditor;
 using UnityEngine;
 
 
@@ -10,5 +11,18 @@ public class DiceDescription : ScriptableObject
     public int DiceLowerRange;
     public int DiceUpperRange;
 
+    [SerializeField] private HandDice _handDicePrefab;
+    
+    public HandDice GetHandDicePrefab()
+    {
+        return _handDicePrefab;
+    }
+    
+    public DiceContainer GetDiceContainer()
+    {
+        return new DiceContainer{
+            DiceID = DiceID,
+        };
+    }
     
 }

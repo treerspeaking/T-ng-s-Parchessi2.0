@@ -17,3 +17,4 @@ MonoBehaviour:
   CardName: 
   CardEffectDescription: 
   CardCost: 0
+  HandCardPrefab: {fileID: -313294548724005488, guid: 8acfe556bbf875c4d9f115e9ad9599a7, type: 3}

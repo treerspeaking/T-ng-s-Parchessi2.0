@@ -44,7 +44,7 @@ namespace _Scripts.Player
         public HandDice CreateDiceHand(DiceContainer diceContainer, int diceContainerIndex)
         {
             var diceDescription = GameResourceManager.Instance.GetDiceDescription(diceContainer.DiceID);
-            var handDice = Instantiate(GameResourceManager.Instance.HandDicePrefab);
+            var handDice = Instantiate(diceDescription.GetHandDicePrefab());
             handDice.Initialize(this, diceDescription, diceContainerIndex, PlayerController.OwnerClientId);
             return handDice;
         }
@@ -54,7 +54,7 @@ namespace _Scripts.Player
             if (IsOwner)
             {
                 PlayerController.PlayerResourceController.RemoveDiceServerRPC(handDice.ContainerIndex);
-                MapManager.Instance.StartMovePawnServerRPC(mapPawn.ContainerIndex, handDice.DiceValue);
+                MapManager.Instance.StartMovePawnServerRPC(mapPawn.ContainerIndex, handDice.DiceValue.Value);
 
             }
             else

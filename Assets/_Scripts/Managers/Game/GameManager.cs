@@ -45,7 +45,6 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     public Action<PlayerController> OnPlayerTurnEnd { get; set; }
 
     [SerializeField] private List<DiceDescription> _incomeDiceDescriptions = new();
-    [SerializeField] private List<PawnDescription> _pawnDescriptions = new();
     [SerializeField] private List<CardDescription> _deckCardDescriptions = new();
 
     public PlayerController GetPlayerController(ulong clientId)
@@ -93,10 +92,7 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
         {
             foreach (var diceDescription in _incomeDiceDescriptions)
             {
-                playerController.PlayerResourceController.AddIncomeServerRPC(new DiceContainer
-                {
-                    DiceID = diceDescription.DiceID 
-                });
+                playerController.PlayerResourceController.AddIncomeServerRPC(diceDescription.GetDiceContainer());
                 
                 Debug.Log($"Dice {diceDescription.DiceID} : ");
                 
@@ -104,10 +100,8 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
 
             foreach (var cardDescription in _deckCardDescriptions)
             {
-                playerController.PlayerResourceController.AddCardToDeckServerRPC(new CardContainer
-                {
-                    CardID = cardDescription.CardID
-                });
+                
+                playerController.PlayerResourceController.AddCardToDeckServerRPC(cardDescription.GetCardContainer());
                 
                 Debug.Log($"Card {cardDescription.CardID} : ");
             }

@@ -729,7 +729,7 @@ GameObject:
   - component: {fileID: 5892810085876356848}
   - component: {fileID: 5892810085876356849}
   m_Layer: 0
-  m_Name: Champion Box
+  m_Name: Image Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -793,7 +793,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 1
   m_Sprite: {fileID: 1583205246106739649, guid: 1cbc28f88db3f774e9515fae7d6b2a38, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.80784315}
+  m_Color: {r: 0.42145783, g: 0.69122773, b: 0.7264151, a: 0.80784315}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
@@ -1079,7 +1079,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62653a127a7e448dbe4718005f2af84e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targeteeType: 4
+  _targeteeType: 5
 --- !u!114 &971385533165736036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1114,7 +1114,7 @@ MonoBehaviour:
   IsDraggable: 1
   IsHoverable: 1
   ActivateOnValidate: 0
-  _targetTypes: 02000000
+  _targetTypes: 0300000001000000
 --- !u!1 &5892810086544425642
 GameObject:
   m_ObjectHideFlags: 0

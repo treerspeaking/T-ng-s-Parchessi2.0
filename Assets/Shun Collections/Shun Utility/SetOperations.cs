@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+
 
 namespace Shun_Utility
 {
@@ -59,6 +61,23 @@ namespace Shun_Utility
             }
 
             return mergedArray;
+        }
+        
+        
+        // Shuffle a list using the Fisher-Yates shuffle algorithm
+        public static List<T> ShuffleList<T>(IEnumerable<T> list)
+        {
+            var collection = list as T[] ?? list.ToArray();
+            List<T> shuffledList = new List<T>(collection);
+            int n = collection.Count();
+            while (n > 1)
+            {
+                n--;
+                int k = UnityEngine.Random.Range(0, n + 1);
+                (shuffledList[k], shuffledList[n]) = (shuffledList[n], shuffledList[k]);
+            }
+
+            return shuffledList;
         }
     }
 }

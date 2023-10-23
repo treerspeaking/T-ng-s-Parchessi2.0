@@ -1,7 +1,8 @@
 ﻿public enum TargetType
 {
+    None,
     Empty,
-    DiceConverter,
+    Deck,
     Pawn,
     Tile,
     Card,

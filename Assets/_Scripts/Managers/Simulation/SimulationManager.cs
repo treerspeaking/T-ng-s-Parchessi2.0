@@ -63,6 +63,7 @@ namespace _Scripts.Simulation
         {
             foreach (var enumerator in simulationPackage.ExecuteEvents)
             {
+                if (enumerator == null) continue;
                 yield return StartCoroutine(enumerator.Invoke());
             }
 
@@ -73,9 +74,10 @@ namespace _Scripts.Simulation
         {
             List<Coroutine> runningCoroutines = new List<Coroutine>();
 
-            foreach (var enterEnumerator in simulationPackage.ExecuteEvents)
+            foreach (var enumerator in simulationPackage.ExecuteEvents)
             {
-                Coroutine newCoroutine = StartCoroutine(enterEnumerator.Invoke());
+                if (enumerator == null) continue;
+                Coroutine newCoroutine = StartCoroutine(enumerator.Invoke());
                 runningCoroutines.Add(newCoroutine);
             }
 

@@ -13,12 +13,41 @@ using UnityUtilities;
 public class ActionManager : SingletonMonoBehaviour<ActionManager>
 {
     
-    [SerializeField, ShowImmutable] private List<TargetEntity> _mapTargets;
-
-    public void AddTargetEntity(TargetEntity targetEntity)
+    [SerializeField, ShowImmutable] private List<ITargetee> _mapTargets = new();
+    private List<ITargetee> _highlightingTargetees = new();
+    
+    
+    public void AddTargetEntity(ITargetee targetEntity)
     {
         _mapTargets.Add(targetEntity);
     }
+    
+    public void RemoveTargetEntity(ITargetee targetEntity)
+    {
+        _mapTargets.Remove(targetEntity);
+    }
+    
+    public void StartHighlightTargetee(ITargeter targeter, Func<ITargetee, bool> targeteeCondition)
+    {
+        foreach (var targetee in _mapTargets)
+        {
+            if (targeteeCondition.Invoke(targetee))
+            {
+                targetee.StartHighlight();
+                _highlightingTargetees.Add(targetee);
+            }
+        }
+    }
+
+    public void EndHighlightTargetee()
+    {
+        foreach (var highlightingTargetee in _highlightingTargetees)
+        {
+            highlightingTargetee.EndHighlight();
+        }
+        _highlightingTargetees.Clear();
+    }
+    
     
     
     public void ExecuteTarget<TTargeter, TTargetee>(TTargeter targeter, TTargetee targetee) 
@@ -45,6 +74,7 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         
     }
 
+    
 
     private ITargeter GetTargeter(TargetContainer targeterContainer)
     {
@@ -62,7 +92,7 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
             case TargetType.Dice:
                 return GetHandDice(targeterContainer.TargetContainerIndex, targeterContainer.TargetClientOwnerId);
                 break;
-            case TargetType.DiceConverter:
+            case TargetType.Deck:
             default:
                 return null;
         }
@@ -75,9 +105,10 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         switch (targeteeContainer.TargetType)
         {
             case TargetType.Empty:
+                return GetEmptyTarget();
                 break;
-            case TargetType.DiceConverter:
-                return GetDiceCardConverter();
+            case TargetType.Deck:
+                return GetDeck();
                 break;
             case TargetType.Pawn:
                 return GetMapPawn(targeteeContainer.TargetContainerIndex);
@@ -132,7 +163,7 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         {
             HandDice => TargetType.Dice,
             MapPawn => TargetType.Pawn,
-            PlayerDeck => TargetType.DiceConverter,
+            PlayerDeck => TargetType.Deck,
             HandCard => TargetType.Card,
             _ => TargetType.Empty
         };
@@ -154,7 +185,7 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         TargetType targetType;
         if (monoBehavior is HandDice) targetType = TargetType.Dice;
         else if (monoBehavior is MapPawn) targetType = TargetType.Pawn;
-        else if (monoBehavior is PlayerDeck) targetType = TargetType.DiceConverter;
+        else if (monoBehavior is PlayerDeck) targetType = TargetType.Deck;
         else targetType = TargetType.Empty; 
 
         return new TargetContainer
@@ -183,8 +214,14 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         return MapManager.Instance.GetPlayerPawn(pawnContainerIndex);
     }
     
-    public PlayerDeck GetDiceCardConverter()
+    public PlayerDeck GetDeck()
     {
-        return MapManager.Instance.GetDiceCardConverter();
+        return MapManager.Instance.GetDeck();
     }
+    
+    private ITargetee GetEmptyTarget()
+    {
+        return MapManager.Instance.GetEmptyTarget();
+    }
+
 }

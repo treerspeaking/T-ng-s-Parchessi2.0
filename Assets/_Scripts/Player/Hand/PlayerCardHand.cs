@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using _Scripts.NetworkContainter;
 using _Scripts.Player.Card;
+using _Scripts.Simulation;
 using UnityEngine;
 
 public class PlayerCardHand : PlayerControllerCompositionDependency
@@ -27,18 +28,41 @@ public class PlayerCardHand : PlayerControllerCompositionDependency
         if (_maxCards <= _containerIndexToHandCardDictionary.Count) return;
         
         var handCard = CreateCardHand(cardContainer, cardContainerIndex);
+        
         _containerIndexToHandCardDictionary.Add(cardContainerIndex, handCard);
         _handCardRegion.TryAddCard(handCard.GetComponent<HandCardDragAndTargeter>());
+        
     }
 
-
-    public HandCard CreateCardHand(CardContainer cardContainer, int cardContainerIndex)
+    public void FailAddCardToHand(CardContainer cardContainer)
     {
-        var cardDescription = GameResourceManager.Instance.GetCardDescription(cardContainer.CardID);
-        var handCard = Instantiate(GameResourceManager.Instance.HandCardPrefab);
-        handCard.Initialize(this, cardDescription, cardContainerIndex, PlayerController.OwnerClientId);
-        return handCard;
+        var handCard = CreateCardHand(cardContainer, -1);
+
+        SimulationManager.Instance.AddCoroutineSimulationObject(handCard.Discard());
     }
+
+    private HandCard CreateCardHand(CardContainer cardContainer, int cardContainerIndex)
+    {
+        switch (cardContainer.CardType)
+        {
+            case CardType.Action:
+                var cardDescription = GameResourceManager.Instance.GetCardDescription(cardContainer.CardID);
+                var handCard = Instantiate(cardDescription.GetHandCardPrefab());
+                handCard.Initialize(this, cardDescription, cardContainerIndex, PlayerController.OwnerClientId);
+                return handCard;
+            
+            case CardType.Pawn:
+                var pawnCardDescription = GameResourceManager.Instance.GetPawnCardDescription(cardContainer.CardID);
+                var pawnHandCard = Instantiate(pawnCardDescription.GetPawnHandCardPrefab());
+                pawnHandCard.Initialize(this, pawnCardDescription, cardContainerIndex, PlayerController.OwnerClientId);
+                return pawnHandCard;
+            
+            default:
+                return null;
+        }
+        
+    }
+
 
     public void PlayCard(HandCard handCard)
     {
@@ -55,4 +79,5 @@ public class PlayerCardHand : PlayerControllerCompositionDependency
 
         }
     }
+    
 }

@@ -22,6 +22,7 @@ namespace _Scripts.Managers.Game
         [SerializeField] private List<MapPath> _mapPaths = new ();
         
         [SerializeField] private PlayerDeck _playerDeck;
+        [SerializeField] private PlayerEmptyTarget _playerEmptyTarget;
         
         private NetworkList<PawnContainer> _mapPawnContainers;
         
@@ -46,16 +47,27 @@ namespace _Scripts.Managers.Game
             return mapPawn;
         }
 
-        public PlayerDeck GetDiceCardConverter()
+        public PlayerDeck GetDeck()
         {
             return _playerDeck;
         }
+        
+        public ITargetee GetEmptyTarget()
+        {
+            return _playerEmptyTarget;
+        }
 
+        public void SpawnPawnToMap(PawnDescription pawnDescription, ulong ownerClientId)
+        {
+            if (ownerClientId != NetworkManager.LocalClientId) return;
+            SpawnPawnToMapServerRPC(new PawnContainer{PawnID = pawnDescription.PawnID, ClientOwnerID = ownerClientId, StandingMapCell = 0, StandingMapSpot = 0}, ownerClientId);
+        }
+        
         public MapPawn CreateMapPawn(PawnContainer pawnContainer, int pawnContainerIndex, ulong ownerClientId)
         {
             var pawnDescription = GameResourceManager.Instance.GetPawnDescription(pawnContainer.PawnID);
             Transform spawnTransform = _mapPaths[(int)ownerClientId].Path[0].transform;
-            var mapPawn = Instantiate(GameResourceManager.Instance.MapPawnPrefab, spawnTransform.position, spawnTransform.rotation, _mapParent);
+            var mapPawn = Instantiate(pawnDescription.GetMapPawnPrefab(), spawnTransform.position, spawnTransform.rotation, _mapParent);
             
             mapPawn.Initialize(_mapPaths[(int)ownerClientId], pawnDescription,  pawnContainerIndex, ownerClientId);
             
@@ -66,7 +78,7 @@ namespace _Scripts.Managers.Game
         [ServerRpc(RequireOwnership = false)]
         public void SpawnPawnToMapServerRPC(PawnContainer pawnContainer, ulong ownerClientId)
         {
-            
+            if (ownerClientId != NetworkManager.LocalClientId) return;
             for (var index = 0; index < _mapPawnContainers.Count; index++)
             {
                 var mapPawnContainer = _mapPawnContainers[index];
@@ -80,7 +92,7 @@ namespace _Scripts.Managers.Game
         }
 
         [ClientRpc]
-        public void SpawnPawnToMapClientRPC(PawnContainer pawnContainer, int containerIndex, ulong ownerClientId)
+        private void SpawnPawnToMapClientRPC(PawnContainer pawnContainer, int containerIndex, ulong ownerClientId)
         {
             var mapPawn = CreateMapPawn(pawnContainer, containerIndex, ownerClientId);
             _containerIndexToMapPawnDictionary.Add(containerIndex, mapPawn);
@@ -171,9 +183,6 @@ namespace _Scripts.Managers.Game
             
             var attackerPawnContainer = _mapPawnContainers[attackerPawnContainerIndex];
             if (attackerPawnContainer.ClientOwnerID != clientId) return;   
-            
-            
-            
             
             // Attack Logic
             var defenderPawnContainer = _mapPawnContainers[defenderPawnContainerIndex];

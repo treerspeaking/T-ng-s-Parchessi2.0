@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using _Scripts.DataWrapper;
 using _Scripts.Managers.Game;
 using _Scripts.Player;
 using _Scripts.Player.Dice;
@@ -15,7 +16,7 @@ public class HandDice : PlayerEntity, ITargeter
 {
 
     public Action OnTargeterDestroy { get; set; }
-    public int DiceValue;
+    public ObservableData<int> DiceValue;
 
     private PlayerDiceHand _playerDiceHand;
     [SerializeField, ShowImmutable] DiceDescription _diceDescription;
@@ -39,7 +40,7 @@ public class HandDice : PlayerEntity, ITargeter
         var simulationPackage = new SimulationPackage();
         simulationPackage.AddToPackage(() =>
         {
-            DiceValue = value;
+            DiceValue.Value = value;
             Debug.Log($"Dice Value: {DiceValue}");
         });
         return simulationPackage;
@@ -67,12 +68,18 @@ public class HandDice : PlayerEntity, ITargeter
                 
             }
 
-            if (TryGetComponent<BaseDraggableObject>(out var baseDraggableObject))
-                baseDraggableObject.Destroy();
-            Destroy(gameObject);
+            Destroy();
         });
         
         return package;
     }
 
+    public void Destroy()
+    {
+        
+        if (TryGetComponent<BaseDraggableObject>(out var baseDraggableObject))
+            baseDraggableObject.Destroy();
+        Destroy(gameObject);
+    }
+    
 }
