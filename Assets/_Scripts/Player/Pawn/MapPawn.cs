@@ -42,16 +42,16 @@ namespace _Scripts.Player.Pawn
 
         
 
-        private bool TryMove(int startMapCellIndex, int stepCount)
+        public virtual bool TryMove(int startMapCellIndex, int stepCount)
         {
             bool isMovable = true;
             int endMapCellIndex = stepCount + startMapCellIndex;
                 
-            for (var index = startMapCellIndex; index <= stepCount + startMapCellIndex; index++)
+            for (var index = startMapCellIndex + 1; index <= stepCount + startMapCellIndex; index++)
             {
                 var mapCell = _mapPath.Path[index];
 
-                if (mapCell.CheckEnterable()) continue;
+                if (index < _mapPath.Path.Count && mapCell.CheckEnterable()) continue;
                     
                 isMovable = false;
                 break;
@@ -61,14 +61,14 @@ namespace _Scripts.Player.Pawn
             if (isMovable && _mapPath.Path[endMapCellIndex].CheckEnterable()) 
                 // If the last cell , try to make combat to find empty slot
             {
-                isMovable = !TryMakeCombatToFindEmptySlot(this, _mapPath.Path[endMapCellIndex]);
+                isMovable = TryMakeCombatToFindEmptySlot(this, _mapPath.Path[endMapCellIndex]);
                     
             }
 
             return isMovable;
         }
 
-        private bool TryMakeCombatToFindEmptySlot(MapPawn attacker, MapCell mapCell)
+        protected virtual bool TryMakeCombatToFindEmptySlot(MapPawn attacker, MapCell mapCell)
         {
             bool emptySlot = mapCell.CheckEnterable();
             var defenders = mapCell.GetAllPawn();
@@ -89,32 +89,51 @@ namespace _Scripts.Player.Pawn
         public SimulationPackage StartMove(int startMapCellIndex, int stepCount)
         {
             var simulationPackage = new SimulationPackage();
-            
-            simulationPackage.AddToPackage(() =>
-            {
-                // Teleport to the end position
-                //transform.position = _mapPath.Path[_standingMapCellIndex].transform.position;
-                
-                if(TryMove(startMapCellIndex, stepCount))
-                {
-                    var endMapCellIndex = stepCount + startMapCellIndex;
 
-                    foreach (var mapPawn in _mapPath.Path[endMapCellIndex].GetAllPawn())
+            if (TryMove(startMapCellIndex, stepCount))
+            {
+                
+                simulationPackage.AddToPackage(()=> 
+                {
+                    // Start move
+                    _mapPath.Path[startMapCellIndex].RemovePawn(this);
+                    
+                    for (int step = 1; step <= stepCount; step++)
+                    {
+                    
+                        // Teleport to the end position
+                        StandingMapCellIndex = step + startMapCellIndex;
+                        transform.position = _mapPath.Path[StandingMapCellIndex].GetEmptySpot().transform.position; 
+                    }
+                });
+
+  
+                simulationPackage.AddToPackage(() =>
+                {
+                    // Make combat to all pawn in the cell
+                    foreach (var mapPawn in _mapPath.Path[StandingMapCellIndex].GetAllPawn())
                     {
                         MapManager.MakeCombatServerRPC(ContainerIndex, mapPawn.ContainerIndex);
                     }
                     
-                    MapManager.EndMovePawnServerRPC(ContainerIndex, endMapCellIndex);
-                }
-                else
+                });
+                
+                simulationPackage.AddToPackage(() =>
                 {
-                    
-                }
-            });
-            
+                    // End move
+                    MapManager.EndMovePawnServerRPC(ContainerIndex, StandingMapCellIndex);
+                });
+            }
+            else
+            {
+                
+            }
+
             return simulationPackage;
          
         }
+        
+        
 
         public SimulationPackage EndMove(int endMapCellIndex)
         {
@@ -126,6 +145,9 @@ namespace _Scripts.Player.Pawn
                 // Teleport to the end position
                 StandingMapCellIndex = endMapCellIndex;
                 transform.position = _mapPath.Path[StandingMapCellIndex].transform.position; 
+                
+                // End move
+                _mapPath.Path[endMapCellIndex].EnterPawn(this);
             });
             
             return simulationPackage;

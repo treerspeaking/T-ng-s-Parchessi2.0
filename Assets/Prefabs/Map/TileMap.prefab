@@ -129,6 +129,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cc817ace3db7bf4a90e8dce879a76aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targeteeType: 0
+  _targeteeType: 3
   _mapSpotTransforms:
   - {fileID: 7091291278601499341}

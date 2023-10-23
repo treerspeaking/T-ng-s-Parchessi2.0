@@ -138,6 +138,7 @@ namespace _Scripts.Managers.Game
         private void EndMovePawnClientRPC(int pawnContainerIndex, int finalMapCellIndex)
         {
             var mapPawn = GetPlayerPawn(pawnContainerIndex);
+            
             SimulationManager.Instance.AddCoroutineSimulationObject(mapPawn.EndMove(finalMapCellIndex));
             
         }
