@@ -41,7 +41,7 @@ public class HandDice : PlayerEntity, ITargeter
         simulationPackage.AddToPackage(() =>
         {
             DiceValue.Value = value;
-            Debug.Log($"Dice Value: {DiceValue}");
+            Debug.Log($"Dice Value: {DiceValue.Value}");
         });
         return simulationPackage;
     }

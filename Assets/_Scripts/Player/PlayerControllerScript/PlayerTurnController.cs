@@ -21,8 +21,10 @@ public class PlayerTurnController : PlayerControllerRequireDependency
 
     private PlayerController _playerController;
 
-    [ShowImmutable] public readonly NetworkVariable<PlayerPhase> CurrentPlayerPhase = new (PlayerPhase.Wait);
-
+    public readonly NetworkVariable<PlayerPhase> CurrentPlayerPhase = new (PlayerPhase.Wait);
+    public readonly NetworkVariable<int> CurrentPlayerTurn = new (0);
+    public readonly NetworkVariable<int> VictoryPoint = new (0);
+    
     private PlayerDiceHand _playerDiceHand;
     private void Start()
     {
@@ -105,5 +107,10 @@ public class PlayerTurnController : PlayerControllerRequireDependency
         GameManager.Instance.StartNextPlayerTurnServerRPC();
     }
 
-
+    [ServerRpc(RequireOwnership = false)]
+    public void AddVictoryPointServerRPC(int value)
+    {
+        VictoryPoint.Value += value;
+        GameManager.Instance.CheckWin(OwnerClientId, VictoryPoint.Value);
+    }
 }

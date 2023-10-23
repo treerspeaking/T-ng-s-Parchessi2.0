@@ -223,5 +223,31 @@ namespace _Scripts.Managers.Game
             SimulationManager.Instance.AddCoroutineSimulationObject(defenderMapPawn.Defend(attackerMapPawn));
         }
 
+        [ServerRpc(RequireOwnership = false)]
+        public void ReachGoalServerRPC(int containerIndex, ulong ownerClientId, ServerRpcParams serverRpcParams = default)
+        {
+            var clientId = serverRpcParams.Receive.SenderClientId;
+            if (!NetworkManager.ConnectedClients.ContainsKey(clientId)) return;
+            
+            //if (attackerPawnContainer.ClientOwnerID != clientId) return;   
+            if (NetworkManager.ServerClientId != clientId) return;
+            
+            // Win Logic
+            _mapPawnContainers[containerIndex] = EmptyPawnContainer;
+            PlayerTurnController playerTurnController = GameManager.Instance.GetPlayerController(ownerClientId).PlayerTurnController;
+            playerTurnController.AddVictoryPointServerRPC(1);
+            
+            ReachGoalClientRPC(containerIndex, ownerClientId);
+            
+        }
+        
+        [ClientRpc]
+        private void ReachGoalClientRPC(int containerIndex, ulong ownerClientId)
+        {
+            var mapPawn = GetPlayerPawn(containerIndex);
+            _containerIndexToMapPawnDictionary.Remove(containerIndex);
+            SimulationManager.Instance.AddCoroutineSimulationObject(mapPawn.ReachGoal());
+        }
+        
     }
 }
