@@ -125,6 +125,7 @@ namespace _Scripts.Managers.Game
             
         }
         
+        
         [ClientRpc]
         private void StartMovePawnClientRPC(int pawnContainerIndex, int startMapCellIndex ,int stepCount)
         {
@@ -162,7 +163,7 @@ namespace _Scripts.Managers.Game
         }
 
 
-        [ServerRpc]
+        [ServerRpc(RequireOwnership = false)]
         public void MakeCombatServerRPC(int attackerPawnContainerIndex, int defenderPawnContainerIndex, ServerRpcParams serverRpcParams = default)
         {
             var clientId = serverRpcParams.Receive.SenderClientId;
@@ -170,6 +171,8 @@ namespace _Scripts.Managers.Game
             
             var attackerPawnContainer = _mapPawnContainers[attackerPawnContainerIndex];
             if (attackerPawnContainer.ClientOwnerID != clientId) return;   
+            
+            
             
             
             // Attack Logic
