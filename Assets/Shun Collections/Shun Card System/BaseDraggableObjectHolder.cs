@@ -19,7 +19,6 @@ namespace Shun_Card_System
         {
             DraggableObjectRegion = draggableObjectRegion;
             IndexInRegion = indexInRegion;
-            transform.parent = draggableObjectRegion.transform;
         }
         
         public void AttachCardGameObject(BaseDraggableObject draggableObject)
