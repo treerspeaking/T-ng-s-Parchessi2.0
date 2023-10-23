@@ -54,6 +54,6 @@ public class PlayerEntity : MonoBehaviour, ITargetee
 
     protected virtual void OnDestroy()
     {
-        ActionManager.Instance.RemoveTargetEntity(this);
+        if (ActionManager.InstanceOptional != null) ActionManager.InstanceOptional.RemoveTargetEntity(this);
     }
 }
