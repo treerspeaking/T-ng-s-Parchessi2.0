@@ -44,28 +44,22 @@ namespace _Scripts.Player.Pawn
 
         public virtual bool TryMove(int startMapCellIndex, int stepCount)
         {
-            bool isMovable = true;
+            
             int endMapCellIndex = stepCount + startMapCellIndex;
+
+            if (startMapCellIndex + stepCount >= _mapPath.Path.Count) return false;
                 
-            for (var index = startMapCellIndex + 1; index <= stepCount + startMapCellIndex; index++)
+            for (var index = startMapCellIndex + 1; index < stepCount + startMapCellIndex; index++)
             {
                 var mapCell = _mapPath.Path[index];
 
                 if (index < _mapPath.Path.Count && mapCell.CheckEnterable()) continue;
-                    
-                isMovable = false;
-                break;
+
+                return false;
 
             }
-                
-            if (isMovable && _mapPath.Path[endMapCellIndex].CheckEnterable()) 
-                // If the last cell , try to make combat to find empty slot
-            {
-                isMovable = TryMakeCombatToFindEmptySlot(this, _mapPath.Path[endMapCellIndex]);
-                    
-            }
-
-            return isMovable;
+            
+            return TryMakeCombatToFindEmptySlot(this, _mapPath.Path[endMapCellIndex]);
         }
 
         protected virtual bool TryMakeCombatToFindEmptySlot(MapPawn attacker, MapCell mapCell)
@@ -98,13 +92,15 @@ namespace _Scripts.Player.Pawn
                     // Start move
                     _mapPath.Path[startMapCellIndex].RemovePawn(this);
                     
-                    for (int step = 1; step <= stepCount; step++)
+                    for (int step = 1; step < stepCount; step++)
                     {
                     
                         // Teleport to the end position
                         StandingMapCellIndex = step + startMapCellIndex;
                         transform.position = _mapPath.Path[StandingMapCellIndex].GetEmptySpot().transform.position; 
                     }
+
+                    StandingMapCellIndex ++;
                 });
 
   
@@ -144,7 +140,7 @@ namespace _Scripts.Player.Pawn
             {
                 // Teleport to the end position
                 StandingMapCellIndex = endMapCellIndex;
-                transform.position = _mapPath.Path[StandingMapCellIndex].transform.position; 
+                transform.position = _mapPath.Path[endMapCellIndex].transform.position; 
                 
                 // End move
                 _mapPath.Path[endMapCellIndex].EnterPawn(this);
@@ -161,9 +157,52 @@ namespace _Scripts.Player.Pawn
         }
 
 
-        public SimulationPackage MakeCombat(MapPawn defenderMapPawn)
+        public SimulationPackage Attack(MapPawn defenderMapPawn)
         {
-            throw new NotImplementedException();
+            var simulationPacket = new SimulationPackage();
+            
+            simulationPacket.AddToPackage(() =>
+            {
+                // Buff from attacker and debuff from defender
+                
+            });
+            
+            return null;
         }
+
+        public SimulationPackage Defend(MapPawn attackerMapPawn)
+        {
+            var simulationPacket = new SimulationPackage();
+            
+            simulationPacket.AddToPackage(() =>
+            {
+                CurrentHealth.Value -= attackerMapPawn.AttackDamage.Value;
+                
+                if (CurrentHealth.Value <= 0)
+                {
+                    // Death
+                    MapManager.RemovePawnFromMapServerRPC(ContainerIndex);
+                    
+                    _mapPath.Path[StandingMapCellIndex].RemovePawn(this);
+                }
+            });
+            
+            return simulationPacket;
+        }
+        
+        
+        public SimulationPackage Death()
+        {
+            var simulationPacket = new SimulationPackage();
+            
+            simulationPacket.AddToPackage(() =>
+            {
+                // Death Animation
+                Destroy(gameObject);
+            });
+            
+            return simulationPacket;
+        }
+        
     }
 }

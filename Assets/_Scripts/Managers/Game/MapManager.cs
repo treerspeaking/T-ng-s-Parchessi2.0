@@ -87,10 +87,25 @@ namespace _Scripts.Managers.Game
         }
         
         [ServerRpc(RequireOwnership = false)]
-        public void RemovePawnFromMapServerRPC(int pawnContainerIndex)
+        public void RemovePawnFromMapServerRPC(int pawnContainerIndex, ServerRpcParams serverRpcParams = default)
         {
-            _containerIndexToMapPawnDictionary.Remove(pawnContainerIndex);
+            var clientId = serverRpcParams.Receive.SenderClientId;
+            if (!NetworkManager.ConnectedClients.ContainsKey(clientId)) return;
+            
+            var mapPawnContainer = _mapPawnContainers[pawnContainerIndex];
+            if (mapPawnContainer.ClientOwnerID != clientId) return;
+            
             _mapPawnContainers[pawnContainerIndex] = EmptyPawnContainer;
+            
+            RemovePawnFromMapClientRPC(pawnContainerIndex);
+        }
+        
+        [ClientRpc]
+        public void RemovePawnFromMapClientRPC(int pawnContainerIndex)
+        {
+            var mapPawn = GetPlayerPawn(pawnContainerIndex);
+            _containerIndexToMapPawnDictionary.Remove(pawnContainerIndex);
+            SimulationManager.Instance.AddCoroutineSimulationObject(mapPawn.Death());
         }
 
         [ServerRpc(RequireOwnership = false)]
@@ -101,6 +116,8 @@ namespace _Scripts.Managers.Game
             
             var mapPawnContainer = _mapPawnContainers[pawnContainerIndex];
             if (mapPawnContainer.ClientOwnerID != clientId) return;
+            
+            // Start Move Logic
 
             stepCount += mapPawnContainer.PawnStatContainer.MovementSpeed;
             
@@ -127,10 +144,11 @@ namespace _Scripts.Managers.Game
             var mapPawnContainer = _mapPawnContainers[pawnContainerIndex];
             if (mapPawnContainer.ClientOwnerID != clientId) return;
             
+            // End Move Logic
             
             mapPawnContainer.StandingMapCell = finalMapCellIndex;
-            
             _mapPawnContainers[pawnContainerIndex] = mapPawnContainer;
+            
             EndMovePawnClientRPC(pawnContainerIndex, finalMapCellIndex);
         }
 
@@ -145,8 +163,19 @@ namespace _Scripts.Managers.Game
 
 
         [ServerRpc]
-        public void MakeCombatServerRPC(int attackerPawnContainerIndex, int defenderPawnContainerIndex)
+        public void MakeCombatServerRPC(int attackerPawnContainerIndex, int defenderPawnContainerIndex, ServerRpcParams serverRpcParams = default)
         {
+            var clientId = serverRpcParams.Receive.SenderClientId;
+            if (!NetworkManager.ConnectedClients.ContainsKey(clientId)) return;
+            
+            var attackerPawnContainer = _mapPawnContainers[attackerPawnContainerIndex];
+            if (attackerPawnContainer.ClientOwnerID != clientId) return;   
+            
+            
+            // Attack Logic
+            var defenderPawnContainer = _mapPawnContainers[defenderPawnContainerIndex];
+            
+            defenderPawnContainer.PawnStatContainer.CurrentHealth -= attackerPawnContainer.PawnStatContainer.AttackDamage;
             
             MakeCombatClientRPC(attackerPawnContainerIndex, defenderPawnContainerIndex);
         }
@@ -157,8 +186,10 @@ namespace _Scripts.Managers.Game
             var attackerMapPawn = GetPlayerPawn(attackerPawnContainerIndex);
             var defenderMapPawn = GetPlayerPawn(defenderPawnContainerIndex);
             
-            SimulationManager.Instance.AddCoroutineSimulationObject(attackerMapPawn.MakeCombat(defenderMapPawn));
+            SimulationManager.Instance.AddCoroutineSimulationObject(attackerMapPawn.Attack(defenderMapPawn));
+            
+            SimulationManager.Instance.AddCoroutineSimulationObject(defenderMapPawn.Defend(attackerMapPawn));
         }
-        
+
     }
 }
