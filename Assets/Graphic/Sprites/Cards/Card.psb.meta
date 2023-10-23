@@ -137,6 +137,28 @@ ScriptedImporter:
     parentGroupIndex: -1
     uvTransform: {x: 883, y: 1377}
     spritePosition: {x: 3, y: 402}
+  - name: Speed Box
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 508
+      y: 1611
+      width: 133
+      height: 133
+    spriteID: 87764ca9f2488f64a860931b59280d92
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 508, y: 1611}
+    spritePosition: {x: 3, y: 253}
   - name: Cost Box
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -294,6 +316,16 @@ ScriptedImporter:
     spriteID: 185c9a1fccb599b4b8f57c96d2337b19
     layerID: 16
     mosaicPosition: {x: 883, y: 1377}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Speed Box
+    spriteName: Speed Box
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 87764ca9f2488f64a860931b59280d92
+    layerID: 20
+    mosaicPosition: {x: 508, y: 1611}
     flatten: 0
     isImported: 1
     isVisible: 1

@@ -57,6 +57,12 @@ namespace _Scripts.Managers.Game
             return _playerEmptyTarget;
         }
 
+        public void SpawnPawnToMap(PawnDescription pawnDescription, ulong ownerClientId)
+        {
+            if (ownerClientId != NetworkManager.LocalClientId) return;
+            SpawnPawnToMapServerRPC(new PawnContainer{PawnID = pawnDescription.PawnID, ClientOwnerID = ownerClientId, StandingMapCell = 0, StandingMapSpot = 0}, ownerClientId);
+        }
+        
         public MapPawn CreateMapPawn(PawnContainer pawnContainer, int pawnContainerIndex, ulong ownerClientId)
         {
             var pawnDescription = GameResourceManager.Instance.GetPawnDescription(pawnContainer.PawnID);
@@ -72,7 +78,7 @@ namespace _Scripts.Managers.Game
         [ServerRpc(RequireOwnership = false)]
         public void SpawnPawnToMapServerRPC(PawnContainer pawnContainer, ulong ownerClientId)
         {
-            
+            if (ownerClientId != NetworkManager.LocalClientId) return;
             for (var index = 0; index < _mapPawnContainers.Count; index++)
             {
                 var mapPawnContainer = _mapPawnContainers[index];
@@ -86,7 +92,7 @@ namespace _Scripts.Managers.Game
         }
 
         [ClientRpc]
-        public void SpawnPawnToMapClientRPC(PawnContainer pawnContainer, int containerIndex, ulong ownerClientId)
+        private void SpawnPawnToMapClientRPC(PawnContainer pawnContainer, int containerIndex, ulong ownerClientId)
         {
             var mapPawn = CreateMapPawn(pawnContainer, containerIndex, ownerClientId);
             _containerIndexToMapPawnDictionary.Add(containerIndex, mapPawn);

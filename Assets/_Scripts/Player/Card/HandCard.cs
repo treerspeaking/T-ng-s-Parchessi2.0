@@ -20,17 +20,19 @@ public class HandCard : PlayerEntity, ITargeter
     public void Initialize(PlayerCardHand playerCardHand, CardDescription cardDescription, int containerIndex, ulong ownerClientID)
     {
         PlayerCardHand = playerCardHand;
-        CardDescription = cardDescription;
         Initialize(containerIndex, ownerClientID);
+        InitializeCardDescription(cardDescription);
     }
 
-
+    protected virtual void InitializeCardDescription(CardDescription cardDescription)
+    {
+        CardDescription = cardDescription;
+    }
 
     public virtual SimulationPackage ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : ITargetee
     {
         
         var package = new SimulationPackage();
-        
         
         if (targetee is MapPawn playerPawn)
         {
