@@ -23,7 +23,7 @@ public class PawnHandCard : HandCard
             Debug.LogError("PawnCardDescription is null");
     }
 
-    public virtual SimulationPackage ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : ITargetee
+    public override SimulationPackage ExecuteTargeter<TTargetee>(TTargetee targetee)
     {
         
         var package = new SimulationPackage();
