@@ -1,4 +1,5 @@
-﻿
+using System.Collections;
+using System.Collections.Generic;
 using _Scripts.DataWrapper;
 using _Scripts.Managers.Game;
 using _Scripts.Player.Dice;
@@ -8,25 +9,25 @@ using _Scripts.Simulation;
 using DG.Tweening;
 using UnityEngine;
 
-public class SpinalTapCard: HandCard
+public class AquaponicsCard : StylizedHandCard
 {
-    public ObservableData<int> DealDamage;
-
+    public ObservableData<int> HealValue;
+    
     protected override void InitializeCardDescription(CardDescription cardDescription)
     {
         base.InitializeCardDescription(cardDescription);
-        DealDamage = new ObservableData<int>(cardDescription.CardEffectIntVariables[0]);
+        HealValue = new ObservableData<int>(cardDescription.CardEffectIntVariables[0]);
     }
-
+    
     public override bool CheckTargeteeValid(ITargetee targetee)
     {
         if (targetee is MapPawn mapPawn)
         {
-            return targetee.OwnerClientID != this.OwnerClientID;
+            return targetee.OwnerClientID == this.OwnerClientID;
         }
         else return false;
     }
-
+    
     public override SimulationPackage ExecuteTargeter<TTargetee>(TTargetee targetee)
     {
         var package = new SimulationPackage();
@@ -35,22 +36,22 @@ public class SpinalTapCard: HandCard
         {
             return package; 
         }
-
+        
         package.AddToPackage(MoveToMiddleScreen());
 
         package.AddToPackage(() =>
-        {
-            // Inherit this class and write Card effect
-            Debug.Log(name + " Card drag to Pawn " + playerPawn.name);
+            {
+                // Inherit this class and write Card effect
+                Debug.Log(name + " Card drag to Pawn " + playerPawn.name);
 
-            MapManager.Instance.TakeDamagePawnServerRPC(DealDamage.Value, playerPawn.ContainerIndex);
-            playerPawn.TakeDamage(DealDamage.Value);
+                MapManager.Instance.HealPawnServerRPC(HealValue.Value, playerPawn.ContainerIndex);
+                playerPawn.TakeDamage(HealValue.Value);
                 
-            PlayerCardHand.PlayCard(this);
+                PlayerCardHand.PlayCard(this);
 
-            Destroy();
+                Destroy();
                 
-        });
+            });
         
         
         return package;

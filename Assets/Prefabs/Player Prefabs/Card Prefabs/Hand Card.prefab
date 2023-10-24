@@ -1007,6 +1007,7 @@ GameObject:
   - component: {fileID: -313294548724005488}
   - component: {fileID: 971385533165736036}
   - component: {fileID: 1235029926}
+  - component: {fileID: 8396391368306482471}
   m_Layer: 0
   m_Name: Hand Card
   m_TagString: Untagged
@@ -1080,6 +1081,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targeteeType: 5
+  MoveToMiddleDuration: 0.5
+  MoveToMiddleEase: 9
 --- !u!114 &971385533165736036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1115,7 +1118,20 @@ MonoBehaviour:
   IsDraggable: 1
   IsHoverable: 1
   ActivateOnValidate: 0
-  _targetTypes: 0300000001000000
+--- !u!114 &8396391368306482471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5892810086109648495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6fcd0d7394c43119738075020b56fc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Renderers: []
+  FadeDuration: 1
 --- !u!1 &5892810086544425642
 GameObject:
   m_ObjectHideFlags: 0
