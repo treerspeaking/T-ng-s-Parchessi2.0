@@ -14,9 +14,7 @@ public class HandCard : PlayerEntity, ITargeter
 {
     protected PlayerCardHand PlayerCardHand;
     public CardDescription CardDescription { get; protected set; }
-
     
-
     public void Initialize(PlayerCardHand playerCardHand, CardDescription cardDescription, int containerIndex, ulong ownerClientID)
     {
         PlayerCardHand = playerCardHand;

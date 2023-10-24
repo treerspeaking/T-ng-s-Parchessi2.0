@@ -172,18 +172,21 @@ namespace _Scripts.Player.Pawn
             {
                 // Buff from attacker and debuff from defender
                 
+                SimulationManager.Instance.AddCoroutineSimulationObject(defenderMapPawn.TakeDamage(AttackDamage.Value));
             });
+            
+            
             
             return null;
         }
 
-        public SimulationPackage Defend(MapPawn attackerMapPawn)
+        public SimulationPackage TakeDamage(int damage)
         {
             var simulationPacket = new SimulationPackage();
             
             simulationPacket.AddToPackage(() =>
             {
-                CurrentHealth.Value -= attackerMapPawn.AttackDamage.Value;
+                CurrentHealth.Value -= damage;
                 
                 if (CurrentHealth.Value <= 0)
                 {

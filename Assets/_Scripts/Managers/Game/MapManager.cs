@@ -219,8 +219,6 @@ namespace _Scripts.Managers.Game
             var defenderMapPawn = GetPlayerPawn(defenderPawnContainerIndex);
             
             SimulationManager.Instance.AddCoroutineSimulationObject(attackerMapPawn.Attack(defenderMapPawn));
-            
-            SimulationManager.Instance.AddCoroutineSimulationObject(defenderMapPawn.Defend(attackerMapPawn));
         }
 
         [ServerRpc(RequireOwnership = false)]
