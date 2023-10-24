@@ -46,17 +46,21 @@ namespace _Scripts.Simulation
                 return CoroutineWrapper();
             });
         }
-        
-        public Func<IEnumerator> ConvertToIEnumerator(Tween tween)
+
+        private Func<IEnumerator> ConvertToIEnumerator(Tween tween)
         {
+            tween.Pause();
             return new Func<IEnumerator>(() =>
             {
                 IEnumerator CoroutineWrapper()
                 {
+                    tween.SetAutoKill(false);
+                    tween.Play();
                     while (!tween.IsComplete())
                     {
                         yield return null;
                     }
+                    tween.Kill();
                 }
 
                 return CoroutineWrapper();
