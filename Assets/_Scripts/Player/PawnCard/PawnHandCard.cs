@@ -11,56 +11,45 @@ public class PawnHandCard : HandCard
 {
     protected PawnDescription PawnDescription;
 
-    
+
     protected override void InitializeCardDescription(CardDescription cardDescription)
     {
         base.InitializeCardDescription(cardDescription);
         var pawnCardDescription = cardDescription as PawnCardDescription;
-        
-        if (pawnCardDescription != null) 
+
+        if (pawnCardDescription != null)
             PawnDescription = pawnCardDescription.PawnDescription;
-        else 
+        else
             Debug.LogError("PawnCardDescription is null");
     }
 
-    public virtual SimulationPackage ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : ITargetee
+    public override SimulationPackage ExecuteTargeter<TTargetee>(TTargetee targetee)
     {
-        
         var package = new SimulationPackage();
-        
-        if (targetee is PlayerEmptyTarget playerEmptyTarget && FindObjectOfType<PawnHandCard>() != null)
+
+        package.AddToPackage(() =>
         {
-            package.AddToPackage(() =>
+            if (targetee is PlayerEmptyTarget playerEmptyTarget)
             {
-            
                 // Inherit this class and write Card effect
                 Debug.Log(name + " Card drag to Empty ");
                 PlayerCardHand.PlayCard(this);
 
                 MapManager.Instance.SpawnPawnToMap(PawnDescription, OwnerClientID);
-                
+
                 Destroy();
-                
-            });
-        }
-        else if (targetee is MapPawn playerPawn)
-        {
-            package.AddToPackage(() =>
+            }
+            else if (targetee is MapPawn playerPawn)
             {
-            
                 // Inherit this class and write Card effect
                 Debug.Log(name + " Card drag to Pawn " + playerPawn.name);
                 PlayerCardHand.PlayCard(this);
 
                 Destroy();
-                
-            });
-        }
-        
-        
+            }
+        });
+
+
         return package;
     }
-   
-    
-    
 }

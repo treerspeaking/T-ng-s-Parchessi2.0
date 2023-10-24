@@ -26,9 +26,10 @@ public class HandDraggableObjectHolder : BaseDraggableObjectHolder
 
     private void KillTween(BaseDraggableObject baseDraggableObject)
     {
+        if(DraggableObject != null) DraggableObject.EnableDrag();
+        if (baseDraggableObject != DraggableObject) return;
         if (_moveTween != null && _moveTween.IsActive()) _moveTween.Kill();
         if (_scaleTween != null && _scaleTween.IsActive()) _scaleTween.Kill();
-        if(DraggableObject != null) DraggableObject.EnableDrag();
     }
 
     protected override void DetachCardVisual()

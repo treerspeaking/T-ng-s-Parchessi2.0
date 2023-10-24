@@ -140,10 +140,17 @@ namespace _Scripts.Player.Pawn
             {
                 // Teleport to the end position
                 StandingMapCellIndex = endMapCellIndex;
-                transform.position = _mapPath.Path[endMapCellIndex].transform.position; 
-                
-                // End move
-                _mapPath.Path[endMapCellIndex].EnterPawn(this);
+                transform.position = _mapPath.Path[endMapCellIndex].transform.position;
+
+                if (endMapCellIndex == _mapPath.Path.Count - 1) // If the pawn reach the end of the path
+                {
+                    MapManager.Instance.ReachGoalServerRPC(ContainerIndex, OwnerClientID);
+                }
+                else
+                {
+                    // End move
+                    _mapPath.Path[endMapCellIndex].EnterPawn(this);
+                }
             });
             
             return simulationPackage;
@@ -181,9 +188,11 @@ namespace _Scripts.Player.Pawn
                 if (CurrentHealth.Value <= 0)
                 {
                     // Death
-                    MapManager.RemovePawnFromMapServerRPC(ContainerIndex);
                     
                     _mapPath.Path[StandingMapCellIndex].RemovePawn(this);
+                    
+                    MapManager.RemovePawnFromMapServerRPC(ContainerIndex);
+                    
                 }
             });
             
@@ -203,6 +212,19 @@ namespace _Scripts.Player.Pawn
             
             return simulationPacket;
         }
-        
+
+        public SimulationPackage ReachGoal()
+        {
+            var simulationPacket = new SimulationPackage();
+            
+            simulationPacket.AddToPackage(() =>
+            {
+                // Fun Animation
+                Debug.Log("Reach Goal!");
+                _mapPath.Path[StandingMapCellIndex].RemovePawn(this);
+            });
+            
+            return simulationPacket;
+        }
     }
 }

@@ -59,11 +59,14 @@ namespace _Scripts.Managers.Game
 
         public void SpawnPawnToMap(PawnDescription pawnDescription, ulong ownerClientId)
         {
-            if (ownerClientId != NetworkManager.LocalClientId) return;
-            SpawnPawnToMapServerRPC(new PawnContainer{PawnID = pawnDescription.PawnID, ClientOwnerID = ownerClientId, StandingMapCell = 0, StandingMapSpot = 0}, ownerClientId);
+            var pawnContainer = pawnDescription.GetPawnContainer();
+            pawnContainer.ClientOwnerID = ownerClientId;
+            pawnContainer.StandingMapCell = 0;
+            
+            SpawnPawnToMapServerRPC(pawnContainer, ownerClientId);
         }
         
-        public MapPawn CreateMapPawn(PawnContainer pawnContainer, int pawnContainerIndex, ulong ownerClientId)
+        private MapPawn CreateMapPawn(PawnContainer pawnContainer, int pawnContainerIndex, ulong ownerClientId)
         {
             var pawnDescription = GameResourceManager.Instance.GetPawnDescription(pawnContainer.PawnID);
             Transform spawnTransform = _mapPaths[(int)ownerClientId].Path[0].transform;
@@ -76,9 +79,23 @@ namespace _Scripts.Managers.Game
 
 
         [ServerRpc(RequireOwnership = false)]
-        public void SpawnPawnToMapServerRPC(PawnContainer pawnContainer, ulong ownerClientId)
+        private void SpawnPawnToMapServerRPC(PawnContainer pawnContainer, ulong ownerClientId, ServerRpcParams serverRpcParams = default)
         {
-            if (ownerClientId != NetworkManager.LocalClientId) return;
+            var clientId = serverRpcParams.Receive.SenderClientId;
+            if (!NetworkManager.ConnectedClients.ContainsKey(clientId)) return;
+
+            if (NetworkManager.ServerClientId != clientId) return;
+            //if (ownerClientId != NetworkManager.LocalClientId) return;
+            
+            foreach (var mapPawnContainer in _mapPawnContainers)
+            {
+                if (mapPawnContainer.Equals(pawnContainer))
+                {
+                    return; // Already Spawned
+                }
+            }
+            
+            // Spawn Logic
             for (var index = 0; index < _mapPawnContainers.Count; index++)
             {
                 var mapPawnContainer = _mapPawnContainers[index];
@@ -104,8 +121,8 @@ namespace _Scripts.Managers.Game
             var clientId = serverRpcParams.Receive.SenderClientId;
             if (!NetworkManager.ConnectedClients.ContainsKey(clientId)) return;
             
-            var mapPawnContainer = _mapPawnContainers[pawnContainerIndex];
-            if (mapPawnContainer.ClientOwnerID != clientId) return;
+            //var mapPawnContainer = _mapPawnContainers[pawnContainerIndex];
+            if (NetworkManager.ServerClientId != clientId) return;
             
             _mapPawnContainers[pawnContainerIndex] = EmptyPawnContainer;
             
@@ -127,7 +144,8 @@ namespace _Scripts.Managers.Game
             if (!NetworkManager.ConnectedClients.ContainsKey(clientId)) return;
             
             var mapPawnContainer = _mapPawnContainers[pawnContainerIndex];
-            if (mapPawnContainer.ClientOwnerID != clientId) return;
+            //if (mapPawnContainer.ClientOwnerID != clientId) return;
+            if (NetworkManager.ServerClientId != clientId) return;
             
             // Start Move Logic
 
@@ -155,7 +173,8 @@ namespace _Scripts.Managers.Game
             if (!NetworkManager.ConnectedClients.ContainsKey(clientId)) return;
             
             var mapPawnContainer = _mapPawnContainers[pawnContainerIndex];
-            if (mapPawnContainer.ClientOwnerID != clientId) return;
+            //if (mapPawnContainer.ClientOwnerID != clientId) return;
+            if (NetworkManager.ServerClientId != clientId) return;
             
             // End Move Logic
             
@@ -182,7 +201,8 @@ namespace _Scripts.Managers.Game
             if (!NetworkManager.ConnectedClients.ContainsKey(clientId)) return;
             
             var attackerPawnContainer = _mapPawnContainers[attackerPawnContainerIndex];
-            if (attackerPawnContainer.ClientOwnerID != clientId) return;   
+            //if (attackerPawnContainer.ClientOwnerID != clientId) return;   
+            if (NetworkManager.ServerClientId != clientId) return;
             
             // Attack Logic
             var defenderPawnContainer = _mapPawnContainers[defenderPawnContainerIndex];
@@ -203,5 +223,31 @@ namespace _Scripts.Managers.Game
             SimulationManager.Instance.AddCoroutineSimulationObject(defenderMapPawn.Defend(attackerMapPawn));
         }
 
+        [ServerRpc(RequireOwnership = false)]
+        public void ReachGoalServerRPC(int containerIndex, ulong ownerClientId, ServerRpcParams serverRpcParams = default)
+        {
+            var clientId = serverRpcParams.Receive.SenderClientId;
+            if (!NetworkManager.ConnectedClients.ContainsKey(clientId)) return;
+            
+            //if (attackerPawnContainer.ClientOwnerID != clientId) return;   
+            if (NetworkManager.ServerClientId != clientId) return;
+            
+            // Win Logic
+            _mapPawnContainers[containerIndex] = EmptyPawnContainer;
+            PlayerTurnController playerTurnController = GameManager.Instance.GetPlayerController(ownerClientId).PlayerTurnController;
+            playerTurnController.AddVictoryPointServerRPC(1);
+            
+            ReachGoalClientRPC(containerIndex, ownerClientId);
+            
+        }
+        
+        [ClientRpc]
+        private void ReachGoalClientRPC(int containerIndex, ulong ownerClientId)
+        {
+            var mapPawn = GetPlayerPawn(containerIndex);
+            _containerIndexToMapPawnDictionary.Remove(containerIndex);
+            SimulationManager.Instance.AddCoroutineSimulationObject(mapPawn.ReachGoal());
+        }
+        
     }
 }
