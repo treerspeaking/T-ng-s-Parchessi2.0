@@ -221,7 +221,7 @@ namespace _Scripts.Managers.Game
             SimulationManager.Instance.AddCoroutineSimulationObject(attackerMapPawn.Attack(defenderMapPawn));
         }
 
-        [ServerRpc]
+        [ServerRpc(RequireOwnership = false)]
         public void TakeDamagePawnServerRPC(int damage, int defenderPawnContainerIndex, ServerRpcParams serverRpcParams = default)
         {
             var clientId = serverRpcParams.Receive.SenderClientId;
@@ -246,7 +246,7 @@ namespace _Scripts.Managers.Game
             SimulationManager.Instance.AddCoroutineSimulationObject(defenderMapPawn.TakeDamage(damage));
         }
         
-        [ServerRpc]
+        [ServerRpc(RequireOwnership = false)]
         public void HealPawnServerRPC(int healValue, int defenderPawnContainerIndex, ServerRpcParams serverRpcParams = default)
         {
             var clientId = serverRpcParams.Receive.SenderClientId;
