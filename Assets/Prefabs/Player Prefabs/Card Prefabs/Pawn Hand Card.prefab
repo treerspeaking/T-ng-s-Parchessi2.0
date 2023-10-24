@@ -2089,9 +2089,10 @@ MonoBehaviour:
   _cardEffectDescription: {fileID: 8842430944892691079}
   _cardImage: {fileID: 8842430943813567567}
   _cardCost: {fileID: 3172645666061913512}
-  _backgroundImage: {fileID: 8842430944136340284}
-  _descriptionBackgroundImage: {fileID: 8842430945408696482}
-  _bannerImage: {fileID: 5524663455553075869}
+  _cardBorderSprite: {fileID: 8842430944136340284}
+  _cardEffectBoxSprite: {fileID: 8842430945408696482}
+  _cardBannerBoxSprite: {fileID: 5524663455553075869}
+  _cardImageBoxSprite: {fileID: 8842430943419315935}
 --- !u!1 &8842430945408696543
 GameObject:
   m_ObjectHideFlags: 0

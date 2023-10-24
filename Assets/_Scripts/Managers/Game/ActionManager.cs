@@ -33,6 +33,8 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
         {
             if (targeteeCondition.Invoke(targetee))
             {
+                if(_highlightingTargetees.Contains(targetee)) continue;
+                
                 targetee.StartHighlight();
                 _highlightingTargetees.Add(targetee);
             }
@@ -43,7 +45,7 @@ public class ActionManager : SingletonMonoBehaviour<ActionManager>
     {
         foreach (var highlightingTargetee in _highlightingTargetees)
         {
-            highlightingTargetee.EndHighlight();
+            highlightingTargetee?.EndHighlight();
         }
         _highlightingTargetees.Clear();
     }

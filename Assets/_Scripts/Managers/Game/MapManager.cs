@@ -199,15 +199,15 @@ namespace _Scripts.Managers.Game
         {
             var clientId = serverRpcParams.Receive.SenderClientId;
             if (!NetworkManager.ConnectedClients.ContainsKey(clientId)) return;
+            if (NetworkManager.ServerClientId != clientId) return;
             
             var attackerPawnContainer = _mapPawnContainers[attackerPawnContainerIndex];
             //if (attackerPawnContainer.ClientOwnerID != clientId) return;   
-            if (NetworkManager.ServerClientId != clientId) return;
             
             // Attack Logic
             var defenderPawnContainer = _mapPawnContainers[defenderPawnContainerIndex];
             
-            defenderPawnContainer.PawnStatContainer.CurrentHealth -= attackerPawnContainer.PawnStatContainer.AttackDamage;
+            defenderPawnContainer.PawnStatContainer.CurrentHealth -= Mathf.Max(attackerPawnContainer.PawnStatContainer.AttackDamage,0);
             
             MakeCombatClientRPC(attackerPawnContainerIndex, defenderPawnContainerIndex);
         }
@@ -219,9 +219,60 @@ namespace _Scripts.Managers.Game
             var defenderMapPawn = GetPlayerPawn(defenderPawnContainerIndex);
             
             SimulationManager.Instance.AddCoroutineSimulationObject(attackerMapPawn.Attack(defenderMapPawn));
-            
-            SimulationManager.Instance.AddCoroutineSimulationObject(defenderMapPawn.Defend(attackerMapPawn));
         }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void TakeDamagePawnServerRPC(int damage, int defenderPawnContainerIndex, ServerRpcParams serverRpcParams = default)
+        {
+            var clientId = serverRpcParams.Receive.SenderClientId;
+            if (!NetworkManager.ConnectedClients.ContainsKey(clientId)) return;
+            if (NetworkManager.ServerClientId != clientId) return;
+            
+            //if (attackerPawnContainer.ClientOwnerID != clientId) return;   
+            
+            // Attack Logic
+            var defenderPawnContainer = _mapPawnContainers[defenderPawnContainerIndex];
+            
+            defenderPawnContainer.PawnStatContainer.CurrentHealth -= Mathf.Max(damage, 0);
+            
+            TakeDamagePawnClientRPC(damage, defenderPawnContainerIndex);
+        }
+        
+        [ClientRpc]
+        private void TakeDamagePawnClientRPC(int damage, int defenderPawnContainerIndex)
+        {
+            var defenderMapPawn = GetPlayerPawn(defenderPawnContainerIndex);
+            
+            SimulationManager.Instance.AddCoroutineSimulationObject(defenderMapPawn.TakeDamage(damage));
+        }
+        
+        [ServerRpc(RequireOwnership = false)]
+        public void HealPawnServerRPC(int healValue, int defenderPawnContainerIndex, ServerRpcParams serverRpcParams = default)
+        {
+            var clientId = serverRpcParams.Receive.SenderClientId;
+            if (!NetworkManager.ConnectedClients.ContainsKey(clientId)) return;
+            if (NetworkManager.ServerClientId != clientId) return;
+            
+            //if (attackerPawnContainer.ClientOwnerID != clientId) return;   
+            
+            // Attack Logic
+            var defenderPawnContainer = _mapPawnContainers[defenderPawnContainerIndex];
+
+            var maxHealableAmount = defenderPawnContainer.PawnStatContainer.MaxHealth -
+                                    defenderPawnContainer.PawnStatContainer.CurrentHealth;
+            var actualHealValue = Mathf.Min(Mathf.Max(healValue, 0) , (maxHealableAmount));
+            defenderPawnContainer.PawnStatContainer.CurrentHealth += actualHealValue;
+            TakeDamagePawnClientRPC(healValue, defenderPawnContainerIndex);
+        }
+        
+        [ClientRpc]
+        private void HealPawnClientRPC(int healValue, int defenderPawnContainerIndex)
+        {
+            var defenderMapPawn = GetPlayerPawn(defenderPawnContainerIndex);
+            
+            SimulationManager.Instance.AddCoroutineSimulationObject(defenderMapPawn.Heal(healValue));
+        }
+
 
         [ServerRpc(RequireOwnership = false)]
         public void ReachGoalServerRPC(int containerIndex, ulong ownerClientId, ServerRpcParams serverRpcParams = default)
@@ -248,6 +299,8 @@ namespace _Scripts.Managers.Game
             _containerIndexToMapPawnDictionary.Remove(containerIndex);
             SimulationManager.Instance.AddCoroutineSimulationObject(mapPawn.ReachGoal());
         }
+        
+        
         
     }
 }

@@ -15,8 +15,12 @@ namespace _Scripts.Scriptable_Objects
         public string CardName;
         public string CardEffectDescription;
         public int CardCost;
+        public int [] CardEffectIntVariables;
         
+        public CardPaletteDescription CardPaletteDescription;
         [SerializeField] protected HandCard HandCardPrefab;
+
+        
         
         public HandCard GetHandCardPrefab()
         {

@@ -42,9 +42,9 @@ namespace _Scripts.Player.Pawn
 
         
 
-        public virtual bool TryMove(int startMapCellIndex, int stepCount)
+        public virtual bool TryMove(int stepCount)
         {
-            
+            int startMapCellIndex = StandingMapCellIndex;
             int endMapCellIndex = stepCount + startMapCellIndex;
 
             if (startMapCellIndex + stepCount >= _mapPath.Path.Count) return false;
@@ -84,7 +84,7 @@ namespace _Scripts.Player.Pawn
         {
             var simulationPackage = new SimulationPackage();
 
-            if (TryMove(startMapCellIndex, stepCount))
+            if (TryMove(stepCount))
             {
                 
                 simulationPackage.AddToPackage(()=> 
@@ -172,18 +172,37 @@ namespace _Scripts.Player.Pawn
             {
                 // Buff from attacker and debuff from defender
                 
+                SimulationManager.Instance.AddCoroutineSimulationObject(defenderMapPawn.TakeDamage(AttackDamage.Value));
             });
+            
+            
             
             return null;
         }
 
-        public SimulationPackage Defend(MapPawn attackerMapPawn)
+        public SimulationPackage TakeDamage(MapPawn attackerMapPawn)
         {
             var simulationPacket = new SimulationPackage();
             
             simulationPacket.AddToPackage(() =>
             {
-                CurrentHealth.Value -= attackerMapPawn.AttackDamage.Value;
+                // Buff from attacker and debuff from defender
+                
+                SimulationManager.Instance.AddCoroutineSimulationObject(TakeDamage(attackerMapPawn.AttackDamage.Value));
+            });
+            
+            
+            
+            return null;
+        }
+        
+        public SimulationPackage TakeDamage(int damage)
+        {
+            var simulationPacket = new SimulationPackage();
+            
+            simulationPacket.AddToPackage(() =>
+            {
+                CurrentHealth.Value -= damage;
                 
                 if (CurrentHealth.Value <= 0)
                 {
@@ -222,6 +241,20 @@ namespace _Scripts.Player.Pawn
                 // Fun Animation
                 Debug.Log("Reach Goal!");
                 _mapPath.Path[StandingMapCellIndex].RemovePawn(this);
+            });
+            
+            return simulationPacket;
+        }
+
+        public SimulationPackage Heal(int healValue)
+        {
+            var simulationPacket = new SimulationPackage();
+            
+            simulationPacket.AddToPackage(() =>
+            {
+                // Fun Animation
+                Debug.Log("Heal!");
+                CurrentHealth.Value += healValue;
             });
             
             return simulationPacket;

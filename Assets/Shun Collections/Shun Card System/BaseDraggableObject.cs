@@ -11,10 +11,10 @@ namespace Shun_Card_System
     {
         public Action<BaseDraggableObject> OnDestroy { get; set; }
         public bool IsDestroyed { get; protected set; }
-        public bool IsDraggable; 
+        public bool IsDraggable = true; 
         public bool IsDragging { get; private set; }
 
-        public bool IsHoverable;
+        public bool IsHoverable = true;
         public bool IsHovering { get; private set; }
         
         public virtual void StartDrag()

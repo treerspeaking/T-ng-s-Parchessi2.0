@@ -11,6 +11,11 @@ namespace _Scripts.Simulation
         public float Priority { get; set; }
         public readonly List<Func<IEnumerator>> ExecuteEvents = new();
 
+        public SimulationPackage(float priority = 0)
+        {
+            Priority = priority;
+        }
+        
         
         
         public void AddToPackage(Action action)
