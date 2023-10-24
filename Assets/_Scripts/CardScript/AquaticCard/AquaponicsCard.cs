@@ -7,7 +7,7 @@ using _Scripts.Scriptable_Objects;
 using _Scripts.Simulation;
 using UnityEngine;
 
-public class AerobaticCard : HandCard
+public class AquaponicsCard : HandCard
 {
     public ObservableData<int> DealDamage;
 
@@ -15,6 +15,15 @@ public class AerobaticCard : HandCard
     {
         base.InitializeCardDescription(cardDescription);
         DealDamage = new ObservableData<int>(cardDescription.CardEffectIntVariables[0]);
+    }
+    
+    public override bool CheckTargeteeValid(ITargetee targetee)
+    {
+        if (targetee is MapPawn mapPawn)
+        {
+            return targetee.OwnerClientID != this.OwnerClientID;
+        }
+        else return false;
     }
     
     public override SimulationPackage ExecuteTargeter<TTargetee>(TTargetee targetee)
