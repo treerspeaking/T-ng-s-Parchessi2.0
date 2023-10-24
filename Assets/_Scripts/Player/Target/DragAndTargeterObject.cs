@@ -2,14 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Shun_Card_System;
+using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Device;
 
 public abstract class DragAndTargeterObject : BaseDraggableObject
 {
-    [SerializeField] private ITargeter _targeterObject;
-    [SerializeField] private TargetType[] _targetTypes;
+    [ShowInInspector] protected ITargeter TargeterObject;
     
     
     bool _isDragging;
@@ -17,14 +17,14 @@ public abstract class DragAndTargeterObject : BaseDraggableObject
 
     private void Awake()
     {
-        _targeterObject = GetComponent<ITargeter>();
+        TargeterObject = GetComponent<ITargeter>();
         
     }
 
     public override void StartDrag()
     {
         base.StartDrag();
-        ActionManager.Instance.StartHighlightTargetee(_targeterObject, CheckValid);
+        ActionManager.Instance.StartHighlightTargetee(TargeterObject, TargeterObject.CheckTargeteeValid);
         
     }
 
@@ -53,19 +53,11 @@ public abstract class DragAndTargeterObject : BaseDraggableObject
     {
         var targetEntity = hit.transform.gameObject.GetComponent<ITargetee>();
         
-        if (targetEntity == null || !CheckValid(targetEntity)) return false;
+        if (targetEntity == null || !TargeterObject.CheckTargeteeValid(targetEntity)) return false;
         
-        ActionManager.Instance.ExecuteTarget(_targeterObject, targetEntity);
+        ActionManager.Instance.ExecuteTarget(TargeterObject, targetEntity);
         return true;
     }
     
-    protected virtual bool CheckValid(ITargetee dropTargetEntity)
-    {
-        foreach (var targetType in _targetTypes)
-        {
-            if (targetType == dropTargetEntity.TargetType) return true;
-        }
-        return false;
-    }
     
 }

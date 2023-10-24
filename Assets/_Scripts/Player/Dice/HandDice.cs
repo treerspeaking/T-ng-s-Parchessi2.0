@@ -35,6 +35,17 @@ public class HandDice : PlayerEntity, ITargeter
         _playerDiceHand.RollDice(this, _diceDescription.DiceLowerRange, _diceDescription.DiceUpperRange);
     }
 
+    
+    public bool CheckTargeteeValid(ITargetee targetee)
+    {
+        if (targetee is PlayerDeck) return true;
+        if (targetee is MapPawn mapPawn)
+        {
+            return mapPawn.TryMove(DiceValue.Value);
+        }
+        else return false;
+    }
+    
     public virtual SimulationPackage SetDiceValue(int value)
     {
         var simulationPackage = new SimulationPackage();
@@ -73,6 +84,7 @@ public class HandDice : PlayerEntity, ITargeter
         
         return package;
     }
+
 
     public void Destroy()
     {

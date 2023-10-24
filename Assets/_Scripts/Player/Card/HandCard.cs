@@ -27,6 +27,14 @@ public class HandCard : PlayerEntity, ITargeter
         CardDescription = cardDescription;
     }
 
+    
+    public virtual bool CheckTargeteeValid(ITargetee targetee)
+    {
+        if (targetee.TargetType == TargetType.Pawn || targetee.TargetType == TargetType.Empty)
+            return true;
+        else return false;
+    }
+    
     public virtual SimulationPackage ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : ITargetee
     {
         
@@ -62,6 +70,7 @@ public class HandCard : PlayerEntity, ITargeter
         
         return package;
     }
+
 
     public virtual SimulationPackage Discard()
     {

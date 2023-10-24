@@ -2763,15 +2763,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86629c39421b4380bbe1cff03983bf6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _handCard: {fileID: 0}
-  _cardDescription: {fileID: 0}
-  _cardName: {fileID: 323696937}
-  _cardEffectDescription: {fileID: 101756031}
-  _cardImage: {fileID: 1232431423}
-  _cardCost: {fileID: 978095273}
-  _backgroundImage: {fileID: 62776119}
-  _descriptionBackgroundImage: {fileID: 838843696}
-  _bannerImage: {fileID: 1603395759}
 --- !u!114 &1400504169
 MonoBehaviour:
   m_ObjectHideFlags: 0

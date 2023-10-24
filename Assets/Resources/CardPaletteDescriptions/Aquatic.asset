@@ -15,6 +15,6 @@ MonoBehaviour:
   CardImageBoxColor: {r: 0.38431376, g: 0.62352943, b: 0.654902, a: 1}
   CardBorderColor: {r: 0.23529413, g: 0.34901962, b: 0.3647059, a: 1}
   CardEffectBoxColor: {r: 0.18823531, g: 0.2784314, b: 0.2901961, a: 1}
-  CardBannerBoxColor: {r: 0, g: 1, b: 1, a: 1}
+  CardBannerBoxColor: {r: 0.09019608, g: 0.57254905, b: 0.6901961, a: 1}
   CardNameTextColor: {r: 1, g: 1, b: 1, a: 1}
   CardEffectTextColor: {r: 1, g: 1, b: 1, a: 1}

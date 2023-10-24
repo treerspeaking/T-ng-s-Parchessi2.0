@@ -42,9 +42,9 @@ namespace _Scripts.Player.Pawn
 
         
 
-        public virtual bool TryMove(int startMapCellIndex, int stepCount)
+        public virtual bool TryMove(int stepCount)
         {
-            
+            int startMapCellIndex = StandingMapCellIndex;
             int endMapCellIndex = stepCount + startMapCellIndex;
 
             if (startMapCellIndex + stepCount >= _mapPath.Path.Count) return false;
@@ -84,7 +84,7 @@ namespace _Scripts.Player.Pawn
         {
             var simulationPackage = new SimulationPackage();
 
-            if (TryMove(startMapCellIndex, stepCount))
+            if (TryMove(stepCount))
             {
                 
                 simulationPackage.AddToPackage(()=> 

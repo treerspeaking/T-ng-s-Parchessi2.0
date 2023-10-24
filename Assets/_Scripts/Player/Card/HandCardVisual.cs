@@ -35,9 +35,17 @@ public class HandCardVisual : MonoBehaviour
         if(CardDescription == null) return;
     
         _cardName.text = CardDescription.CardName;
-        _cardEffectDescription.text = string.Format(CardDescription.CardEffectDescription, args: CardDescription.CardEffectIntVariables);
         _cardImage.sprite = CardDescription.CardSprite;
         _cardCost.text = CardDescription.CardCost.ToString();
+        
+        object[] intValueObjects = new object[CardDescription.CardEffectIntVariables.Length];
+        for (int i = 0; i < CardDescription.CardEffectIntVariables.Length; i++)
+        {
+            intValueObjects[i] = CardDescription.CardEffectIntVariables[i];
+        }
+        
+        _cardEffectDescription.text = string.Format(CardDescription.CardEffectDescription, args: intValueObjects);
+
     }
     
     private void LoadCardColor()

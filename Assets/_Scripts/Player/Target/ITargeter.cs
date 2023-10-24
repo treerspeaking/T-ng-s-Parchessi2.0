@@ -9,6 +9,8 @@ public interface ITargeter
     public int ContainerIndex { get; set; }
     public TargetType TargetType { get; set; }
     public SimulationPackage ExecuteTargeter<TTargetee>(TTargetee targetee) where TTargetee : ITargetee;
+    
+    public bool CheckTargeteeValid(ITargetee targetee);
 
     public virtual MonoBehaviour GetMonoBehavior() 
     {
