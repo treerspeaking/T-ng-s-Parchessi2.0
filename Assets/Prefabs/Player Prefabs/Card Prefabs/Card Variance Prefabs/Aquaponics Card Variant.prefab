@@ -149,14 +149,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5892810086109648494, guid: 8acfe556bbf875c4d9f115e9ad9599a7, type: 3}
-      propertyPath: m_SortingLayer
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5892810086109648494, guid: 8acfe556bbf875c4d9f115e9ad9599a7, type: 3}
-      propertyPath: m_SortingLayerID
-      value: -234422237
-      objectReference: {fileID: 0}
     - target: {fileID: 5892810086109648495, guid: 8acfe556bbf875c4d9f115e9ad9599a7, type: 3}
       propertyPath: m_Name
       value: Aquaponics Card Variant
@@ -191,6 +183,7 @@ MonoBehaviour:
   MoveToMiddleEase: 9
   _destroyParticleSystem: {fileID: 2222099306435137539}
   _fadeObject: {fileID: 3224651932014240499}
+  _destroyDelay: 2
   HealValue:
     _value: 0
 --- !u!114 &3224651932014240499 stripped
