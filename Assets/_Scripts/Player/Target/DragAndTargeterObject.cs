@@ -21,19 +21,22 @@ public abstract class DragAndTargeterObject : BaseDraggableObject
         
     }
 
-    public override void StartDrag()
+    public override bool StartDrag()
     {
-        base.StartDrag();
         ActionManager.Instance.StartHighlightTargetee(TargeterObject, TargeterObject.CheckTargeteeValid);
-        
+        return base.StartDrag();
     }
 
-    public override void EndDrag()
+    public override bool EndDrag()
     {
         ActionManager.Instance.EndHighlightTargetee();
+
+        if( TryDrop() )
+            MouseInput.ForceEndDragAndDetachTemporary();
         
-        if (TryDrop()) return;
-        base.EndDrag();
+
+        return base.EndDrag();
+
     }
 
     private bool TryDrop()
@@ -43,20 +46,24 @@ public abstract class DragAndTargeterObject : BaseDraggableObject
         foreach (RaycastHit2D hit in overlapCircleAll)
         {
             if (hit.transform.gameObject == gameObject) continue;
-            if (CheckHit(hit)) return true;
+            var targetee = CheckHit(hit);
+            if (targetee != null)
+            {
+                ActionManager.Instance.ExecuteTarget(TargeterObject, targetee);
+                return true;
+            }
         }
 
         return false;
     }
 
-    protected virtual bool CheckHit(RaycastHit2D hit)
+    protected virtual ITargetee CheckHit(RaycastHit2D hit)
     {
-        var targetEntity = hit.transform.gameObject.GetComponent<ITargetee>();
+        var targetee = hit.transform.gameObject.GetComponent<ITargetee>();
         
-        if (targetEntity == null || !TargeterObject.CheckTargeteeValid(targetEntity)) return false;
+        if (targetee == null || !TargeterObject.CheckTargeteeValid(targetee)) return null;
         
-        ActionManager.Instance.ExecuteTarget(TargeterObject, targetEntity);
-        return true;
+        return targetee;
     }
     
     

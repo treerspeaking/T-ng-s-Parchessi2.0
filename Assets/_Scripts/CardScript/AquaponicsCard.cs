@@ -6,12 +6,13 @@ using _Scripts.Player.Dice;
 using _Scripts.Player.Pawn;
 using _Scripts.Scriptable_Objects;
 using _Scripts.Simulation;
+using DG.Tweening;
 using UnityEngine;
 
 public class AquaponicsCard : HandCard
 {
     public ObservableData<int> HealValue;
-
+    
     protected override void InitializeCardDescription(CardDescription cardDescription)
     {
         base.InitializeCardDescription(cardDescription);
@@ -30,10 +31,15 @@ public class AquaponicsCard : HandCard
     public override SimulationPackage ExecuteTargeter<TTargetee>(TTargetee targetee)
     {
         var package = new SimulationPackage();
-        
-        if (targetee is MapPawn playerPawn)
+
+        if (targetee is not MapPawn playerPawn)
         {
-            package.AddToPackage(() =>
+            return package; 
+        }
+        
+        package.AddToPackage(MoveToMiddleScreen());
+
+        package.AddToPackage(() =>
             {
                 // Inherit this class and write Card effect
                 Debug.Log(name + " Card drag to Pawn " + playerPawn.name);
@@ -46,20 +52,6 @@ public class AquaponicsCard : HandCard
                 Destroy();
                 
             });
-        }
-        else if (targetee is PlayerEmptyTarget playerEmptyTarget)
-        {
-            package.AddToPackage(() =>
-            {
-            
-                // Inherit this class and write Card effect
-                Debug.Log(name + " Card drag to Empty ");
-                PlayerCardHand.PlayCard(this);
-
-                Destroy();
-                
-            });
-        }
         
         
         return package;

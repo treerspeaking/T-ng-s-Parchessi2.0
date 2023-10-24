@@ -10,21 +10,40 @@ namespace _Scripts.Managers.Game
 {
     public class HandManager : SingletonMonoBehaviour<HandManager>
     {
-        private Dictionary<ulong,PlayerCardHand> _playerCardHands = new ();
-        private Dictionary<ulong,PlayerDiceHand> _playerDiceHands = new ();
+        
 
         [SerializeField] private Transform _playerCardHandParent;
         [SerializeField] private Transform _playerDiceHandParent;
         [SerializeField] private Transform _offScreenCardHandParent;
         [SerializeField] private Transform _offScreenDiceHandParent;
         
+        
+        private HandDraggableObjectMouseInput _draggableObjectMouseInput = new ();
+        private bool _isHandInteractable = false;
+        
+        private Dictionary<ulong,PlayerCardHand> _playerCardHands = new ();
+        private Dictionary<ulong,PlayerDiceHand> _playerDiceHands = new ();
+        
         private void Awake()
         {
             GameManager.Instance.OnGameStart += OnGameStartSetUp;
+            
+            GameManager.Instance.OnPlayerTurnStart += SetPlayerHandInteractable;
             GameManager.Instance.OnPlayerTurnStart += ShowPlayerHand;
             GameManager.Instance.OnPlayerTurnEnd += HidePlayerHand;
         }
 
+        private void Update()
+        {
+            if (_isHandInteractable)
+                _draggableObjectMouseInput.UpdateMouseInput();
+        }
+        
+        private void SetPlayerHandInteractable(PlayerController playerController)
+        {
+            _isHandInteractable = playerController == GameManager.Instance.ClientOwnerPlayerController;
+        }
+        
         public PlayerDiceHand GetPlayerDiceHand(ulong clientOwnerID)
         {
             return _playerDiceHands[clientOwnerID];

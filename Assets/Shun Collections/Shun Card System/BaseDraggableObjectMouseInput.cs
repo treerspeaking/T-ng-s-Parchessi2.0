@@ -179,7 +179,7 @@ namespace Shun_Card_System
             IsDraggingCard = true;
 
             DraggingObject.StartDrag();
-    
+            DraggingObject.SetMouseInput(this);
             return true;
         
         }
@@ -192,11 +192,13 @@ namespace Shun_Card_System
         
         }
 
-        protected void EndDrag()
+        private void EndDrag()
         {
             if (!IsDraggingCard) return;
 
+            
             DraggingObject.EndDrag();
+            if (DraggingObject != null) DraggingObject.RemoveMouseInput(this);
             AttachCardToHolder();
 
             DraggingObject = null;
@@ -204,6 +206,20 @@ namespace Shun_Card_System
             LastDraggableObjectRegion = null;
             IsDraggingCard = false;
 
+        }
+
+        public void ForceEndDragAndDetachTemporary()
+        {
+            if (LastDraggableObjectRegion != null) // remove the temporary in last region
+            {
+                LastDraggableObjectRegion.RemoveTemporary(DraggingObject);
+                
+            }
+            
+            DraggingObject = null;
+            LastDraggableObjectHolder = null;
+            LastDraggableObjectRegion = null;
+            IsDraggingCard = false;
         }
     
         protected virtual bool DetachCardToHolder()
@@ -241,7 +257,7 @@ namespace Shun_Card_System
 
         protected void AttachCardToHolder()
         {
-            if (DraggingObject.IsDestroyed) return;
+            if (DraggingObject == null || DraggingObject.IsDestroyed) return;
             var dropRegion = FindFirstInMouseCast<BaseDraggableObjectRegion>();
             var dropHolder = FindFirstInMouseCast<BaseDraggableObjectHolder>();
         

@@ -1,10 +1,12 @@
 ﻿
 using System;
 using System.Threading.Tasks;
+using _Scripts.Managers.Game;
 using _Scripts.Player.Dice;
 using _Scripts.Player.Pawn;
 using _Scripts.Scriptable_Objects;
 using _Scripts.Simulation;
+using DG.Tweening;
 using Shun_Card_System;
 using TMPro;
 using UnityEngine;
@@ -16,7 +18,11 @@ public class HandCard : PlayerEntity, ITargeter
     public CardDescription CardDescription { get; protected set; }
 
     public Action OnInitialize { get; set;}
-
+    
+    [Header("Animations ")]
+    [SerializeField] protected float MoveToMiddleDuration = 0.5f;
+    [SerializeField] protected Ease MoveToMiddleEase = Ease.OutCubic;
+    
     public void Initialize(PlayerCardHand playerCardHand, CardDescription cardDescription, int containerIndex, ulong ownerClientID)
     {
         PlayerCardHand = playerCardHand;
@@ -47,9 +53,9 @@ public class HandCard : PlayerEntity, ITargeter
         
         if (targetee is MapPawn playerPawn)
         {
+            
             package.AddToPackage(() =>
             {
-            
                 // Inherit this class and write Card effect
                 Debug.Log(name + " Card drag to Pawn " + playerPawn.name);
                 PlayerCardHand.PlayCard(this);
@@ -94,4 +100,12 @@ public class HandCard : PlayerEntity, ITargeter
             baseDraggableObject.Destroy();
         Destroy(gameObject);
     }
+
+    protected virtual Tween MoveToMiddleScreen()
+    {
+        return transform
+            .DOMove(MapManager.Instance.GetEmptyTarget().GetMonoBehavior().transform.position, MoveToMiddleDuration)
+            .SetEase(MoveToMiddleEase);
+    }
+    
 }

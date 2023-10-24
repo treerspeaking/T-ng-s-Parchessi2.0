@@ -5,6 +5,7 @@ using _Scripts.Player.Dice;
 using _Scripts.Player.Pawn;
 using _Scripts.Scriptable_Objects;
 using _Scripts.Simulation;
+using DG.Tweening;
 using UnityEngine;
 
 public class SpinalTapCard: HandCard
@@ -29,37 +30,29 @@ public class SpinalTapCard: HandCard
     public override SimulationPackage ExecuteTargeter<TTargetee>(TTargetee targetee)
     {
         var package = new SimulationPackage();
-    
-        if (targetee is MapPawn playerPawn)
+
+        if (targetee is not MapPawn playerPawn)
         {
-            package.AddToPackage(() =>
-            {
-                // Inherit this class and write Card effect
-                Debug.Log(name + " Card drag to Pawn " + playerPawn.name);
-
-                MapManager.Instance.TakeDamagePawnServerRPC(DealDamage.Value, playerPawn.ContainerIndex);
-            
-                PlayerCardHand.PlayCard(this);
-
-                Destroy();
-            
-            });
+            return package; 
         }
-        else if (targetee is PlayerEmptyTarget playerEmptyTarget)
+
+        package.AddToPackage(MoveToMiddleScreen());
+
+        package.AddToPackage(() =>
         {
-            package.AddToPackage(() =>
-            {
+            // Inherit this class and write Card effect
+            Debug.Log(name + " Card drag to Pawn " + playerPawn.name);
+
+            MapManager.Instance.TakeDamagePawnServerRPC(DealDamage.Value, playerPawn.ContainerIndex);
+            playerPawn.TakeDamage(DealDamage.Value);
+                
+            PlayerCardHand.PlayCard(this);
+
+            Destroy();
+                
+        });
         
-                // Inherit this class and write Card effect
-                Debug.Log(name + " Card drag to Empty ");
-                PlayerCardHand.PlayCard(this);
-
-                Destroy();
-            
-            });
-        }
-    
-    
+        
         return package;
     }
 }

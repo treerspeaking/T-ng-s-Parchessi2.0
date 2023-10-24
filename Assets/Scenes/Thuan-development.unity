@@ -2776,6 +2776,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targeteeType: 0
+  MoveToMiddleDuration: 0.5
+  MoveToMiddleEase: 9
 --- !u!222 &1400504170
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3595,7 +3597,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4845276930943762971, guid: 2da3dcc22749e7f4280737786d898334, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000030517578
+      value: 0.000061035156
       objectReference: {fileID: 0}
     - target: {fileID: 4845637959249703711, guid: 2da3dcc22749e7f4280737786d898334, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4507,7 +4509,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8449361531432333053, guid: 94595561b19177f46ae77d86ee41c69b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8449361531432333053, guid: 94595561b19177f46ae77d86ee41c69b, type: 3}
       propertyPath: m_LocalPosition.z

@@ -10,6 +10,7 @@ namespace Shun_Card_System
     public class BaseDraggableObject : MonoBehaviour, IMouseDraggable, IMouseHoverable
     {
         public Action<BaseDraggableObject> OnDestroy { get; set; }
+        protected BaseDraggableObjectMouseInput MouseInput;
         public bool IsDestroyed { get; protected set; }
         public bool IsDraggable = true; 
         public bool IsDragging { get; private set; }
@@ -17,19 +18,23 @@ namespace Shun_Card_System
         public bool IsHoverable = true;
         public bool IsHovering { get; private set; }
         
-        public virtual void StartDrag()
-        {
-            IsDragging = true;
-        }
-
-        public virtual void EndDrag()
-        {
-            IsDragging = false;
-        }
-        
         [SerializeField] protected bool ActivateOnValidate = false;
-        
 
+        
+        public virtual bool StartDrag()
+        {
+            if (!IsDraggable) return false;
+            IsDragging = true;
+            return true;
+        }
+
+        public virtual bool EndDrag()
+        {
+            if (!IsDraggable) return false;
+            IsDragging = false;
+            return true;
+        }
+        
         private void OnValidate()
         {
             if (ActivateOnValidate) ValidateInformation();
@@ -61,6 +66,16 @@ namespace Shun_Card_System
         {
             if (IsDraggable) return;
             IsDraggable = true;
+        }
+
+        public void SetMouseInput(BaseDraggableObjectMouseInput mouseInput)
+        {
+            MouseInput = mouseInput;
+        }
+        
+        public void RemoveMouseInput(BaseDraggableObjectMouseInput mouseInput)
+        {
+            MouseInput = null;    
         }
 
         public void Destroy()

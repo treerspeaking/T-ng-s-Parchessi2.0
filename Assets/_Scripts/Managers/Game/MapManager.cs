@@ -262,7 +262,7 @@ namespace _Scripts.Managers.Game
                                     defenderPawnContainer.PawnStatContainer.CurrentHealth;
             var actualHealValue = Mathf.Min(Mathf.Max(healValue, 0) , (maxHealableAmount));
             defenderPawnContainer.PawnStatContainer.CurrentHealth += actualHealValue;
-            TakeDamagePawnClientRPC(healValue, defenderPawnContainerIndex);
+            HealPawnClientRPC(healValue, defenderPawnContainerIndex);
         }
         
         [ClientRpc]
