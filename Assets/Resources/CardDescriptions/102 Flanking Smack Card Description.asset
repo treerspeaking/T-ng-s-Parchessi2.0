@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7982a113185a468bae32be7e08763311, type: 3}
-  m_Name: Spinal Tap Card Description
+  m_Name: 102 Flanking Smack Card Description
   m_EditorClassIdentifier: 
-  CardID: 1
-  CardSprite: {fileID: 21300000, guid: 067beb42a9df741b2bde814584f5154f, type: 3}
-  CardName: Spinal Tap
-  CardEffectDescription: Do {0} damage to an enemy
+  CardID: 102
+  CardSprite: {fileID: 21300000, guid: c211932e13cf4458e9f943c77c20ab5d, type: 3}
+  CardName: Flanking Smack
+  CardEffectDescription: Do {0} damage to ALL axies that are not full health
   CardCost: 1
   CardEffectIntVariables: 02000000
   CardPaletteDescription: {fileID: 11400000, guid: cb0d70e5f96d1e041980a5b52f5185dd, type: 2}
