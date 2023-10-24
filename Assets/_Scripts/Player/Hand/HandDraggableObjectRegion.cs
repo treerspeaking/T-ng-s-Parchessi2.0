@@ -30,7 +30,7 @@ namespace _Scripts.Player
         protected override void Awake()
         {
             base.Awake();
-            _startPosition = transform.localPosition;
+            _startPosition = SpawnPlace.transform.localPosition;
         }
         
         protected override void OnSuccessfullyAddCard(BaseDraggableObject baseDraggableObject,
@@ -53,7 +53,7 @@ namespace _Scripts.Player
 
         private void MiddleAlign()
         {
-            var maxOffset = (CardOffset * (MaxCardHold - 1)) / 2;
+            var maxOffset = (CardOffset * (MaxCardHold)) / 2;
             var currentOffset = (CardOffset * (CardHoldingCount - 1)) / 2;
             _middlePivotDestinationPosition = maxOffset - currentOffset;
 
@@ -85,7 +85,7 @@ namespace _Scripts.Player
         {
             _moveSequence.Kill();
             _moveSequence = DOTween.Sequence();
-            _moveSequence.Append(transform.DOLocalMove(GetMovePosition(), duration).SetEase(ease));
+            _moveSequence.Append(SpawnPlace.transform.DOLocalMove(GetMovePosition(), duration).SetEase(ease));
             _moveSequence.Play();
         }
 

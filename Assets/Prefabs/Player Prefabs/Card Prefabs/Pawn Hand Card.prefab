@@ -1982,8 +1982,8 @@ GameObject:
   - component: {fileID: 8842430945399567938}
   - component: {fileID: 8842430945399567937}
   - component: {fileID: 600866889934413978}
-  - component: {fileID: 2741243479800541259}
   - component: {fileID: 3130520252921474953}
+  - component: {fileID: 6144479861326050585}
   m_Layer: 0
   m_Name: Pawn Hand Card
   m_TagString: Untagged
@@ -2057,25 +2057,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targeteeType: 5
---- !u!114 &2741243479800541259
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8842430945399567936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7000876ce8a4300a1e45474d80bc033, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cardName: {fileID: 8826807904206272048}
-  _cardEffectDescription: {fileID: 8842430944892691079}
-  _cardImage: {fileID: 8842430943813567567}
-  _cardCost: {fileID: 3172645666061913512}
-  _backgroundImage: {fileID: 8842430944136340284}
-  _descriptionBackgroundImage: {fileID: 8842430945408696482}
-  _bannerImage: {fileID: 5524663455553075869}
 --- !u!114 &3130520252921474953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2092,6 +2073,25 @@ MonoBehaviour:
   IsHoverable: 1
   ActivateOnValidate: 0
   _targetTypes: 0300000001000000
+--- !u!114 &6144479861326050585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8842430945399567936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eea2b2836b5a4adca376b91c113457cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cardName: {fileID: 8826807904206272048}
+  _cardEffectDescription: {fileID: 8842430944892691079}
+  _cardImage: {fileID: 8842430943813567567}
+  _cardCost: {fileID: 3172645666061913512}
+  _backgroundImage: {fileID: 8842430944136340284}
+  _descriptionBackgroundImage: {fileID: 8842430945408696482}
+  _bannerImage: {fileID: 5524663455553075869}
 --- !u!1 &8842430945408696543
 GameObject:
   m_ObjectHideFlags: 0

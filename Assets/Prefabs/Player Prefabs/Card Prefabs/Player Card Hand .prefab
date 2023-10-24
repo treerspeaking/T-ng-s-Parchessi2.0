@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4586256181370157972}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -104,13 +104,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d05c187380650e1449ed22d7deb9621e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactable: 1
   DraggableObjectHolderPrefab: {fileID: 3963509264343179173, guid: ae307a74a80e64f408f789e0d969442e, type: 3}
   SpawnPlace: {fileID: 4586256181370157973}
   CardOffset: {x: 2.5, y: 0, z: 0}
   _cardPlaceHolders: []
   MaxCardHold: 5
   CardMiddleInsertionStyle: 1
-  _interactable: 1
   _moveInteractableOffset: {x: 0, y: -2, z: 0}
   _moveInteractableDuration: 0.25
   _moveInteractableEase: 9
@@ -130,3 +130,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be74cefd6a1091d408a6ec200b498674, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxCards: 5

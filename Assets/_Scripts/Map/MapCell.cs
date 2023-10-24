@@ -50,7 +50,7 @@ public class MapCell : PlayerEntity
 
     public void RemovePawn(MapPawn mapPawn)
     {
-        _stayingPlayerPawns.Remove(mapPawn);
+        if(_stayingPlayerPawns.Contains(mapPawn)) _stayingPlayerPawns.Remove(mapPawn);
     }
 
     public Transform GetEmptySpot()

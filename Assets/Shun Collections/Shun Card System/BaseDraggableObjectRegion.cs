@@ -40,7 +40,7 @@ namespace Shun_Card_System
             InitializeCardPlaceHolder();
         }
 
-        protected void InitializeCardPlaceHolder()
+        protected virtual void InitializeCardPlaceHolder()
         {
             if (_cardPlaceHolders.Count != 0)
             {
@@ -54,7 +54,7 @@ namespace Shun_Card_System
             {
                 for (int i = 0; i < MaxCardHold; i++)
                 {
-                    var cardPlaceHolder = Instantiate(DraggableObjectHolderPrefab, SpawnPlace.position + i * CardOffset,
+                    var cardPlaceHolder = Instantiate(DraggableObjectHolderPrefab, SpawnPlace.position + ((float)i -  MaxCardHold/2f) * CardOffset,
                         Quaternion.identity, SpawnPlace);
                     _cardPlaceHolders.Add(cardPlaceHolder);
                     cardPlaceHolder.InitializeRegion(this, i);

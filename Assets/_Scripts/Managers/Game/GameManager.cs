@@ -46,7 +46,8 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
 
     [SerializeField] private List<DiceDescription> _incomeDiceDescriptions = new();
     [SerializeField] private List<CardDescription> _deckCardDescriptions = new();
-
+    [SerializeField] private int _victoryPointRequirement = 4;
+    
     public PlayerController GetPlayerController(ulong clientId)
     {
         return PlayerControllers.FirstOrDefault(playerController => playerController.OwnerClientId == clientId);
@@ -146,6 +147,29 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
         playerController.PlayerTurnController.StartPreparationPhaseServerRPC();
         playerController.PlayerResourceController.GainIncomeServerRPC();
     }
+
+    public void CheckWin(ulong ownerClientId , int victoryPoint)
+    {
+        if (victoryPoint >= _victoryPointRequirement)
+        {
+            EndGameServerRPC(ownerClientId);
+        }
+        
+    }
     
+    [ServerRpc(RequireOwnership = false)]
+    public void EndGameServerRPC(ulong ownerClientId)
+    {
+        _gameState = GameState.GameEnd;
+        EndGameClientRPC(ownerClientId);
+    }
+    
+    [ClientRpc]
+    private void EndGameClientRPC(ulong ownerClientId)
+    {
+        OnGameEnd?.Invoke();
+        
+        Debug.Log("Game End!");
+    }
     
 }
