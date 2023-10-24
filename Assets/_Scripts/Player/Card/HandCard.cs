@@ -14,12 +14,17 @@ public class HandCard : PlayerEntity, ITargeter
 {
     protected PlayerCardHand PlayerCardHand;
     public CardDescription CardDescription { get; protected set; }
-    
+
+    public Action OnInitialize { get; set;}
+
     public void Initialize(PlayerCardHand playerCardHand, CardDescription cardDescription, int containerIndex, ulong ownerClientID)
     {
         PlayerCardHand = playerCardHand;
         Initialize(containerIndex, ownerClientID);
         InitializeCardDescription(cardDescription);
+        
+        OnInitialize?.Invoke();
+        OnInitialize = null;
     }
 
     protected virtual void InitializeCardDescription(CardDescription cardDescription)
