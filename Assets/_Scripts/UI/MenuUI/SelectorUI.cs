@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,13 +14,13 @@ public class SelectorUI : MonoBehaviour
     public Transform selectedCharacter;
     private void Start()
     {
-        foreach (Character c in CharacterManger.instance.characters)
+        foreach (Character c in CharacterManger.Instance.characters)
         {
             GameObject option = Instantiate(optionPrefab, transform);
             Button button = option.GetComponent<Button>();
             button.onClick.AddListener(() =>
             {
-                CharacterManger.instance.SetCharacter(c);
+                CharacterManger.Instance.SetCharacter(c);
                 if (selectedCharacter != null)
                 {
                     prevCharacter = selectedCharacter;
@@ -27,7 +28,7 @@ public class SelectorUI : MonoBehaviour
 
                 selectedCharacter = option.transform;
             });
-            Text text = option.GetComponentInChildren<Text>();
+            var text = option.GetComponentInChildren<TMP_Text>();
             text.text = c.name;
             Image image = option.GetComponentInChildren<Image>();
             image.sprite = c.spriteName;

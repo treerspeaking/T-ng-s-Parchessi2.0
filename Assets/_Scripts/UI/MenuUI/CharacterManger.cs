@@ -2,27 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityUtilities;
 
 
-public class CharacterManger : MonoBehaviour
+public class CharacterManger : SingletonMonoBehaviour<CharacterManger>
 {
-   public static CharacterManger instance;
-
    public Character[] characters;
    public Character currentCharacter;
-
-   public void Awake()
-   {
-      if (instance == null)
-      {
-         instance = this;
-      }
-      else
-      {
-         Destroy(gameObject);
-      }
-      DontDestroyOnLoad(gameObject);
-   }
 
    private void Start()
    {
