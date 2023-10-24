@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7982a113185a468bae32be7e08763311, type: 3}
-  m_Name: Aquaponics Card Description
+  m_Name: Aquaponics Card Description 1
   m_EditorClassIdentifier: 
   CardID: 0
   CardSprite: {fileID: 21300000, guid: c211932e13cf4458e9f943c77c20ab5d, type: 3}
   CardName: Aquaponics
-  CardEffectDescription: Do {0} damage to an enemy
+  CardEffectDescription: Heal an ally by {0}
   CardCost: 1
-  CardEffectIntVariables: 02000000
+  CardEffectIntVariables: 03000000
   CardPaletteDescription: {fileID: 11400000, guid: cb0d70e5f96d1e041980a5b52f5185dd, type: 2}
   HandCardPrefab: {fileID: 406102951322897787, guid: fcee7f5b4818c3842bc0723c15e8c037, type: 3}

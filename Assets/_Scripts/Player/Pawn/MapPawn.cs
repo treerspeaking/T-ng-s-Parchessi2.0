@@ -180,6 +180,22 @@ namespace _Scripts.Player.Pawn
             return null;
         }
 
+        public SimulationPackage TakeDamage(MapPawn attackerMapPawn)
+        {
+            var simulationPacket = new SimulationPackage();
+            
+            simulationPacket.AddToPackage(() =>
+            {
+                // Buff from attacker and debuff from defender
+                
+                SimulationManager.Instance.AddCoroutineSimulationObject(TakeDamage(attackerMapPawn.AttackDamage.Value));
+            });
+            
+            
+            
+            return null;
+        }
+        
         public SimulationPackage TakeDamage(int damage)
         {
             var simulationPacket = new SimulationPackage();
@@ -225,6 +241,20 @@ namespace _Scripts.Player.Pawn
                 // Fun Animation
                 Debug.Log("Reach Goal!");
                 _mapPath.Path[StandingMapCellIndex].RemovePawn(this);
+            });
+            
+            return simulationPacket;
+        }
+
+        public SimulationPackage Heal(int healValue)
+        {
+            var simulationPacket = new SimulationPackage();
+            
+            simulationPacket.AddToPackage(() =>
+            {
+                // Fun Animation
+                Debug.Log("Heal!");
+                CurrentHealth.Value += healValue;
             });
             
             return simulationPacket;

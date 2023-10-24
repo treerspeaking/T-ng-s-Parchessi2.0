@@ -20,10 +20,7 @@ namespace _Scripts.Scriptable_Objects
         public CardPaletteDescription CardPaletteDescription;
         [SerializeField] protected HandCard HandCardPrefab;
 
-        void Awake()
-        {
-            CardPaletteDescription = ScriptableObject.CreateInstance<CardPaletteDescription>();
-        }
+        
         
         public HandCard GetHandCardPrefab()
         {
