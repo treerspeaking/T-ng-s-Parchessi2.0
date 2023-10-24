@@ -5,12 +5,11 @@ using UnityEngine.UI;
 [Serializable]
 public class Character
 {
-   // public GameObject prefab;
-   // public string name;
-   // public Image icon;
+   public GameObject prefab;
+   public string name;
+   public Image icon;
 
    public Sprite spriteName;
-   public string name;
 
 
 }
