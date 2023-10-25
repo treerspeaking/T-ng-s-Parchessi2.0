@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Thuan-development.unity
     guid: 8d578bb192d783d4e84ae1f3c7b596c7
   - enabled: 1
-    path: Assets/Scenes/In-Game-UI.unity
+    path: 
     guid: ba7f4784bb211ee42b8b31a2fdbc4da6
+  - enabled: 1
+    path: Assets/KitchenChaos/Scenes/LobbyScene.unity
+    guid: 2db6d82244b549b43a11236a066ead09
   m_configObjects: {}
