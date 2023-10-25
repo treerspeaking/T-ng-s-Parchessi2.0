@@ -9,10 +9,18 @@ namespace _Scripts.Managers.Network
 {
     public class AssetNetworkSceneManager : AssetSceneManager
     {
+        public static void LoadNetworkLoadingScene()
+        {
+            NetworkManager.Singleton.SceneManager.LoadScene(AssetScene.LoadingScene.ToString(), LoadSceneMode.Additive);
+        }
+        
         public static bool LoadNetworkScene(string sceneName, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
         {
             Debug.Log($"Network about to load scene {sceneName} ");
+
+            
             var status = NetworkManager.Singleton.SceneManager.LoadScene(sceneName, loadSceneMode);
+            LoadNetworkLoadingScene();
             
             if (status != SceneEventProgressStatus.Started)
             {

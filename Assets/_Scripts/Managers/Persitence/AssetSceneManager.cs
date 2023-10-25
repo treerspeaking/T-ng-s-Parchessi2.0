@@ -33,10 +33,16 @@ public class AssetSceneManager
         
     }
 
+    public static void LoadLoadingScene()
+    {
+        SceneManager.LoadScene(AssetScene.LoadingScene.ToString(), LoadSceneMode.Additive);
+    }
+
     public static void LoadScene(string sceneName)
     {
-        targetScene = sceneName;
-        SceneManager.LoadScene(AssetScene.LoadingScene.ToString());
+        SceneManager.LoadScene(sceneName);
+        LoadLoadingScene();
+        
     }
     
     public static void LoadTargetScene()
