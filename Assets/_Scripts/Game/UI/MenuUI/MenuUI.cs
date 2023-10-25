@@ -1,46 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class MenuUI : MonoBehaviour
 {
-    public GameObject optionMenu;
-    public GameObject mainMenu;
+    [FormerlySerializedAs("optionMenu")] public GameObject OptionMenu;
+    [FormerlySerializedAs("mainMenu")] public GameObject MainMenu;
 
-
+    public void LoadLobby()
+    {
+        AssetSceneManager.LoadScene(AssetSceneManager.AssetScene.LobbyScene.ToString());
+    }
+    
     public void OnOptionOpen()
     {
-        mainMenu.LeanScale(Vector2.zero, .3f).setEaseInBack().setOnComplete(OptionEnable);
-        optionMenu.LeanScale(Vector2.one, 0.5f);
+        MainMenu.LeanScale(Vector2.zero, .3f).setEaseInBack().setOnComplete(OptionEnable);
+        OptionMenu.LeanScale(Vector2.one, 0.5f);
     }
 
     public void OnOptionClose()
     {
-        optionMenu.LeanScale(Vector2.zero, .3f).setEaseInBack().setOnComplete(OptionDisable);
-        mainMenu.LeanScale(Vector2.one, 0.5f);
+        OptionMenu.LeanScale(Vector2.zero, .3f).setEaseInBack().setOnComplete(OptionDisable);
+        MainMenu.LeanScale(Vector2.one, 0.5f);
     }
 
     public void OptionEnable()
     {
-        optionMenu.SetActive(true);
-        mainMenu.SetActive(false);
+        OptionMenu.SetActive(true);
+        MainMenu.SetActive(false);
     }
 
     public void OptionDisable()
     {
-        optionMenu.SetActive(false);
-        mainMenu.SetActive(true);
+        OptionMenu.SetActive(false);
+        MainMenu.SetActive(true);
     }
 
     public void MainMenuEnable()
     {
-        optionMenu.SetActive(false);
-        mainMenu.SetActive(true);
+        OptionMenu.SetActive(false);
+        MainMenu.SetActive(true);
     }
 
     public void MainMenuDisable()
     {
-        optionMenu.SetActive(true);
-        mainMenu.SetActive(false);
+        OptionMenu.SetActive(true);
+        MainMenu.SetActive(false);
     }
 }

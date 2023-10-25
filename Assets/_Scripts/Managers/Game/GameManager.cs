@@ -108,7 +108,7 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     public void StartGameClientRPC()
     {
         
-        OnGameStart.Invoke();
+        OnGameStart?.Invoke();
     }
 
     private void LoadPlayerSetup()
@@ -156,14 +156,14 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     [ClientRpc]
     private void EndPlayerTurnClientRPC(ulong clientId)
     {
-        OnPlayerTurnEnd.Invoke(GetPlayerController(clientId));
+        OnPlayerTurnEnd?.Invoke(GetPlayerController(clientId));
         Debug.Log($"Player {PlayerControllers[_playerIdTurn.Value].OwnerClientId} end turn");
     }
     
     [ClientRpc]
     private void StartPlayerTurnClientRPC(ulong clientId)
     {
-        OnPlayerTurnStart.Invoke(GetPlayerController(clientId));
+        OnPlayerTurnStart?.Invoke(GetPlayerController(clientId));
         Debug.Log($"Player {PlayerControllers[_playerIdTurn.Value].OwnerClientId} start turn");
     }
     

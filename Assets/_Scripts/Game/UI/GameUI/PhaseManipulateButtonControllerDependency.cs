@@ -13,12 +13,10 @@ public abstract class PhaseManipulateButtonControllerDependency : PlayerControll
     {
         
         Button = GetComponent<Button>();
-    }
-
-    protected void Start()
-    {
+        
         GameManager.Instance.OnGameStart += GameSetUp;
     }
+
 
     protected abstract void GameSetUp();
 }
