@@ -29,8 +29,6 @@ public class HandCard : PlayerEntity, ITargeter
         Initialize(containerIndex, ownerClientID);
         InitializeCardDescription(cardDescription);
         
-        OnInitialize?.Invoke();
-        OnInitialize = null;
     }
 
     protected virtual void InitializeCardDescription(CardDescription cardDescription)
@@ -38,7 +36,12 @@ public class HandCard : PlayerEntity, ITargeter
         CardDescription = cardDescription;
     }
 
-    
+    private void Start()
+    {
+        OnInitialize?.Invoke();
+        OnInitialize = null;
+    }
+
     public virtual bool CheckTargeteeValid(ITargetee targetee)
     {
         if (targetee.TargetType == TargetType.Pawn || targetee.TargetType == TargetType.Empty)

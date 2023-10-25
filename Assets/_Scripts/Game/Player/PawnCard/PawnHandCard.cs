@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using _Scripts.DataWrapper;
 using _Scripts.Managers.Game;
 using _Scripts.Player.Dice;
 using _Scripts.Player.Pawn;
@@ -9,8 +10,12 @@ using UnityEngine;
 
 public class PawnHandCard : HandCard
 {
-    protected PawnDescription PawnDescription;
+    public PawnDescription PawnDescription { get; protected set; }
 
+    public ObservableData<int> Attack = new ObservableData<int>();
+    public ObservableData<int> MaxHealth = new ObservableData<int>();
+    public ObservableData<int> Speed = new ObservableData<int>();
+    
 
     protected override void InitializeCardDescription(CardDescription cardDescription)
     {
@@ -18,11 +23,20 @@ public class PawnHandCard : HandCard
         var pawnCardDescription = cardDescription as PawnCardDescription;
 
         if (pawnCardDescription != null)
-            PawnDescription = pawnCardDescription.PawnDescription;
+            InitializedPawnCardDescription(pawnCardDescription);
         else
             Debug.LogError("PawnCardDescription is null");
     }
 
+    private void InitializedPawnCardDescription(PawnCardDescription pawnCardDescription)
+    {
+        PawnDescription = pawnCardDescription.PawnDescription;
+        
+        Attack.Value = PawnDescription.PawnAttackDamage;
+        MaxHealth.Value = PawnDescription.PawnMaxHealth;
+        Speed.Value = PawnDescription.PawnMovementSpeed;
+    }
+    
     public override SimulationPackage ExecuteTargeter<TTargetee>(TTargetee targetee)
     {
         var package = new SimulationPackage();

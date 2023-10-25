@@ -22,7 +22,7 @@ public class HandCardVisual : MonoBehaviour
     [SerializeField] private SpriteRenderer _cardBannerBoxSprite;
     [SerializeField] private SpriteRenderer _cardImageBoxSprite;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         HandCard = GetComponent<HandCard>();
         HandCard.OnInitialize += InitializeVisual;
@@ -53,7 +53,7 @@ public class HandCardVisual : MonoBehaviour
 
     }
     
-    private void LoadCardColor()
+    protected virtual void LoadCardColor()
     {
         if(CardDescription == null || CardDescription.CardPaletteDescription != null) return;
         CardPaletteDescription cardPaletteDescription = CardDescription.CardPaletteDescription;

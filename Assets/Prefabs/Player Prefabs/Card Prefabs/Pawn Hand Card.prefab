@@ -2059,6 +2059,12 @@ MonoBehaviour:
   _targeteeType: 5
   MoveToMiddleDuration: 0.5
   MoveToMiddleEase: 9
+  Attack:
+    _value: 0
+  MaxHealth:
+    _value: 0
+  Speed:
+    _value: 0
 --- !u!114 &3130520252921474953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2094,6 +2100,11 @@ MonoBehaviour:
   _cardEffectBoxSprite: {fileID: 8842430945408696482}
   _cardBannerBoxSprite: {fileID: 5524663455553075869}
   _cardImageBoxSprite: {fileID: 8842430943419315935}
+  _attackText: {fileID: 3130520252803809138}
+  _healthText: {fileID: 3130520252514528863}
+  _speedText: {fileID: 3130520251176995569}
+  _buffColor: {r: 0, g: 1, b: 0, a: 1}
+  _debuffColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &8842430945408696543
 GameObject:
   m_ObjectHideFlags: 0
