@@ -14,9 +14,14 @@ public abstract class PhaseManipulateButtonControllerDependency : PlayerControll
         
         Button = GetComponent<Button>();
         
-        GameManager.Instance.OnGameStart += GameSetUp;
+        Invoke(nameof(DelaySetUp), 0.5f);
     }
 
-
+    protected void DelaySetUp()
+    {
+        
+        GameManager.Instance.OnGameStart += GameSetUp;
+    }
+    
     protected abstract void GameSetUp();
 }
