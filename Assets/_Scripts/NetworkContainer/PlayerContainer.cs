@@ -1,15 +1,23 @@
 ﻿using System;
+using Unity.Collections;
 using Unity.Netcode;
 
 namespace _Scripts.NetworkContainter
 {
     public struct PlayerContainer : INetworkSerializable, IEquatable<PlayerContainer>
     {
-        public int PlayerID;
+        public FixedString64Bytes PlayerID;
+        public ulong ClientID;
+        public int ColorID;
+        public FixedString64Bytes PlayerName;
+        
         
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
             serializer.SerializeValue(ref PlayerID);
+            serializer.SerializeValue(ref ClientID);
+            serializer.SerializeValue(ref ColorID);
+            serializer.SerializeValue(ref PlayerName);
             
         }
 

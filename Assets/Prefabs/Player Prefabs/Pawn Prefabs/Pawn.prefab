@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6143088622980807475}
   - component: {fileID: 6143088622980807476}
   - component: {fileID: 6143088622980807477}
-  - component: {fileID: 6143088622980807473}
+  - component: {fileID: 4188652359283035722}
   m_Layer: 0
   m_Name: Pawn
   m_TagString: Untagged
@@ -112,7 +112,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &6143088622980807473
+--- !u!114 &4188652359283035722
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6143088622980807479}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 003cf308152845de8290efe817606318, type: 3}
+  m_Script: {fileID: 11500000, guid: 7aa55d210bb142488ed8bd360443b905, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _targeteeType: 3
@@ -134,3 +134,5 @@ MonoBehaviour:
     _value: 0
   MovementSpeed:
     _value: 0
+  _moveDuration: 0.2
+  _moveEase: 1

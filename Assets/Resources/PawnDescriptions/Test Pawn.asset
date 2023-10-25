@@ -17,4 +17,4 @@ MonoBehaviour:
   PawnMaxHealth: 4
   PawnAttackDamage: 4
   PawnMovementSpeed: 0
-  _mapPawnPrefab: {fileID: 6143088622980807473, guid: f26bc0cba1f3bea4a812221916e03214, type: 3}
+  _mapPawnPrefab: {fileID: 4188652359283035722, guid: f26bc0cba1f3bea4a812221916e03214, type: 3}

@@ -18,15 +18,14 @@ namespace _Scripts.Managers.Game
         private const int MAP_PAWN_COUNT = 20;
         private static readonly PawnContainer EmptyPawnContainer = new PawnContainer{PawnID = -1};
         
-        [SerializeField] private Transform _mapParent;
-        [SerializeField] private List<MapPath> _mapPaths = new ();
+        [SerializeField] private MapRegion _mapRegion;
         
         [SerializeField] private PlayerDeck _playerDeck;
         [SerializeField] private PlayerEmptyTarget _playerEmptyTarget;
         
         private NetworkList<PawnContainer> _mapPawnContainers;
         
-        private Dictionary<int, MapPawn> _containerIndexToMapPawnDictionary = new();
+        private readonly Dictionary<int, MapPawn> _containerIndexToMapPawnDictionary = new();
 
         
         private void Awake()
@@ -69,10 +68,11 @@ namespace _Scripts.Managers.Game
         private MapPawn CreateMapPawn(PawnContainer pawnContainer, int pawnContainerIndex, ulong ownerClientId)
         {
             var pawnDescription = GameResourceManager.Instance.GetPawnDescription(pawnContainer.PawnID);
-            Transform spawnTransform = _mapPaths[(int)ownerClientId].Path[0].transform;
-            var mapPawn = Instantiate(pawnDescription.GetMapPawnPrefab(), spawnTransform.position, spawnTransform.rotation, _mapParent);
+            var mapPath = _mapRegion.GetMapPath((int)ownerClientId);
+            Transform spawnTransform = mapPath.Path[0].transform;
+            var mapPawn = Instantiate(pawnDescription.GetMapPawnPrefab(), spawnTransform.position, spawnTransform.rotation, _mapRegion.transform);
             
-            mapPawn.Initialize(_mapPaths[(int)ownerClientId], pawnDescription,  pawnContainerIndex, ownerClientId);
+            mapPawn.Initialize(mapPath, pawnDescription,  pawnContainerIndex, ownerClientId);
             
             return mapPawn;
         }
