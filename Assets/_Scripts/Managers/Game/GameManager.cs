@@ -42,6 +42,7 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     public Action OnGameQuit { get; set; }
     
     public Action<PlayerController> OnPlayerTurnStart { get; set; }
+    public Action<PlayerTurnController.PlayerPhase, PlayerTurnController.PlayerPhase, PlayerController> OnPlayerPhaseChanged { get; set;}
     public Action<PlayerController> OnPlayerTurnEnd { get; set; }
 
     [SerializeField] private List<DiceDescription> _incomeDiceDescriptions = new();

@@ -29,6 +29,8 @@ public class PlayerTurnController : PlayerControllerRequireDependency
     private void Start()
     {
         _playerDiceHand = FindObjectOfType<PlayerDiceHand>();
+
+        CurrentPlayerPhase.OnValueChanged += (PlayerPhase oldValue, PlayerPhase newValue) => GameManager.Instance.OnPlayerPhaseChanged.Invoke(oldValue, newValue, PlayerController);
     }
 
     [Command]

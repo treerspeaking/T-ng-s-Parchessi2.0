@@ -929,7 +929,7 @@ GameObject:
   m_Component:
   - component: {fileID: 330377671}
   m_Layer: 0
-  m_Name: Player Card Hide Parent
+  m_Name: Peak Player Card Hand Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1212,8 +1212,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerCardHandParent: {fileID: 314058090}
   _playerDiceHandParent: {fileID: 93351248}
+  _playerPeakCardHandParent: {fileID: 330377671}
   _offScreenCardHandParent: {fileID: 1003574520}
   _offScreenDiceHandParent: {fileID: 1889332435}
+  _moveDuration: 0.25
+  _moveEase: 9
 --- !u!1 &511124455
 GameObject:
   m_ObjectHideFlags: 0
@@ -2269,7 +2272,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1185773919}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3909,7 +3912,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2538744362699107286, guid: 878b9365ace3e7e498d26676b8b90590, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 878b9365ace3e7e498d26676b8b90590, type: 3}
