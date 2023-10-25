@@ -5,38 +5,60 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityUtilities;
 
-public class AssetSceneManager : PersistentSingletonMonoBehaviour<AssetSceneManager>
+public class AssetSceneManager
 {
+    public enum AssetScene
+    {
+        LoadingScene,
+        LobbyScene,
+        GameScene,
+        CharacterSelectScene,
+        MainMenuScene
+    }
     
-    public void Exit()
+    
+    private static string targetScene;
+    
+    public static void Exit()
     {
         Application.Quit();
     }
-    public void Tutorial()
+    public static void Tutorial()
     {
-        //SceneManager.LoadScene("How To Play");
+        //SceneManager.LoadNetworkScene("How To Play");
     }
     
-    public void Credit()
+    public static void Credit()
     {
         
     }
+
+    public static void LoadScene(string sceneName)
+    {
+        targetScene = sceneName;
+        SceneManager.LoadScene(AssetScene.LoadingScene.ToString());
+    }
     
-    public void LoadNextScene()
+    public static void LoadTargetScene()
+    {
+        SceneManager.LoadScene(targetScene);
+    }
+    
+    public static void LoadNextScene()
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         int nextSceneIndex = (currentSceneIndex + 1) % SceneManager.sceneCountInBuildSettings;
         SceneManager.LoadScene(nextSceneIndex);
     }
 
-    public void RestartScene()
+    public static void RestartScene()
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex);
     }
     
     
-    public void HomeScene()
+    public static void HomeScene()
     {
         SceneManager.LoadScene(0);
     }

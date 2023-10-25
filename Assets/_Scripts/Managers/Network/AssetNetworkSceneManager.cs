@@ -7,9 +7,9 @@ using UnityUtilities;
 
 namespace _Scripts.Managers.Network
 {
-    public static class AssetNetworkSceneManager 
+    public class AssetNetworkSceneManager : AssetSceneManager
     {
-        public static bool LoadScene(string sceneName, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
+        public static bool LoadNetworkScene(string sceneName, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
         {
             Debug.Log($"Network about to load scene {sceneName} ");
             var status = NetworkManager.Singleton.SceneManager.LoadScene(sceneName, loadSceneMode);
