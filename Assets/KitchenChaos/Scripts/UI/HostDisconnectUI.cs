@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using _Scripts.Managers.Network;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class HostDisconnectUI : MonoBehaviour {
 
 
-    [SerializeField] private Button playAgainButton;
+    [FormerlySerializedAs("playAgainButton")] [SerializeField] private Button _playAgainButton;
 
 
     private void Awake() {
-        playAgainButton.onClick.AddListener(() => {
+        _playAgainButton.onClick.AddListener(() => {
             AssetNetworkSceneManager.LoadNetworkScene(AssetSceneManager.AssetScene.MainMenuScene.ToString());
         });
     }

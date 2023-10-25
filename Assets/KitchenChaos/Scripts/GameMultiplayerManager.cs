@@ -8,17 +8,15 @@ using Unity.Services.Authentication;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class KitchenGameMultiplayer : NetworkBehaviour {
+public class GameMultiplayerManager : PersistentSingletonNetworkBehavior<GameMultiplayerManager> 
+{
 
 
     public const int MAX_PLAYER_AMOUNT = 4;
     private const string PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER = "PlayerNameMultiplayer";
 
-
-    public static KitchenGameMultiplayer Instance { get; private set; }
-
-
-    public static readonly bool PlayMultiplayer = true;
+    
+    public bool PlayMultiplayer = true;
 
 
     public event EventHandler OnTryingToJoinGame;
@@ -34,10 +32,6 @@ public class KitchenGameMultiplayer : NetworkBehaviour {
 
 
     private void Awake() {
-        Instance = this;
-
-        DontDestroyOnLoad(gameObject);
-
         _playerName = PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER, "PlayerName" + UnityEngine.Random.Range(100, 1000));
 
         _playerContainerNetworkList = new NetworkList<PlayerContainer>();

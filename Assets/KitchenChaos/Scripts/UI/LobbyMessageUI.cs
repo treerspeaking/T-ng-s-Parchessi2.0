@@ -3,26 +3,27 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class LobbyMessageUI : MonoBehaviour {
 
 
-    [SerializeField] private TextMeshProUGUI messageText;
-    [SerializeField] private Button closeButton;
+    [FormerlySerializedAs("messageText")] [SerializeField] private TextMeshProUGUI _messageText;
+    [FormerlySerializedAs("closeButton")] [SerializeField] private Button _closeButton;
 
 
     private void Awake() {
-        closeButton.onClick.AddListener(Hide);
+        _closeButton.onClick.AddListener(Hide);
     }
 
     private void Start() {
-        KitchenGameMultiplayer.Instance.OnFailedToJoinGame += KitchenGameMultiplayer_OnFailedToJoinGame;
-        KitchenGameLobby.Instance.OnCreateLobbyStarted += KitchenGameLobby_OnCreateLobbyStarted;
-        KitchenGameLobby.Instance.OnCreateLobbyFailed += KitchenGameLobby_OnCreateLobbyFailed;
-        KitchenGameLobby.Instance.OnJoinStarted += KitchenGameLobby_OnJoinStarted;
-        KitchenGameLobby.Instance.OnJoinFailed += KitchenGameLobby_OnJoinFailed;
-        KitchenGameLobby.Instance.OnQuickJoinFailed += KitchenGameLobby_OnQuickJoinFailed;
+        GameMultiplayerManager.Instance.OnFailedToJoinGame += KitchenGameMultiplayer_OnFailedToJoinGame;
+        GameLobbyManager.Instance.OnCreateLobbyStarted += KitchenGameLobby_OnCreateLobbyStarted;
+        GameLobbyManager.Instance.OnCreateLobbyFailed += KitchenGameLobby_OnCreateLobbyFailed;
+        GameLobbyManager.Instance.OnJoinStarted += KitchenGameLobby_OnJoinStarted;
+        GameLobbyManager.Instance.OnJoinFailed += KitchenGameLobby_OnJoinFailed;
+        GameLobbyManager.Instance.OnQuickJoinFailed += KitchenGameLobby_OnQuickJoinFailed;
 
         Hide();
     }
@@ -57,7 +58,7 @@ public class LobbyMessageUI : MonoBehaviour {
 
     private void ShowMessage(string message) {
         Show();
-        messageText.text = message;
+        _messageText.text = message;
     }
 
     private void Show() {
@@ -69,12 +70,12 @@ public class LobbyMessageUI : MonoBehaviour {
     }
 
     private void OnDestroy() {
-        KitchenGameMultiplayer.Instance.OnFailedToJoinGame -= KitchenGameMultiplayer_OnFailedToJoinGame;
-        KitchenGameLobby.Instance.OnCreateLobbyStarted -= KitchenGameLobby_OnCreateLobbyStarted;
-        KitchenGameLobby.Instance.OnCreateLobbyFailed -= KitchenGameLobby_OnCreateLobbyFailed;
-        KitchenGameLobby.Instance.OnJoinStarted -= KitchenGameLobby_OnJoinStarted;
-        KitchenGameLobby.Instance.OnJoinFailed -= KitchenGameLobby_OnJoinFailed;
-        KitchenGameLobby.Instance.OnQuickJoinFailed -= KitchenGameLobby_OnQuickJoinFailed;
+        GameMultiplayerManager.Instance.OnFailedToJoinGame -= KitchenGameMultiplayer_OnFailedToJoinGame;
+        GameLobbyManager.Instance.OnCreateLobbyStarted -= KitchenGameLobby_OnCreateLobbyStarted;
+        GameLobbyManager.Instance.OnCreateLobbyFailed -= KitchenGameLobby_OnCreateLobbyFailed;
+        GameLobbyManager.Instance.OnJoinStarted -= KitchenGameLobby_OnJoinStarted;
+        GameLobbyManager.Instance.OnJoinFailed -= KitchenGameLobby_OnJoinFailed;
+        GameLobbyManager.Instance.OnQuickJoinFailed -= KitchenGameLobby_OnQuickJoinFailed;
     }
 
 }

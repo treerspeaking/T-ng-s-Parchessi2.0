@@ -1,16 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class TestingCharacterSelectUI : MonoBehaviour {
 
 
-    [SerializeField] private Button readyButton;
+    [FormerlySerializedAs("readyButton")] [SerializeField] private Button _readyButton;
 
 
     private void Awake() {
-        readyButton.onClick.AddListener(() => {
+        _readyButton.onClick.AddListener(() => {
             CharacterSelectReady.Instance.SetPlayerReady();
         });
     }

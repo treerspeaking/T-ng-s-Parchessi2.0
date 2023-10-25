@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConnectingUI : MonoBehaviour {
-
-
-
+public class ConnectingUI : MonoBehaviour 
+{
+    
     private void Start() {
-        KitchenGameMultiplayer.Instance.OnTryingToJoinGame += KitchenGameMultiplayer_OnTryingToJoinGame;
-        KitchenGameMultiplayer.Instance.OnFailedToJoinGame += KitchenGameManager_OnFailedToJoinGame;
+        GameMultiplayerManager.Instance.OnTryingToJoinGame += KitchenGameMultiplayer_OnTryingToJoinGame;
+        GameMultiplayerManager.Instance.OnFailedToJoinGame += KitchenGameManager_OnFailedToJoinGame;
 
         Hide();
     }
@@ -30,8 +29,8 @@ public class ConnectingUI : MonoBehaviour {
     }
 
     private void OnDestroy() {
-        KitchenGameMultiplayer.Instance.OnTryingToJoinGame -= KitchenGameMultiplayer_OnTryingToJoinGame;
-        KitchenGameMultiplayer.Instance.OnFailedToJoinGame -= KitchenGameManager_OnFailedToJoinGame;
+        GameMultiplayerManager.Instance.OnTryingToJoinGame -= KitchenGameMultiplayer_OnTryingToJoinGame;
+        GameMultiplayerManager.Instance.OnFailedToJoinGame -= KitchenGameManager_OnFailedToJoinGame;
     }
 
 }

@@ -4,32 +4,34 @@ using TMPro;
 using Unity.Netcode;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class CharacterSelectUI : MonoBehaviour {
+public class CharacterSelectUI : MonoBehaviour 
+{
 
 
-    [SerializeField] private Button mainMenuButton;
-    [SerializeField] private Button readyButton;
-    [SerializeField] private TextMeshProUGUI lobbyNameText;
-    [SerializeField] private TextMeshProUGUI lobbyCodeText;
+    [FormerlySerializedAs("mainMenuButton")] [SerializeField] private Button _mainMenuButton;
+    [FormerlySerializedAs("readyButton")] [SerializeField] private Button _readyButton;
+    [FormerlySerializedAs("lobbyNameText")] [SerializeField] private TextMeshProUGUI _lobbyNameText;
+    [FormerlySerializedAs("lobbyCodeText")] [SerializeField] private TextMeshProUGUI _lobbyCodeText;
 
 
     private void Awake() {
-        mainMenuButton.onClick.AddListener(() => {
-            KitchenGameLobby.Instance.LeaveLobby();
+        _mainMenuButton.onClick.AddListener(() => {
+            GameLobbyManager.Instance.LeaveLobby();
             NetworkManager.Singleton.Shutdown();
             AssetSceneManager.LoadScene(AssetSceneManager.AssetScene.MainMenuScene.ToString());
         });
-        readyButton.onClick.AddListener(() => {
+        _readyButton.onClick.AddListener(() => {
             CharacterSelectReady.Instance.SetPlayerReady();
         });
     }
 
     private void Start() {
-        Lobby lobby = KitchenGameLobby.Instance.GetLobby();
+        Lobby lobby = GameLobbyManager.Instance.GetLobby();
 
-        lobbyNameText.text = "Lobby Name: " + lobby.Name;
-        lobbyCodeText.text = "Lobby Code: " + lobby.LobbyCode;
+        _lobbyNameText.text = "Lobby Name: " + lobby.Name;
+        _lobbyCodeText.text = "Lobby Code: " + lobby.LobbyCode;
     }
 }

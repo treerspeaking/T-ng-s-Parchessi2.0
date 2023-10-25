@@ -1,25 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class CharacterColorSelectSingleUI : MonoBehaviour {
-
-
-    [SerializeField] private int colorId;
-    [SerializeField] private Image image;
-    [SerializeField] private GameObject selectedGameObject;
-
+public class CharacterColorSelectSingleUI : MonoBehaviour 
+{
+    
+    [FormerlySerializedAs("colorId")] [SerializeField] private int _colorId;
+    [FormerlySerializedAs("image")] [SerializeField] private Image _image;
+    [FormerlySerializedAs("selectedGameObject")] [SerializeField] private GameObject _selectedGameObject;
 
     private void Awake() {
         GetComponent<Button>().onClick.AddListener(() => {
-            KitchenGameMultiplayer.Instance.ChangePlayerColor(colorId);
+            GameMultiplayerManager.Instance.ChangePlayerColor(_colorId);
         });
     }
 
     private void Start() {
-        KitchenGameMultiplayer.Instance.OnPlayerContainerNetworkListChanged += KitchenGameMultiplayer_OnPlayerDataNetworkListChanged;
-        image.color = KitchenGameMultiplayer.Instance.GetPlayerColor(colorId);
+        GameMultiplayerManager.Instance.OnPlayerContainerNetworkListChanged += KitchenGameMultiplayer_OnPlayerDataNetworkListChanged;
+        _image.color = GameMultiplayerManager.Instance.GetPlayerColor(_colorId);
         UpdateIsSelected();
     }
 
@@ -28,14 +28,14 @@ public class CharacterColorSelectSingleUI : MonoBehaviour {
     }
 
     private void UpdateIsSelected() {
-        if (KitchenGameMultiplayer.Instance.GetPlayerContainer().ColorID == colorId) {
-            selectedGameObject.SetActive(true);
+        if (GameMultiplayerManager.Instance.GetPlayerContainer().ColorID == _colorId) {
+            _selectedGameObject.SetActive(true);
         } else {
-            selectedGameObject.SetActive(false);
+            _selectedGameObject.SetActive(false);
         }
     }
 
     private void OnDestroy() {
-        KitchenGameMultiplayer.Instance.OnPlayerContainerNetworkListChanged -= KitchenGameMultiplayer_OnPlayerDataNetworkListChanged;
+        GameMultiplayerManager.Instance.OnPlayerContainerNetworkListChanged -= KitchenGameMultiplayer_OnPlayerDataNetworkListChanged;
     }
 }

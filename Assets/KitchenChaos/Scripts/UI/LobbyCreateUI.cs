@@ -2,26 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class LobbyCreateUI : MonoBehaviour {
-
-
-    [SerializeField] private Button closeButton;
-    [SerializeField] private Button createPublicButton;
-    [SerializeField] private Button createPrivateButton;
-    [SerializeField] private TMP_InputField lobbyNameInputField;
-
-
+public class LobbyCreateUI : MonoBehaviour
+{
+    [FormerlySerializedAs("closeButton")] [SerializeField] private Button _closeButton;
+    [FormerlySerializedAs("createPublicButton")] [SerializeField] private Button _createPublicButton;
+    [FormerlySerializedAs("createPrivateButton")] [SerializeField] private Button _createPrivateButton;
+    [FormerlySerializedAs("lobbyNameInputField")] [SerializeField] private TMP_InputField _lobbyNameInputField;
 
     private void Awake() {
-        createPublicButton.onClick.AddListener(() => {
-            KitchenGameLobby.Instance.CreateLobby(lobbyNameInputField.text, false);
+        _createPublicButton.onClick.AddListener(() => {
+            GameLobbyManager.Instance.CreateLobby(_lobbyNameInputField.text, false);
         });
-        createPrivateButton.onClick.AddListener(() => {
-            KitchenGameLobby.Instance.CreateLobby(lobbyNameInputField.text, true);
+        _createPrivateButton.onClick.AddListener(() => {
+            GameLobbyManager.Instance.CreateLobby(_lobbyNameInputField.text, true);
         });
-        closeButton.onClick.AddListener(() => {
+        _closeButton.onClick.AddListener(() => {
             Hide();
         });
     }
@@ -33,7 +31,7 @@ public class LobbyCreateUI : MonoBehaviour {
     public void Show() {
         gameObject.SetActive(true);
 
-        createPublicButton.Select();
+        _createPublicButton.Select();
     }
 
     private void Hide() {

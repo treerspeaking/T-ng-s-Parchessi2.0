@@ -4,69 +4,69 @@ using TMPro;
 using Unity.Services.Lobbies.Models;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class LobbyUI : MonoBehaviour {
-
-
-    [SerializeField] private Button mainMenuButton;
-    [SerializeField] private Button createLobbyButton;
-    [SerializeField] private Button quickJoinButton;
-    [SerializeField] private Button joinCodeButton;
-    [SerializeField] private TMP_InputField joinCodeInputField;
-    [SerializeField] private TMP_InputField playerNameInputField;
-    [SerializeField] private LobbyCreateUI lobbyCreateUI;
-    [SerializeField] private Transform lobbyContainer;
-    [SerializeField] private Transform lobbyTemplate;
+public class LobbyUI : MonoBehaviour 
+{
+    [FormerlySerializedAs("mainMenuButton")] [SerializeField] private Button _mainMenuButton;
+    [FormerlySerializedAs("createLobbyButton")] [SerializeField] private Button _createLobbyButton;
+    [FormerlySerializedAs("quickJoinButton")] [SerializeField] private Button _quickJoinButton;
+    [FormerlySerializedAs("joinCodeButton")] [SerializeField] private Button _joinCodeButton;
+    [FormerlySerializedAs("joinCodeInputField")] [SerializeField] private TMP_InputField _joinCodeInputField;
+    [FormerlySerializedAs("playerNameInputField")] [SerializeField] private TMP_InputField _playerNameInputField;
+    [FormerlySerializedAs("lobbyCreateUI")] [SerializeField] private LobbyCreateUI _lobbyCreateUI;
+    [FormerlySerializedAs("lobbyContainer")] [SerializeField] private Transform _lobbyContainer;
+    [FormerlySerializedAs("lobbyTemplate")] [SerializeField] private Transform _lobbyTemplate;
 
 
     private void Awake() {
-        mainMenuButton.onClick.AddListener(() => {
-            KitchenGameLobby.Instance.LeaveLobby();
+        _mainMenuButton.onClick.AddListener(() => {
+            GameLobbyManager.Instance.LeaveLobby();
             AssetSceneManager.LoadScene(AssetSceneManager.AssetScene.MainMenuScene.ToString());
         });
-        createLobbyButton.onClick.AddListener(() => {
-            lobbyCreateUI.Show();
+        _createLobbyButton.onClick.AddListener(() => {
+            _lobbyCreateUI.Show();
         });
-        quickJoinButton.onClick.AddListener(() => {
-            KitchenGameLobby.Instance.QuickJoin();
+        _quickJoinButton.onClick.AddListener(() => {
+            GameLobbyManager.Instance.QuickJoin();
         });
-        joinCodeButton.onClick.AddListener(() => {
-            KitchenGameLobby.Instance.JoinWithCode(joinCodeInputField.text);
+        _joinCodeButton.onClick.AddListener(() => {
+            GameLobbyManager.Instance.JoinWithCode(_joinCodeInputField.text);
         });
 
-        lobbyTemplate.gameObject.SetActive(false);
+        _lobbyTemplate.gameObject.SetActive(false);
     }
 
     private void Start() {
-        playerNameInputField.text = KitchenGameMultiplayer.Instance.GetPlayerName();
-        playerNameInputField.onValueChanged.AddListener((string newText) => {
-            KitchenGameMultiplayer.Instance.SetPlayerName(newText);
+        _playerNameInputField.text = GameMultiplayerManager.Instance.GetPlayerName();
+        _playerNameInputField.onValueChanged.AddListener((string newText) => {
+            GameMultiplayerManager.Instance.SetPlayerName(newText);
         });
 
-        KitchenGameLobby.Instance.OnLobbyListChanged += KitchenGameLobby_OnLobbyListChanged;
+        GameLobbyManager.Instance.OnLobbyListChanged += KitchenGameLobby_OnLobbyListChanged;
         UpdateLobbyList(new List<Lobby>());
     }
 
-    private void KitchenGameLobby_OnLobbyListChanged(object sender, KitchenGameLobby.OnLobbyListChangedEventArgs e) {
-        UpdateLobbyList(e.lobbyList);
+    private void KitchenGameLobby_OnLobbyListChanged(object sender, GameLobbyManager.OnLobbyListChangedEventArgs e) {
+        UpdateLobbyList(e.LobbyList);
     }
 
     private void UpdateLobbyList(List<Lobby> lobbyList) {
-        foreach (Transform child in lobbyContainer) {
-            if (child == lobbyTemplate) continue;
+        foreach (Transform child in _lobbyContainer) {
+            if (child == _lobbyTemplate) continue;
             Destroy(child.gameObject);
         }
 
         foreach (Lobby lobby in lobbyList) {
-            Transform lobbyTransform = Instantiate(lobbyTemplate, lobbyContainer);
+            Transform lobbyTransform = Instantiate(_lobbyTemplate, _lobbyContainer);
             lobbyTransform.gameObject.SetActive(true);
             lobbyTransform.GetComponent<LobbyListSingleUI>().SetLobby(lobby);
         }
     }
 
     private void OnDestroy() {
-        KitchenGameLobby.Instance.OnLobbyListChanged -= KitchenGameLobby_OnLobbyListChanged;
+        GameLobbyManager.Instance.OnLobbyListChanged -= KitchenGameLobby_OnLobbyListChanged;
     }
 
 }
