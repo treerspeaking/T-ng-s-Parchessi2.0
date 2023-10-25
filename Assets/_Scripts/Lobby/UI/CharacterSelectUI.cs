@@ -24,7 +24,7 @@ public class CharacterSelectUI : MonoBehaviour
             AssetSceneManager.LoadScene(AssetSceneManager.AssetScene.MainMenuScene.ToString());
         });
         _readyButton.onClick.AddListener(() => {
-            CharacterSelectReady.Instance.SetPlayerReady();
+            CharacterSelectReadyManager.Instance.SetPlayerReady();
         });
     }
 

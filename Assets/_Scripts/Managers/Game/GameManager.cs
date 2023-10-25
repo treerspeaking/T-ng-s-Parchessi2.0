@@ -34,7 +34,7 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     
     public PlayerController ClientOwnerPlayerController;
     public Action OnNetworkSetUp { get; set; }
-    public Action OnPlayerJoinGameSetUp { get; set; }
+    public Action OnClientPlayerJoinGameSetUp { get; set; }
     public Action OnGameStart { get; set; }
     public Action OnGameEnd { get; set; }
     public Action OnGamePause { get; set; }
@@ -47,7 +47,30 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
     [SerializeField] private List<DiceDescription> _incomeDiceDescriptions = new();
     [SerializeField] private List<CardDescription> _deckCardDescriptions = new();
     [SerializeField] private int _victoryPointRequirement = 4;
-    
+
+    public void Start()
+    {
+        CreatePlayerControllerServerRPC();
+
+        if (IsServer)
+        {
+            StartCoroutine(WaitForAllClientConnect());
+        }
+    }
+
+    private IEnumerator WaitForAllClientConnect()
+    {
+        yield return new WaitUntil(() => PlayerControllers.Count == GameMultiplayerManager.Instance.GetAllPlayerContainer().Length);
+        StartGameServerRPC();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void CreatePlayerControllerServerRPC()
+    {
+        var playerController = Instantiate(GameResourceManager.Instance.PlayerControllerPrefab);
+        playerController.GetComponent<NetworkObject>().SpawnAsPlayerObject(NetworkManager.Singleton.LocalClientId);
+    }
+
     public PlayerController GetPlayerController(ulong clientId)
     {
         return PlayerControllers.FirstOrDefault(playerController => playerController.OwnerClientId == clientId);
@@ -61,8 +84,9 @@ public class GameManager : SingletonNetworkBehavior<GameManager>
             ClientOwnerPlayerController = playerController;
             
             _gameState = GameState.GameSetup;
-            OnPlayerJoinGameSetUp.Invoke();
-            //OnPlayerJoinGameSetUp = null;
+            
+            OnClientPlayerJoinGameSetUp?.Invoke();
+            OnClientPlayerJoinGameSetUp = null;
         }
     }
 

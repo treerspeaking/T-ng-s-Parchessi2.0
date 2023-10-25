@@ -30,8 +30,9 @@ public class GameMultiplayerManager : PersistentSingletonNetworkBehavior<GameMul
     private string _playerName;
 
 
-
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
+        
         _playerName = PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER, "PlayerName" + UnityEngine.Random.Range(100, 1000));
 
         _playerContainerNetworkList = new NetworkList<PlayerContainer>();
@@ -154,6 +155,19 @@ public class GameMultiplayerManager : PersistentSingletonNetworkBehavior<GameMul
         return -1;
     }
 
+    public PlayerContainer[] GetAllPlayerContainer()
+    {
+        PlayerContainer [] playerContainers = new PlayerContainer[_playerContainerNetworkList.Count];
+
+        for (var index = 0; index < _playerContainerNetworkList.Count; index++)
+        {
+            var playerContainer = _playerContainerNetworkList[index];
+            playerContainers[index] = playerContainer;
+        }
+
+        return playerContainers;
+    }
+    
     public PlayerContainer GetPlayerContainerFromClientId(ulong clientId) {
         foreach (PlayerContainer playerContainer in _playerContainerNetworkList) {
             if (playerContainer.ClientID == clientId) {

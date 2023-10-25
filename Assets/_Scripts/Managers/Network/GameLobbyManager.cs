@@ -158,7 +158,7 @@ public class GameLobbyManager : PersistentSingletonNetworkBehavior<GameLobbyMana
             });
 
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(allocation, "dtls"));
-
+            
             GameMultiplayerManager.Instance.StartHost();
             
             AssetNetworkSceneManager.LoadNetworkScene(AssetSceneManager.AssetScene.CharacterSelectScene.ToString());

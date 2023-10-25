@@ -50,22 +50,19 @@ MonoBehaviour:
   _incomeDiceDescriptions:
   - {fileID: 11400000, guid: 88f6d5eb9dd88b542b0c3ec68fe84d9f, type: 2}
   - {fileID: 11400000, guid: 88f6d5eb9dd88b542b0c3ec68fe84d9f, type: 2}
-  _pawnDescriptions:
-  - {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
-  - {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
-  - {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
-  - {fileID: 11400000, guid: 4b506fa38d3e9f446961fd6e545adac3, type: 2}
   _deckCardDescriptions:
+  - {fileID: 11400000, guid: b846a576a9298f447929b2d1fbdf2ed6, type: 2}
+  - {fileID: 11400000, guid: f9207e407fee5734796cc1d2a2131b57, type: 2}
   - {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
   - {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
+  - {fileID: 11400000, guid: f9207e407fee5734796cc1d2a2131b57, type: 2}
+  - {fileID: 11400000, guid: b846a576a9298f447929b2d1fbdf2ed6, type: 2}
   - {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
+  - {fileID: 11400000, guid: f9207e407fee5734796cc1d2a2131b57, type: 2}
   - {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
-  - {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
-  - {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
-  - {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
-  - {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
-  - {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
-  - {fileID: 11400000, guid: 9f67221859864844c8cb71d80d98e38b, type: 2}
+  - {fileID: 11400000, guid: b846a576a9298f447929b2d1fbdf2ed6, type: 2}
+  - {fileID: 11400000, guid: f9207e407fee5734796cc1d2a2131b57, type: 2}
+  _victoryPointRequirement: 4
 --- !u!114 &385805303
 MonoBehaviour:
   m_ObjectHideFlags: 0
