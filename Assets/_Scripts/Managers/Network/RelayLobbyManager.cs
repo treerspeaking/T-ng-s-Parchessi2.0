@@ -102,7 +102,7 @@ public class RelayLobbyManager : PersistentSingletonMonoBehaviour<RelayLobbyMana
             CreateLobbyOptions options = new CreateLobbyOptions
             {
                 IsPrivate = false,
-                Player = new Player
+                Player = new Unity.Services.Lobbies.Models.Player
                 {
                     Profile = new PlayerProfile(AuthenticationService.Instance.Profile),
                     Data = new Dictionary<string, PlayerDataObject>

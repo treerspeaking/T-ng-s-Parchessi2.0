@@ -10,6 +10,8 @@ using UnityUtilities;
 
 public class GameResourceManager : SingletonMonoBehaviour<GameResourceManager>
 {
+    public PlayerController PlayerControllerPrefab;
+    
     public PlayerCardHand PlayerCardHandPrefab;
     public PlayerDiceHand PlayerDiceHandPrefab;
 
