@@ -13,7 +13,7 @@ namespace _Scripts.Player.Pawn
     public class MapPawn : PlayerEntity
     {
         protected MapManager MapManager => MapManager.Instance;
-        private MapPath _mapPath;
+        protected MapPath MapPath;
         private PawnDescription _pawnDescription;
 
         public int StandingMapCellIndex = 0;
@@ -23,16 +23,16 @@ namespace _Scripts.Player.Pawn
         public ObservableData<int> CurrentHealth;
         public ObservableData<int> MovementSpeed;
 
-        public void Initialize(MapPath playerMapPawn, PawnDescription pawnDescription , int containerIndex, ulong ownerClientId)
+        public virtual void Initialize(MapPath playerMapPawn, PawnDescription pawnDescription , int containerIndex, ulong ownerClientId)
         {
-            _mapPath = playerMapPawn;
+            MapPath = playerMapPawn;
             _pawnDescription = pawnDescription;
 
             Initialize(containerIndex, ownerClientId);
             LoadPawnDescription();
         }
 
-        public void LoadPawnDescription()
+        public virtual void LoadPawnDescription()
         {
             AttackDamage = new ObservableData<int>(_pawnDescription.PawnAttackDamage);
             MaxHealth = new ObservableData<int>(_pawnDescription.PawnMaxHealth);
@@ -47,19 +47,19 @@ namespace _Scripts.Player.Pawn
             int startMapCellIndex = StandingMapCellIndex;
             int endMapCellIndex = stepCount + startMapCellIndex;
 
-            if (startMapCellIndex + stepCount >= _mapPath.Path.Count) return false;
+            if (startMapCellIndex + stepCount >= MapPath.Path.Count) return false;
                 
             for (var index = startMapCellIndex + 1; index < stepCount + startMapCellIndex; index++)
             {
-                var mapCell = _mapPath.Path[index];
+                var mapCell = MapPath.Path[index];
 
-                if (index < _mapPath.Path.Count && mapCell.CheckEnterable()) continue;
+                if (index < MapPath.Path.Count && mapCell.CheckEnterable()) continue;
 
                 return false;
 
             }
             
-            return TryMakeCombatToFindEmptySlot(this, _mapPath.Path[endMapCellIndex]);
+            return TryMakeCombatToFindEmptySlot(this, MapPath.Path[endMapCellIndex]);
         }
 
         protected virtual bool TryMakeCombatToFindEmptySlot(MapPawn attacker, MapCell mapCell)
@@ -80,7 +80,7 @@ namespace _Scripts.Player.Pawn
             return emptySlot; // If there is an empty slot, the attacker can move to that slot
         }
         
-        public SimulationPackage StartMove(int startMapCellIndex, int stepCount)
+        public virtual SimulationPackage StartMove(int startMapCellIndex, int stepCount)
         {
             var simulationPackage = new SimulationPackage();
 
@@ -90,14 +90,14 @@ namespace _Scripts.Player.Pawn
                 simulationPackage.AddToPackage(()=> 
                 {
                     // Start move
-                    _mapPath.Path[startMapCellIndex].RemovePawn(this);
+                    MapPath.Path[startMapCellIndex].RemovePawn(this);
                     
                     for (int step = 1; step < stepCount; step++)
                     {
                     
                         // Teleport to the end position
                         StandingMapCellIndex = step + startMapCellIndex;
-                        transform.position = _mapPath.Path[StandingMapCellIndex].GetEmptySpot().transform.position; 
+                        transform.position = MapPath.Path[StandingMapCellIndex].GetEmptySpot().transform.position; 
                     }
 
                     StandingMapCellIndex ++;
@@ -107,7 +107,7 @@ namespace _Scripts.Player.Pawn
                 simulationPackage.AddToPackage(() =>
                 {
                     // Make combat to all pawn in the cell
-                    foreach (var mapPawn in _mapPath.Path[StandingMapCellIndex].GetAllPawn())
+                    foreach (var mapPawn in MapPath.Path[StandingMapCellIndex].GetAllPawn())
                     {
                         MapManager.MakeCombatServerRPC(ContainerIndex, mapPawn.ContainerIndex);
                     }
@@ -131,7 +131,7 @@ namespace _Scripts.Player.Pawn
         
         
 
-        public SimulationPackage EndMove(int endMapCellIndex)
+        public virtual SimulationPackage EndMove(int endMapCellIndex)
         {
             
             var simulationPackage = new SimulationPackage();
@@ -140,16 +140,16 @@ namespace _Scripts.Player.Pawn
             {
                 // Teleport to the end position
                 StandingMapCellIndex = endMapCellIndex;
-                transform.position = _mapPath.Path[endMapCellIndex].transform.position;
+                transform.position = MapPath.Path[endMapCellIndex].transform.position;
 
-                if (endMapCellIndex == _mapPath.Path.Count - 1) // If the pawn reach the end of the path
+                if (endMapCellIndex == MapPath.Path.Count - 1) // If the pawn reach the end of the path
                 {
                     MapManager.Instance.ReachGoalServerRPC(ContainerIndex, OwnerClientID);
                 }
                 else
                 {
                     // End move
-                    _mapPath.Path[endMapCellIndex].EnterPawn(this);
+                    MapPath.Path[endMapCellIndex].EnterPawn(this);
                 }
             });
             
@@ -158,13 +158,13 @@ namespace _Scripts.Player.Pawn
         }
         
 
-        public SimulationPackage ExecuteTargetee<TTargeter>(TTargeter targeter) where TTargeter : ITargeter
+        public virtual SimulationPackage ExecuteTargetee<TTargeter>(TTargeter targeter) where TTargeter : ITargeter
         {
             return null;
         }
 
 
-        public SimulationPackage Attack(MapPawn defenderMapPawn)
+        public virtual SimulationPackage Attack(MapPawn defenderMapPawn)
         {
             var simulationPacket = new SimulationPackage();
             
@@ -180,7 +180,7 @@ namespace _Scripts.Player.Pawn
             return null;
         }
 
-        public SimulationPackage TakeDamage(MapPawn attackerMapPawn)
+        public virtual SimulationPackage TakeDamage(MapPawn attackerMapPawn)
         {
             var simulationPacket = new SimulationPackage();
             
@@ -196,7 +196,7 @@ namespace _Scripts.Player.Pawn
             return null;
         }
         
-        public SimulationPackage TakeDamage(int damage)
+        public virtual SimulationPackage TakeDamage(int damage)
         {
             var simulationPacket = new SimulationPackage();
             
@@ -208,7 +208,7 @@ namespace _Scripts.Player.Pawn
                 {
                     // Death
                     
-                    _mapPath.Path[StandingMapCellIndex].RemovePawn(this);
+                    MapPath.Path[StandingMapCellIndex].RemovePawn(this);
                     
                     MapManager.RemovePawnFromMapServerRPC(ContainerIndex);
                     
@@ -219,7 +219,7 @@ namespace _Scripts.Player.Pawn
         }
         
         
-        public SimulationPackage Death()
+        public virtual SimulationPackage Death()
         {
             var simulationPacket = new SimulationPackage();
             
@@ -232,7 +232,7 @@ namespace _Scripts.Player.Pawn
             return simulationPacket;
         }
 
-        public SimulationPackage ReachGoal()
+        public virtual SimulationPackage ReachGoal()
         {
             var simulationPacket = new SimulationPackage();
             
@@ -240,13 +240,13 @@ namespace _Scripts.Player.Pawn
             {
                 // Fun Animation
                 Debug.Log("Reach Goal!");
-                _mapPath.Path[StandingMapCellIndex].RemovePawn(this);
+                MapPath.Path[StandingMapCellIndex].RemovePawn(this);
             });
             
             return simulationPacket;
         }
 
-        public SimulationPackage Heal(int healValue)
+        public virtual SimulationPackage Heal(int healValue)
         {
             var simulationPacket = new SimulationPackage();
             
